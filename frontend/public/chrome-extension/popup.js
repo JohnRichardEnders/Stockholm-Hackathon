@@ -157,6 +157,11 @@ class PopupController {
         const statusDot = document.getElementById('status-dot');
         const statusText = document.getElementById('status-text');
         const analyzeButton = document.getElementById('analyze-button');
+        const setButtonLabel = (html) => {
+            this.ensureGlassStructure(analyzeButton);
+            const labelEl = analyzeButton.querySelector('.liquidGlass-text');
+            if (labelEl) labelEl.innerHTML = html;
+        };
 
         statusDot.className = 'status-dot';
 
@@ -164,30 +169,64 @@ class PopupController {
             case 'processing':
                 statusDot.classList.add('processing');
                 statusText.textContent = 'Analyzing video...';
-                analyzeButton.textContent = '⏳ Processing...';
+                setButtonLabel(`<div style="display: inline-flex; align-items: center; gap: 8px;"><div style="width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: spin 1s linear infinite;"></div><span>Processing...</span></div>`);
                 analyzeButton.disabled = true;
                 break;
             case 'completed':
                 statusDot.classList.add('completed');
                 statusText.textContent = 'Analysis complete';
-                analyzeButton.textContent = '✅ Completed';
+                setButtonLabel('✅ Analysis Complete');
                 analyzeButton.disabled = true;
+                analyzeButton.style.background = 'rgba(76, 175, 80, 0.15)';
+                analyzeButton.style.boxShadow = '0 0 0 2px rgba(76, 175, 80, 0.6), 0 16px 32px rgba(76, 175, 80, 0.12)';
                 document.getElementById('stats-grid').style.display = 'grid';
                 document.getElementById('claims-section').style.display = 'block';
                 break;
             case 'error':
                 statusDot.classList.add('idle');
                 statusText.textContent = 'Error occurred';
-                analyzeButton.textContent = '🔄 Retry';
+                setButtonLabel('🔄 Retry Analysis');
                 analyzeButton.disabled = false;
+                analyzeButton.style.background = 'rgba(244, 67, 54, 0.15)';
+                analyzeButton.style.boxShadow = '0 0 0 2px rgba(244, 67, 54, 0.6), 0 16px 32px rgba(244, 67, 54, 0.12)';
                 break;
             case 'ready':
             default:
                 statusDot.classList.add('idle');
                 statusText.textContent = 'Ready to analyze';
-                analyzeButton.textContent = '🚀 Analyze Video';
+                setButtonLabel('🚀 Analyze Video');
                 analyzeButton.disabled = false;
+                analyzeButton.style.background = 'rgba(255, 255, 255, 0.08)';
+                analyzeButton.style.boxShadow = '0 0 0 2px rgba(255, 255, 255, 0.6), 0 16px 32px rgba(0, 0, 0, 0.12)';
                 break;
+        }
+    }
+
+    ensureGlassStructure(buttonEl) {
+        if (!buttonEl) return;
+        const hasLabel = buttonEl.querySelector('.liquidGlass-text');
+        if (!hasLabel) {
+            buttonEl.innerHTML = `
+                <div class="liquidGlass-effect">
+                    <svg class=\"liquidGlass-svg\" viewBox=\"0 0 100 100\" preserveAspectRatio=\"none\" xmlns=\"http://www.w3.org/2000/svg\">
+                        <defs>
+                            <linearGradient id=\"lg-liquid\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"100%\">
+                                <stop offset=\"0%\" stop-color=\"#8ec5ff\"/>
+                                <stop offset=\"50%\" stop-color=\"#b490ff\"/>
+                                <stop offset=\"100%\" stop-color=\"#ffd1ff\"/>
+                                <animate attributeName=\"x1\" values=\"0%;-50%;0%\" dur=\"8s\" repeatCount=\"indefinite\"/>
+                                <animate attributeName=\"y1\" values=\"0%;50%;0%\" dur=\"8s\" repeatCount=\"indefinite\"/>
+                                <animate attributeName=\"x2\" values=\"100%;150%;100%\" dur=\"8s\" repeatCount=\"indefinite\"/>
+                                <animate attributeName=\"y2\" values=\"100%;50%;100%\" dur=\"8s\" repeatCount=\"indefinite\"/>
+                            </linearGradient>
+                        </defs>
+                        <rect x=\"0\" y=\"0\" width=\"100\" height=\"100\" fill=\"url(#lg-liquid)\" filter=\"url(#glass-distortion)\" rx=\"30\" ry=\"30\"/>
+                    </svg>
+                </div>
+                <div class="liquidGlass-tint"></div>
+                <div class="liquidGlass-shine"></div>
+                <div class="liquidGlass-text"></div>
+            `;
         }
     }
 
