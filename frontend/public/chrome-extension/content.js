@@ -9,6 +9,9 @@ class YouTubeFactChecker {
         this.currentTime = 0;
         this.player = null;
         this.isInitialized = false;
+        this.mockMode = true; // Enable mock data mode
+        this.activeIndicator = null;
+        this.popupTimeouts = [];
 
         this.init();
     }
@@ -52,16 +55,23 @@ class YouTubeFactChecker {
             this.claims = [];
             this.factChecks = [];
             this.clearOverlays();
+            this.clearTimeouts();
 
-            // Request session data from background script
-            chrome.runtime.sendMessage({
-                type: 'GET_SESSION_DATA',
-                videoId: videoId
-            }, (response) => {
-                if (response) {
-                    this.handleSessionData(response);
-                }
-            });
+            if (this.mockMode) {
+                // Load mock data instead of API calls
+                this.loadMockData();
+                this.createActiveIndicator();
+            } else {
+                // Request session data from background script
+                chrome.runtime.sendMessage({
+                    type: 'GET_SESSION_DATA',
+                    videoId: videoId
+                }, (response) => {
+                    if (response) {
+                        this.handleSessionData(response);
+                    }
+                });
+            }
         }
     }
 
@@ -79,6 +89,127 @@ class YouTubeFactChecker {
             this.currentTime = this.player.currentTime;
             this.updateVisibleClaims();
         });
+    }
+
+    loadMockData() {
+        // Mock data with your specified structure: timestamp, claim, categoryOfLikeness, sources, judgement
+        this.mockFactChecks = [{
+                timestamp: 15,
+                claim: "This technology will revolutionize the entire industry within 5 years",
+                categoryOfLikeness: "false",
+                sources: [
+                    "https://example.com/tech-revolution-study",
+                    "https://example.com/industry-transformation-timeline"
+                ],
+                judgement: {
+                    reasoning: "Historical analysis shows that revolutionary industry transformations typically take 10-15 years, not 5. Similar bold predictions in the past have proven overly optimistic.",
+                    summary: "Claim is overly optimistic based on historical precedent"
+                }
+            },
+            {
+                timestamp: 45,
+                claim: "Studies show that 90% of users prefer this method over traditional approaches",
+                categoryOfLikeness: "false",
+                sources: [
+                    "https://example.com/user-preference-study",
+                    "https://example.com/methodology-comparison"
+                ],
+                judgement: {
+                    reasoning: "Independent research indicates preference rates are actually 60-65%, not 90%. The referenced studies could not be independently verified.",
+                    summary: "Significantly overstated user preference statistics"
+                }
+            },
+            {
+                timestamp: 120,
+                claim: "The market cap will reach $1 trillion by next year",
+                categoryOfLikeness: "false",
+                sources: [
+                    "https://example.com/market-analysis-report",
+                    "https://example.com/financial-projections"
+                ],
+                judgement: {
+                    reasoning: "Current market trends and financial analyst consensus indicate this projection is unrealistic given current growth rates and market conditions.",
+                    summary: "Unrealistic market cap projection without supporting evidence"
+                }
+            },
+            {
+                timestamp: 180,
+                claim: "No other company has been able to achieve these results",
+                categoryOfLikeness: "true",
+                sources: [
+                    "https://example.com/industry-benchmarks",
+                    "https://example.com/competitive-analysis"
+                ],
+                judgement: {
+                    reasoning: "Comprehensive industry analysis confirms this claim. Peer-reviewed research and industry reports from the past 3 years support this assertion.",
+                    summary: "Accurate claim supported by industry data"
+                }
+            },
+            {
+                timestamp: 240,
+                claim: "This approach is completely safe with no side effects",
+                categoryOfLikeness: "neutral",
+                sources: [
+                    "https://example.com/safety-study",
+                    "https://example.com/clinical-trials"
+                ],
+                judgement: {
+                    reasoning: "While initial studies show promise, long-term effects are still being studied. The claim of 'no side effects' cannot be definitively confirmed at this time.",
+                    summary: "Insufficient data to confirm absolute safety claims"
+                }
+            }
+        ];
+
+        console.log('Mock fact-check data loaded:', this.mockFactChecks.length, 'claims');
+    }
+
+    createActiveIndicator() {
+        // Remove existing indicator
+        if (this.activeIndicator) {
+            this.activeIndicator.remove();
+        }
+
+        // Create active state indicator
+        this.activeIndicator = document.createElement('div');
+        this.activeIndicator.id = 'fact-checker-indicator';
+        this.activeIndicator.style.cssText = `
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            background: #4caf50;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            z-index: 1001;
+            pointer-events: none;
+            animation: pulse 2s infinite;
+        `;
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { opacity: 1; transform: scale(1); }
+                50% { opacity: 0.7; transform: scale(1.1); }
+                100% { opacity: 1; transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Find YouTube player container and add indicator
+        const playerContainer = document.querySelector('#movie_player') ||
+            document.querySelector('.html5-video-player');
+
+        if (playerContainer) {
+            playerContainer.style.position = 'relative';
+            playerContainer.appendChild(this.activeIndicator);
+        }
+    }
+
+    clearTimeouts() {
+        this.popupTimeouts.forEach(timeout => clearTimeout(timeout));
+        this.popupTimeouts = [];
     }
 
     createOverlayContainer() {
@@ -112,6 +243,14 @@ class YouTubeFactChecker {
 
     handleMessage(message) {
         switch (message.type) {
+            case 'ACTIVATE_MOCK_MODE':
+                // Popup is requesting to activate mock mode
+                console.log('Mock mode activated from popup');
+                break;
+            case 'MOCK_ANALYSIS_COMPLETE':
+                // Background script finished mock analysis
+                console.log('Mock analysis complete from background');
+                break;
             case 'PROCESSING_STARTED':
                 this.showProcessingIndicator();
                 break;
@@ -218,78 +357,104 @@ class YouTubeFactChecker {
     }
 
     updateVisibleClaims() {
-        if (!this.overlayContainer) return;
+        if (!this.overlayContainer || !this.mockMode || !this.mockFactChecks) return;
 
-        // Clear existing overlays
-        this.clearOverlays();
-
-        // Show claims that are active at current time
-        const activeClaims = this.claims.filter(claim =>
-            this.currentTime >= claim.start_time &&
-            this.currentTime <= claim.end_time
+        // Check for claims that should be triggered at current time
+        const newClaims = this.mockFactChecks.filter(factCheck =>
+            Math.abs(this.currentTime - factCheck.timestamp) < 0.5 && // 0.5 second tolerance
+            !this.overlayContainer.querySelector(`[data-claim-timestamp="${factCheck.timestamp}"]`)
         );
 
-        activeClaims.forEach((claim, index) => {
-            this.createClaimOverlay(claim, index);
+        newClaims.forEach((factCheck, index) => {
+            const overlay = this.createClaimOverlay(factCheck, index);
+            overlay.setAttribute('data-claim-timestamp', factCheck.timestamp);
         });
     }
 
-    createClaimOverlay(claim, index) {
-            const factCheck = this.factChecks.find(fc => fc.claim_id === claim.id);
+    createClaimOverlay(factCheck, index) {
+        const overlay = document.createElement('div');
+        overlay.className = 'fact-check-claim';
+        overlay.style.cssText = `
+            position: absolute;
+            top: ${20 + (index * 70)}px;
+            right: 20px;
+            max-width: 320px;
+            background: rgba(0, 0, 0, 0.92);
+            color: white;
+            padding: 14px;
+            border-radius: 10px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 13px;
+            pointer-events: auto;
+            cursor: pointer;
+            border-left: 4px solid ${this.getCategoryColor(factCheck.categoryOfLikeness)};
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(10px);
+        `;
 
-            const overlay = document.createElement('div');
-            overlay.className = 'fact-check-claim';
-            overlay.style.cssText = `
-      position: absolute;
-      top: ${20 + (index * 60)}px;
-      right: 20px;
-      max-width: 300px;
-      background: rgba(0, 0, 0, 0.9);
-      color: white;
-      padding: 12px;
-      border-radius: 8px;
-      font-family: Arial, sans-serif;
-      font-size: 13px;
-      pointer-events: auto;
-      cursor: pointer;
-      border-left: 4px solid ${this.getStatusColor(factCheck?.status)};
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    `;
+        const statusIcon = this.getCategoryIcon(factCheck.categoryOfLikeness);
 
-            const status = factCheck ? factCheck.status : 'checking';
-            const statusIcon = this.getStatusIcon(status);
+        overlay.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                <span style="font-size: 16px;">${statusIcon}</span>
+                <span style="font-weight: 600; text-transform: capitalize; font-size: 12px; letter-spacing: 0.5px;">${factCheck.categoryOfLikeness}</span>
+                <div style="margin-left: auto; width: 4px; height: 4px; background: rgba(255,255,255,0.5); border-radius: 50%;"></div>
+            </div>
+            <div style="margin-bottom: 10px; line-height: 1.4; font-weight: 400;">
+                "${factCheck.claim.substring(0, 120)}${factCheck.claim.length > 120 ? '...' : ''}"
+            </div>
+            <div style="font-size: 11px; opacity: 0.85; line-height: 1.3;">
+                ${factCheck.judgement.summary}
+            </div>
+            <div style="position: absolute; top: 8px; right: 8px; font-size: 10px; opacity: 0.6;">
+                ${this.formatTime(factCheck.timestamp)}
+            </div>
+        `;
 
-            overlay.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-        <span>${statusIcon}</span>
-        <span style="font-weight: bold; text-transform: capitalize;">${status}</span>
-      </div>
-      <div style="margin-bottom: 8px; line-height: 1.4;">
-        "${claim.text.substring(0, 100)}${claim.text.length > 100 ? '...' : ''}"
-      </div>
-      ${factCheck ? `
-        <div style="font-size: 11px; opacity: 0.8;">
-          ${factCheck.explanation.substring(0, 150)}${factCheck.explanation.length > 150 ? '...' : ''}
-        </div>
-      ` : `
-        <div style="font-size: 11px; opacity: 0.8;">
-          Fact-checking in progress...
-        </div>
-      `}
-    `;
+        // Add click handler to show full details
+        overlay.addEventListener('click', () => {
+            this.showFactCheckDetails(factCheck);
+        });
 
-    // Add click handler to show full details
-    overlay.addEventListener('click', () => {
-      this.showClaimDetails(claim, factCheck);
-    });
+        this.overlayContainer.appendChild(overlay);
 
-    this.overlayContainer.appendChild(overlay);
-  }
+        // Animate in
+        requestAnimationFrame(() => {
+            overlay.style.transform = 'translateX(0)';
+            overlay.style.opacity = '1';
+        });
 
-  showClaimDetails(claim, factCheck) {
-    // Create modal for detailed view
-    const modal = document.createElement('div');
-    modal.style.cssText = `
+        // Auto-hide after 8 seconds (good duration for reading)
+        const displayDuration = 8000;
+        const hideTimeout = setTimeout(() => {
+            this.hideClaimOverlay(overlay);
+        }, displayDuration);
+
+        this.popupTimeouts.push(hideTimeout);
+
+        return overlay;
+    }
+
+    hideClaimOverlay(overlay) {
+        if (overlay && overlay.parentNode) {
+            overlay.style.transform = 'translateX(100%)';
+            overlay.style.opacity = '0';
+
+            setTimeout(() => {
+                if (overlay.parentNode) {
+                    overlay.remove();
+                }
+            }, 400);
+        }
+    }
+
+    showClaimDetails(claim, factCheck) {
+            // Create modal for detailed view
+            const modal = document.createElement('div');
+            modal.style.cssText = `
       position: fixed;
       top: 0;
       left: 0;
@@ -302,8 +467,8 @@ class YouTubeFactChecker {
       justify-content: center;
     `;
 
-    const content = document.createElement('div');
-    content.style.cssText = `
+            const content = document.createElement('div');
+            content.style.cssText = `
       background: white;
       max-width: 600px;
       max-height: 80vh;
@@ -313,9 +478,9 @@ class YouTubeFactChecker {
       margin: 20px;
     `;
 
-    const status = factCheck ? factCheck.status : 'checking';
-    
-    content.innerHTML = `
+            const status = factCheck ? factCheck.status : 'checking';
+
+            content.innerHTML = `
       <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
         <h2 style="margin: 0; color: #333;">Claim Details</h2>
         <button id="close-modal" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
@@ -380,11 +545,108 @@ class YouTubeFactChecker {
     });
   }
 
-  clearOverlays() {
-    if (this.overlayContainer) {
-      this.overlayContainer.innerHTML = '';
-    }
+  showFactCheckDetails(factCheck) {
+    // Create modal for detailed view
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 20000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    `;
+
+    const content = document.createElement('div');
+    content.style.cssText = `
+      background: white;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 20px;
+    `;
+
+    content.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="margin: 0; color: #333;">Fact Check Details</h2>
+        <button id="close-modal" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+      </div>
+      
+      <div style="margin-bottom: 16px;">
+        <strong>Status:</strong> 
+        <span style="color: ${this.getCategoryColor(factCheck.categoryOfLikeness)}; font-weight: bold; text-transform: capitalize;">
+          ${this.getCategoryIcon(factCheck.categoryOfLikeness)} ${factCheck.categoryOfLikeness}
+        </span>
+      </div>
+      
+      <div style="margin-bottom: 16px;">
+        <strong>Claim:</strong>
+        <p style="background: #f5f5f5; padding: 12px; border-radius: 6px; margin: 8px 0;">${factCheck.claim}</p>
+      </div>
+      
+      <div style="margin-bottom: 16px;">
+        <strong>Timestamp:</strong> ${this.formatTime(factCheck.timestamp)}
+      </div>
+      
+      <div style="margin-bottom: 16px;">
+        <strong>Summary:</strong>
+        <p style="line-height: 1.5; margin: 8px 0;">${factCheck.judgement.summary}</p>
+      </div>
+      
+      <div style="margin-bottom: 16px;">
+        <strong>Reasoning:</strong>
+        <p style="line-height: 1.5; margin: 8px 0;">${factCheck.judgement.reasoning}</p>
+      </div>
+      
+      ${factCheck.sources && factCheck.sources.length > 0 ? `
+        <div style="margin-bottom: 16px;">
+          <strong>Sources:</strong>
+          <ul style="margin: 8px 0; padding-left: 20px;">
+            ${factCheck.sources.map(source => `
+              <li style="margin-bottom: 8px;">
+                <a href="${source}" target="_blank" style="color: #1976d2; text-decoration: none;">
+                  ${source}
+                </a>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      ` : ''}
+    `;
+
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+
+    // Close modal handlers
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.remove();
+      }
+    });
+
+    content.querySelector('#close-modal').addEventListener('click', () => {
+      modal.remove();
+    });
   }
+
+    clearOverlays() {
+        if (this.overlayContainer) {
+            // Animate out existing overlays before clearing
+            const existingOverlays = this.overlayContainer.querySelectorAll('.fact-check-claim');
+            existingOverlays.forEach(overlay => {
+                this.hideClaimOverlay(overlay);
+            });
+            
+            // Clear timeouts
+            this.clearTimeouts();
+        }
+    }
 
   showCompletionNotification(data) {
     const notification = document.createElement('div');
@@ -417,6 +679,24 @@ class YouTubeFactChecker {
     setTimeout(() => {
       notification.remove();
     }, 5000);
+  }
+
+  getCategoryColor(categoryOfLikeness) {
+    switch (categoryOfLikeness) {
+      case 'true': return '#4caf50'; // Green for true
+      case 'false': return '#f44336'; // Red for false
+      case 'neutral': return '#ff9800'; // Orange for neutral
+      default: return '#2196f3'; // Blue for unknown
+    }
+  }
+
+  getCategoryIcon(categoryOfLikeness) {
+    switch (categoryOfLikeness) {
+      case 'true': return '✅';
+      case 'false': return '❌';
+      case 'neutral': return '⚠️';
+      default: return '🔍';
+    }
   }
 
   getStatusColor(status) {

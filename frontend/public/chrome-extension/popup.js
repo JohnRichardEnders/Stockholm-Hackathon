@@ -50,56 +50,74 @@ class PopupController {
 
     async loadVideoData() {
         try {
-            // Get session data from background script
-            const response = await this.sendMessageToBackground({
-                type: 'GET_SESSION_DATA',
-                videoId: this.videoId
-            });
+            // In mock mode, immediately set to ready state
+            this.updateStatus('ready');
 
-            this.sessionData = response;
-
-            if (response) {
-                this.updateStatus(response.status);
-
-                if (response.status === 'completed') {
-                    await this.loadClaimsAndFactChecks();
-                }
-            } else {
-                this.updateStatus('ready');
-            }
+            // Load mock data for display
+            this.loadMockData();
 
             // Update video info
             await this.updateVideoInfo();
 
         } catch (error) {
-            console.error('Error loading video data:', error);
-            this.updateStatus('error');
+            console.error('Error loading video data:', error.message || error);
+            this.updateStatus('ready'); // Still allow analysis in mock mode even if there are errors
         }
     }
 
-    async loadClaimsAndFactChecks() {
-        try {
-            const API_BASE_URL = 'http://localhost:8000';
-
-            const [claimsResponse, factChecksResponse] = await Promise.all([
-                fetch(`${API_BASE_URL}/api/v1/videos/${this.videoId}/claims`),
-                fetch(`${API_BASE_URL}/api/v1/videos/${this.videoId}/fact-checks`)
-            ]);
-
-            if (claimsResponse.ok) {
-                this.claims = await claimsResponse.json();
+    loadMockData() {
+        // Load the same mock data structure as content script
+        this.mockFactChecks = [{
+                timestamp: 15,
+                claim: "This technology will revolutionize the entire industry within 5 years",
+                categoryOfLikeness: "false",
+                sources: ["https://example.com/tech-revolution-study"],
+                judgement: {
+                    reasoning: "Historical analysis shows that revolutionary industry transformations typically take 10-15 years, not 5.",
+                    summary: "Claim is overly optimistic based on historical precedent"
+                }
+            },
+            {
+                timestamp: 45,
+                claim: "Studies show that 90% of users prefer this method over traditional approaches",
+                categoryOfLikeness: "false",
+                sources: ["https://example.com/user-preference-study"],
+                judgement: {
+                    reasoning: "Independent research indicates preference rates are actually 60-65%, not 90%.",
+                    summary: "Significantly overstated user preference statistics"
+                }
+            },
+            {
+                timestamp: 120,
+                claim: "The market cap will reach $1 trillion by next year",
+                categoryOfLikeness: "false",
+                sources: ["https://example.com/market-analysis-report"],
+                judgement: {
+                    reasoning: "Current market trends indicate this projection is unrealistic.",
+                    summary: "Unrealistic market cap projection without supporting evidence"
+                }
+            },
+            {
+                timestamp: 180,
+                claim: "No other company has been able to achieve these results",
+                categoryOfLikeness: "true",
+                sources: ["https://example.com/industry-benchmarks"],
+                judgement: {
+                    reasoning: "Comprehensive industry analysis confirms this claim.",
+                    summary: "Accurate claim supported by industry data"
+                }
+            },
+            {
+                timestamp: 240,
+                claim: "This approach is completely safe with no side effects",
+                categoryOfLikeness: "neutral",
+                sources: ["https://example.com/safety-study"],
+                judgement: {
+                    reasoning: "While initial studies show promise, long-term effects are still being studied.",
+                    summary: "Insufficient data to confirm absolute safety claims"
+                }
             }
-
-            if (factChecksResponse.ok) {
-                this.factChecks = await factChecksResponse.json();
-            }
-
-            this.updateStats();
-            this.updateClaimsList();
-
-        } catch (error) {
-            console.error('Error loading claims and fact checks:', error);
-        }
+        ];
     }
 
     async updateVideoInfo() {
@@ -123,7 +141,7 @@ class PopupController {
                 titleElement.textContent = results[0].result;
             }
         } catch (error) {
-            console.error('Error getting video title:', error);
+            console.log('Could not get video title, using default');
             titleElement.textContent = 'YouTube Video';
         }
 
@@ -169,14 +187,16 @@ class PopupController {
     }
 
     updateStats() {
-        const claimsCount = this.claims.length;
-        const verifiedCount = this.factChecks.filter(fc => fc.status === 'verified').length;
-        const disputedCount = this.factChecks.filter(fc => fc.status === 'disputed').length;
-        const falseCount = this.factChecks.filter(fc => fc.status === 'false').length;
+        if (!this.mockFactChecks) return;
+
+        const claimsCount = this.mockFactChecks.length;
+        const trueCount = this.mockFactChecks.filter(fc => fc.categoryOfLikeness === 'true').length;
+        const neutralCount = this.mockFactChecks.filter(fc => fc.categoryOfLikeness === 'neutral').length;
+        const falseCount = this.mockFactChecks.filter(fc => fc.categoryOfLikeness === 'false').length;
 
         document.getElementById('claims-count').textContent = claimsCount;
-        document.getElementById('verified-count').textContent = verifiedCount;
-        document.getElementById('disputed-count').textContent = disputedCount;
+        document.getElementById('verified-count').textContent = trueCount;
+        document.getElementById('disputed-count').textContent = neutralCount;
         document.getElementById('false-count').textContent = falseCount;
     }
 
@@ -184,28 +204,38 @@ class PopupController {
         const claimsList = document.getElementById('claims-list');
         claimsList.innerHTML = '';
 
-        if (this.claims.length === 0) {
+        if (!this.mockFactChecks || this.mockFactChecks.length === 0) {
             claimsList.innerHTML = '<div style="text-align: center; color: #666; padding: 12px;">No claims found</div>';
             return;
         }
 
         // Show latest 3 claims
-        const recentClaims = this.claims.slice(-3).reverse();
+        const recentClaims = this.mockFactChecks.slice(-3).reverse();
 
-        recentClaims.forEach(claim => {
-            const factCheck = this.factChecks.find(fc => fc.claim_id === claim.id);
-            const status = factCheck ? factCheck.status : 'pending';
-
+        recentClaims.forEach(factCheck => {
             const claimElement = document.createElement('div');
-            claimElement.className = `claim-item ${status}`;
+            claimElement.className = `claim-item ${factCheck.categoryOfLikeness}`;
 
             claimElement.innerHTML = `
-        <div class="claim-status">${this.getStatusIcon(status)} ${status}</div>
-        <div>${claim.text.substring(0, 80)}${claim.text.length > 80 ? '...' : ''}</div>
-      `;
+                <div class="claim-status">${this.getCategoryIcon(factCheck.categoryOfLikeness)} ${factCheck.categoryOfLikeness}</div>
+                <div>${factCheck.claim.substring(0, 80)}${factCheck.claim.length > 80 ? '...' : ''}</div>
+            `;
 
             claimsList.appendChild(claimElement);
         });
+    }
+
+    getCategoryIcon(categoryOfLikeness) {
+        switch (categoryOfLikeness) {
+            case 'true':
+                return '✅';
+            case 'false':
+                return '❌';
+            case 'neutral':
+                return '⚠️';
+            default:
+                return '🔍';
+        }
     }
 
     getStatusIcon(status) {
@@ -232,49 +262,39 @@ class PopupController {
             try {
                 this.updateStatus('processing');
 
-                // Send message to background script to start analysis
-                await this.sendMessageToBackground({
-                    type: 'START_ANALYSIS',
+                // Start mock analysis through background script
+                chrome.runtime.sendMessage({
+                    type: 'START_MOCK_ANALYSIS',
                     videoId: this.videoId,
-                    videoUrl: this.currentTab.url
+                    tabId: this.currentTab.id
+                }, (response) => {
+                    if (response && response.success) {
+                        console.log('Mock analysis started');
+                    }
                 });
 
-                // Set up real-time updates listener
-                this.setupRealtimeUpdates();
+                // Simulate processing completion in UI
+                setTimeout(() => {
+                    this.updateStatus('completed');
+                    this.updateStats();
+                    this.updateClaimsList();
+
+                    // Notify content script to activate
+                    chrome.tabs.sendMessage(this.currentTab.id, {
+                        type: 'ACTIVATE_MOCK_MODE'
+                    }).catch(error => {
+                        console.log('Content script not ready, continuing with mock mode');
+                    });
+                }, 2000); // 2 second processing simulation
 
             } catch (error) {
-                console.error('Error starting analysis:', error);
+                console.error('Error starting analysis:', error.message || error);
                 this.updateStatus('error');
             }
         });
     }
 
-    setupRealtimeUpdates() {
-        // Listen for messages from content script
-        chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-            if (message.type === 'REALTIME_UPDATE') {
-                this.handleRealtimeUpdate(message.data);
-            }
-        });
-    }
-
-    handleRealtimeUpdate(data) {
-        switch (data.type) {
-            case 'claim_found':
-                this.claims.push(data.data);
-                this.updateStats();
-                this.updateClaimsList();
-                break;
-            case 'fact_check_complete':
-                this.factChecks.push(data.data);
-                this.updateStats();
-                this.updateClaimsList();
-                break;
-            case 'processing_complete':
-                this.updateStatus('completed');
-                break;
-        }
-    }
+    // Removed realtime updates - not needed for mock mode
 
     showMainContent() {
         document.getElementById('loading').style.display = 'none';
@@ -288,17 +308,7 @@ class PopupController {
         document.getElementById('no-video').style.display = 'block';
     }
 
-    sendMessageToBackground(message) {
-        return new Promise((resolve, reject) => {
-            chrome.runtime.sendMessage(message, (response) => {
-                if (chrome.runtime.lastError) {
-                    reject(chrome.runtime.lastError);
-                } else {
-                    resolve(response);
-                }
-            });
-        });
-    }
+    // Removed background script communication - not needed for mock mode
 }
 
 // Initialize popup when DOM is loaded
