@@ -2,5 +2,12 @@ fastapi
 uvicorn[standard]
 pydantic
 openai
+assemblyai
+google-api-python-client
+requests
+langchain
+aci-sdk
+
+# Video Processing
 yt-dlp
 python-multipart
