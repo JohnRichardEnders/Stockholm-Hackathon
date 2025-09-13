@@ -15,20 +15,23 @@ export function ClaimCard({ data, selected = false, onSelect }: Props) {
     <button
       type="button"
       onClick={() => onSelect && onSelect(data)}
-      className={`w-full text-left bg-white rounded-lg border shadow p-4 transition ${
-        selected ? 'border-blue-400 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'
+      className={`w-full text-left rounded-xl border shadow-lg p-4 transition group overflow-hidden ${
+        selected
+          ? 'border-indigo-400 ring-2 ring-indigo-300/40 bg-white'
+          : 'border-white/10 bg-white/5 backdrop-blur hover:bg-white/10 hover:border-white/20'
       }`}
     >
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between relative">
         <div className="flex-1">
-          <div className="text-xs text-gray-500 mb-1">
+          <div className="text-xs mb-1 text-indigo-200/80">
             {formatTime(claim.start)} - {formatTime(claim.end)}
           </div>
-          <p className="text-gray-900 leading-relaxed">{claim.claim}</p>
+          <p className={`leading-relaxed ${selected ? 'text-gray-900' : 'text-indigo-50'}`}>{claim.claim}</p>
         </div>
         <span className={`ml-4 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColor(status)}`}>
           {statusLabel(status)}
         </span>
+        <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-r from-indigo-500/0 via-fuchsia-500/5 to-rose-500/0" />
       </div>
     </button>
   );
@@ -37,14 +40,14 @@ export function ClaimCard({ data, selected = false, onSelect }: Props) {
 function statusColor(status: ClaimStatus) {
   switch (status) {
     case ClaimStatus.VERIFIED:
-      return 'bg-green-100 text-green-800 border border-green-200';
+      return 'bg-emerald-100 text-emerald-800 border border-emerald-200';
     case ClaimStatus.FALSE:
-      return 'bg-red-100 text-red-800 border border-red-200';
+      return 'bg-rose-100 text-rose-800 border border-rose-200';
     case ClaimStatus.DISPUTED:
-      return 'bg-yellow-100 text-yellow-800 border border-yellow-200';
+      return 'bg-amber-100 text-amber-800 border border-amber-200';
     case ClaimStatus.INCONCLUSIVE:
     default:
-      return 'bg-gray-100 text-gray-800 border border-gray-200';
+      return 'bg-slate-100 text-slate-800 border border-slate-200';
   }
 }
 

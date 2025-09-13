@@ -70,47 +70,65 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">YouTube Fact-Checker</h1>
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-900 overflow-hidden">
+      {/* Decorative gradient glows */}
+      <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/30 via-fuchsia-500/20 to-rose-500/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-gradient-to-tr from-rose-500/20 via-fuchsia-500/20 to-indigo-500/30 blur-3xl" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-8 bg-gradient-to-r from-indigo-200 via-fuchsia-300 to-rose-200 bg-clip-text text-transparent drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">
+          YouTube Fact‑Checker
+        </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           {/* Left column: existing fields */}
           <div>
-            <div className="bg-white p-6 rounded-lg shadow mb-8">
-              <label htmlFor="yt-url" className="block text-sm font-medium text-gray-700 mb-2">
-                Paste a YouTube URL
-              </label>
-              <input
-                id="yt-url"
-                type="url"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                placeholder="https://www.youtube.com/watch?v=..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                inputMode="url"
-              />
-              <p className="text-xs text-gray-500 mt-2">
-                As soon as a valid YouTube URL is detected, the video will appear below.
-              </p>
+            <div className="mb-8 rounded-xl border border-white/10 bg-white/10 backdrop-blur-md shadow-xl transition-transform duration-300 hover:-translate-y-0.5">
+              <div className="p-6">
+                <label htmlFor="yt-url" className="block text-sm font-medium text-indigo-100 mb-2">
+                  Paste a YouTube URL
+                </label>
+                <input
+                  id="yt-url"
+                  type="url"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  className="w-full px-4 py-2 rounded-lg bg-white/5 text-white placeholder-white/50 border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400/40"
+                  inputMode="url"
+                />
+                <p className="text-xs text-indigo-200/70 mt-2">
+                  As soon as a valid YouTube URL is detected, the video will appear below.
+                </p>
+              </div>
             </div>
 
             {embedUrl ? (
-              <div className="aspect-video w-full bg-black rounded-lg overflow-hidden shadow">
-                <iframe
-                  title="YouTube video"
-                  id="yt-iframe"
-                  src={embedUrl}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  className="w-full h-full"
-                />
+              <div className="relative group rounded-2xl p-[2px] bg-gradient-to-br from-indigo-500/40 via-fuchsia-500/30 to-rose-500/30 shadow-2xl">
+                <div className="aspect-video w-full rounded-[14px] overflow-hidden bg-black ring-1 ring-white/10 group-hover:ring-indigo-400/30 transition">
+                  <iframe
+                    title="YouTube video"
+                    id="yt-iframe"
+                    src={embedUrl}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="w-full h-full"
+                  />
+                </div>
+                <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-500 blur-2xl bg-gradient-to-r from-indigo-500/10 via-fuchsia-500/10 to-rose-500/10" />
               </div>
             ) : (
-              <div className="text-gray-500 text-sm">Enter a valid YouTube URL to preview the video.</div>
+              <div className="text-indigo-100/70 text-sm">Enter a valid YouTube URL to preview the video.</div>
             )}
 
-            <div className="mt-8 space-y-3">
+            <div className="mt-10">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="h-6 w-1 rounded bg-gradient-to-b from-indigo-400 to-fuchsia-400" />
+                <h2 className="text-lg font-semibold text-indigo-100 tracking-tight">Claims</h2>
+              </div>
+            </div>
+
+            <div className="space-y-3">
               {MOCK_CLAIM_RESPONSES.slice(0, 4).map((cr, idx) => (
                 <ClaimCard
                   key={idx}

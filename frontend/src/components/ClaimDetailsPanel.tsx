@@ -9,9 +9,9 @@ interface Props {
 export function ClaimDetailsPanel({ data }: Props) {
   if (!data) {
     return (
-      <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
-        <h2 className="text-lg font-semibold text-gray-900">Details</h2>
-        <p className="text-sm text-gray-500 mt-2">Select a claim to view its details.</p>
+      <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur p-6 shadow-xl">
+        <h2 className="text-lg font-semibold text-indigo-100">Details</h2>
+        <p className="text-sm text-indigo-200/70 mt-2">Select a claim to view its details.</p>
       </div>
     );
   }
@@ -19,34 +19,34 @@ export function ClaimDetailsPanel({ data }: Props) {
   const { claim, status, summary, evidence } = data;
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
+    <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur p-6 shadow-xl">
       <div className="flex items-start justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">Claim Details</h2>
+        <h2 className="text-lg font-semibold text-indigo-100">Claim Details</h2>
         <span className={`ml-4 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColor(status)}`}>
           {statusLabel(status)}
         </span>
       </div>
 
       <div className="mt-4">
-        <div className="text-xs text-gray-500">Timestamp</div>
-        <div className="text-sm text-gray-900">
+        <div className="text-xs text-indigo-200/80">Timestamp</div>
+        <div className="text-sm text-indigo-100">
           {formatTime(claim.start)} - {formatTime(claim.end)}
         </div>
       </div>
 
       <div className="mt-4">
-        <div className="text-xs text-gray-500">Claim</div>
-        <p className="text-gray-900 leading-relaxed mt-1">{claim.claim}</p>
+        <div className="text-xs text-indigo-200/80">Claim</div>
+        <p className="text-indigo-50 leading-relaxed mt-1">{claim.claim}</p>
       </div>
 
       <div className="mt-6">
-        <div className="text-xs text-gray-500">Reasoning Summary</div>
-        <p className="text-gray-900 leading-relaxed mt-1 text-sm">{summary}</p>
+        <div className="text-xs text-indigo-200/80">Reasoning Summary</div>
+        <p className="text-indigo-50 leading-relaxed mt-1 text-sm">{summary}</p>
       </div>
 
       {evidence && evidence.length > 0 && (
         <div className="mt-6">
-          <div className="text-xs text-gray-500">Sources</div>
+          <div className="text-xs text-indigo-200/80">Sources</div>
           <ul className="mt-2 space-y-3">
             {evidence.map((e, idx) => (
               <li key={idx} className="text-sm">
@@ -54,11 +54,11 @@ export function ClaimDetailsPanel({ data }: Props) {
                   href={e.source_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:text-blue-800 font-medium"
+                  className="text-indigo-200 hover:text-white font-medium"
                 >
                   {e.source_title}
                 </a>
-                <p className="text-gray-600 mt-1 leading-relaxed">{e.excerpt}</p>
+                <p className="text-indigo-200/80 mt-1 leading-relaxed">{e.excerpt}</p>
               </li>
             ))}
           </ul>
@@ -71,14 +71,14 @@ export function ClaimDetailsPanel({ data }: Props) {
 function statusColor(status: ClaimStatus) {
   switch (status) {
     case ClaimStatus.VERIFIED:
-      return 'bg-green-100 text-green-800 border border-green-200';
+      return 'bg-emerald-100 text-emerald-800 border border-emerald-200';
     case ClaimStatus.FALSE:
-      return 'bg-red-100 text-red-800 border border-red-200';
+      return 'bg-rose-100 text-rose-800 border border-rose-200';
     case ClaimStatus.DISPUTED:
-      return 'bg-yellow-100 text-yellow-800 border border-yellow-200';
+      return 'bg-amber-100 text-amber-800 border border-amber-200';
     case ClaimStatus.INCONCLUSIVE:
     default:
-      return 'bg-gray-100 text-gray-800 border border-gray-200';
+      return 'bg-slate-100 text-slate-800 border border-slate-200';
   }
 }
 
