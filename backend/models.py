@@ -24,14 +24,21 @@ class Evidence(BaseModel):
     """Evidence for a fact-check"""
     source_url: str
     source_title: str
-    excerpt: str # short summary of source
-
+    snippet: str # short summary of source
 
 class Claim(BaseModel):
     """A fact-checked claim with timestamp"""
     start: float
     end: float
     claim: str
+
+class ClaimWithAllEvidence(BaseModel):
+    """A fact-checked claim with all evidence"""
+    claim: Claim # claim with timestamp
+    #Claimstatus?? 
+    summary: str # overall summary of claim
+    evidence: List[Evidence] # list of all evidence for the claim; multiple sources
+
 
 class ClaimResponse(BaseModel):
     claim: Claim
@@ -46,3 +53,4 @@ class VideoResponse(BaseModel):
     total_claims: int
     claims: List[Claim]
     summary: Dict[str, int]  # {"verified": 2, "false": 1, etc.}
+
