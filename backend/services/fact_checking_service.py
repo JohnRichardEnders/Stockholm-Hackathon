@@ -95,12 +95,23 @@ async def gather_evidence_with_aci(claim: Claim) -> ClaimWithAllEvidence:
         tool_call = response.choices[0].message.tool_calls[0] if response.choices[0].message.tool_calls else None
         
         if tool_call:
-            # Execute the ACI function call
-            result = aci_client.handle_function_call(
-                tool_call.function.name,
-                json.loads(tool_call.function.arguments),
-                linked_account_owner_id="morris_hackathon"
-            )
+            # Debug the tool call arguments
+            logger.info(f"Tool call arguments: {tool_call.function.arguments}")
+            
+            try:
+                # Execute the ACI function call
+                parsed_args = json.loads(tool_call.function.arguments)
+                logger.info(f"Parsed arguments: {parsed_args}")
+                
+                result = aci_client.handle_function_call(
+                    tool_call.function.name,
+                    parsed_args,
+                    linked_account_owner_id="morris_hackathon"
+                )
+            except json.JSONDecodeError as e:
+                logger.error(f"Failed to parse tool call arguments: {e}")
+                logger.error(f"Raw arguments: {tool_call.function.arguments}")
+                raise
             
             # Parse evidence from ACI result
             evidence_list = []

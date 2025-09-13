@@ -17,9 +17,23 @@ from services.fact_checking_service import fact_check_claim
 from api.endpoints import router
 from models import ClaimResponse
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
+# Setup logging for uvicorn compatibility
+import sys
+
+# Configure root logger
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    stream=sys.stdout,
+    force=True  # Override existing configuration
+)
+
 logger = logging.getLogger(__name__)
+
+# Set specific loggers
+logging.getLogger("main").setLevel(logging.INFO)
+logging.getLogger("api.endpoints").setLevel(logging.INFO)
+logging.getLogger("services").setLevel(logging.INFO)
 
 # Initialize FastAPI
 app = FastAPI(title="YouTube Fact-Checker", version="1.0.0")
@@ -34,6 +48,17 @@ app.add_middleware(
 
 # Include API routes
 app.include_router(router)
+
+
+@app.on_event("startup")
+async def startup_event():
+    logger.info("🚀 YouTube Fact-Checker API started successfully!")
+    logger.info("📡 Ready to process videos at /api/process-video")
+
+
+@app.on_event("shutdown") 
+async def shutdown_event():
+    logger.info("🛑 YouTube Fact-Checker API shutting down")
 
 
 async def process_video(video_url: str) -> dict:
@@ -59,45 +84,55 @@ async def process_video(video_url: str) -> dict:
             claims_found = 0
             sentences_processed = 0
             
+            logger.info("🎵 Starting audio transcription...")
+            
             # Stream sentences from transcription service
             async for sentence in transcribe_from_url_streaming(video_url):
                 sentences_processed += 1
-                logger.info(f"Processing sentence {sentences_processed}: '{sentence.text[:50]}...'")
+                logger.info(f"📝 Sentence {sentences_processed}: '{sentence.text[:50]}...' (at {sentence.start}s)")
                 
                 # Extract claims from this sentence using RunPod
+                logger.info(f"🔍 Extracting claims from sentence {sentences_processed}...")
                 claims = await extract_claims_from_sentence(sentence)
                 
                 # Skip sentences with no claims
                 if not claims:
-                    logger.info(f"No claims found in sentence {sentences_processed}")
+                    logger.info(f"✅ No claims in sentence {sentences_processed} (expected for most sentences)")
                     continue
                 
                 # Add each claim to queue for fact-checking
+                logger.info(f"🎯 Found {len(claims)} claims in sentence {sentences_processed}!")
                 for claim in claims:
                     await claim_queue.put(claim)
                     claims_found += 1
-                    logger.info(f"Added claim to queue: '{claim.claim}' at {claim.start}s")
+                    logger.info(f"➕ Queued claim {claims_found}: '{claim.claim}' (at {claim.start}s)")
             
             # Signal that we're done adding claims
             await claim_queue.put(None)
-            logger.info(f"Processed {sentences_processed} sentences, found {claims_found} claims")
+            logger.info(f"🏁 Transcription complete! Processed {sentences_processed} sentences, found {claims_found} claims")
         
         # Consumer: Fact-check claims from queue
         async def fact_check_worker():
+            fact_checks_completed = 0
+            
             while True:
                 claim = await claim_queue.get()
                 
                 # Check for done signal
                 if claim is None:
+                    logger.info(f"🔚 Fact-checking complete! Processed {fact_checks_completed} claims")
                     break
                 
-                logger.info(f"Fact-checking: '{claim.claim}' at {claim.start}s")
+                fact_checks_completed += 1
+                logger.info(f"🔍 Fact-checking claim {fact_checks_completed}: '{claim.claim}' (at {claim.start}s)")
                 
                 # Fact-check the claim using ACI + OpenAI
+                logger.info(f"🌐 Gathering evidence for claim {fact_checks_completed}...")
                 fact_check_result = await fact_check_claim(claim)
                 fact_check_results.append(fact_check_result)
                 
-                logger.info(f"Fact-check completed: '{claim.claim}' -> {fact_check_result.status}")
+                logger.info(f"✅ Claim {fact_checks_completed} fact-checked: '{claim.claim}' -> {fact_check_result.status}")
+                logger.info(f"📊 Evidence found: {len(fact_check_result.evidence)} sources")
         
         # Run producer and consumer concurrently
         await asyncio.gather(
@@ -107,16 +142,12 @@ async def process_video(video_url: str) -> dict:
         
         logger.info(f"Video processing completed: {len(fact_check_results)} claims fact-checked")
         
-        # Create summary from results
-        summary = create_summary_from_responses(fact_check_results)
-        
         # Return structured JSON with all ClaimResponse objects
         return {
             "video_id": extract_video_id(video_url),
             "title": "Processed Video",
             "total_claims": len(fact_check_results),
-            "claim_responses": [result.dict() for result in fact_check_results],  # Full ClaimResponse objects
-            "summary": summary
+            "claim_responses": [result.dict() for result in fact_check_results]  # Full ClaimResponse objects
         }
         
     except Exception as e:
