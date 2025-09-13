@@ -8,13 +8,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Any
 import logging
+import asyncio
+from asyncio import Queue
 
 # Import services
 from services.transcription_service import transcribe_from_url
 from services.claim_service import extract_claims_from_segment
 from services.verification_service import fact_check_claim
 from api.endpoints import router
-from models import VideoRequest, VideoResponse
+from models import VideoResponse
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -53,49 +55,70 @@ async def process_video(video_url: str) -> VideoResponse:
         segments = await transcribe_from_url(video_url)
         logger.info(f"Got {len(segments)} segments from transcription")
         
-        # Step 2: Extract claims from segments (skip empty ones)
-        claims_with_timestamps = []
-        
-        for segment in segments:
-            claims = await extract_claims_from_segment(segment)
-            
-            # Skip segments with no claims
-            if not claims:
-                continue
-                
-            # Add timestamp info to each claim
-            for claim in claims:
-                claims_with_timestamps.append({
-                    "start": segment["start"],
-                    "end": segment["end"],
-                    "claim": claim["text"],
-                    "category": claim["category"],
-                    "confidence": claim["confidence"]
-                })
-        
-        logger.info(f"Extracted {len(claims_with_timestamps)} claims from {len(segments)} segments")
-        
-        # Step 3: Fact-check each claim
+        # Step 2 & 3: Queue-based claim extraction and fact-checking
+        claim_queue = Queue()
         fact_checked_claims = []
         
-        for claim_data in claims_with_timestamps:
-            fact_check_result = await fact_check_claim(
-                claim=claim_data["claim"],
-                context="",  # Could add surrounding text here
-                metadata={"video_url": video_url}
-            )
+        # Producer: Extract claims and add to queue
+        async def extract_claims_worker():
+            claims_found = 0
+            for segment in segments:
+                claims = await extract_claims_from_segment(segment)
+                
+                # Skip segments with no claims
+                if not claims:
+                    continue
+                    
+                # Add each claim to queue with timestamp info
+                for claim in claims:
+                    await claim_queue.put({
+                        "start": segment["start"],
+                        "end": segment["end"],
+                        "claim": claim["text"],
+                        "category": claim["category"],
+                        "confidence": claim["confidence"]
+                    })
+                    claims_found += 1
             
-            # Combine claim with fact-check result
-            fact_checked_claims.append({
-                "start": claim_data["start"],
-                "end": claim_data["end"],
-                "claim": claim_data["claim"],
-                "category": claim_data["category"],
-                "status": fact_check_result["status"],
-                "confidence": fact_check_result["confidence"],
-                "explanation": fact_check_result["explanation"],
-                "evidence": fact_check_result.get("evidence", [])
-            })
+            # Signal that we're done adding claims
+            await claim_queue.put(None)
+            logger.info(f"Extracted {claims_found} claims from {len(segments)} segments")
+        
+        # Consumer: Fact-check claims from queue
+        async def fact_check_worker():
+            while True:
+                claim_data = await claim_queue.get()
+                
+                # Check for done signal
+                if claim_data is None:
+                    break
+                
+                # Fact-check the claim
+                fact_check_result = await fact_check_claim(
+                    claim=claim_data["claim"],
+                    context="",  # Could add surrounding text here
+                    metadata={"video_url": video_url}
+                )
+                
+                # Combine claim with fact-check result
+                fact_checked_claims.append({
+                    "start": claim_data["start"],
+                    "end": claim_data["end"],
+                    "claim": claim_data["claim"],
+                    "category": claim_data["category"],
+                    "status": fact_check_result["status"],
+                    "confidence": fact_check_result["confidence"],
+                    "explanation": fact_check_result["explanation"],
+                    "evidence": fact_check_result.get("evidence", [])
+                })
+                
+                logger.info(f"Fact-checked claim: '{claim_data['claim'][:50]}...' -> {fact_check_result['status']}")
+        
+        # Run producer and consumer concurrently
+        await asyncio.gather(
+            extract_claims_worker(),
+            fact_check_worker()
+        )
         
         # Step 4: Create summary
         summary = create_summary(fact_checked_claims)
@@ -125,8 +148,3 @@ def create_summary(claims: List[Dict]) -> Dict[str, int]:
             summary[status] += 1
     
     return summary
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
