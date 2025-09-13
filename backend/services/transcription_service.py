@@ -54,6 +54,7 @@ import yt_dlp
 import openai
 import tempfile
 import os
+import subprocess
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -118,47 +119,78 @@ def chunk_segments_into_sentences(segments) -> List[Dict[str, any]]:
 
 async def download_audio_from_youtube(video_url: str) -> str:
     """
-    Download audio from YouTube video using yt-dlp
-    
-    Args:
-        video_url: YouTube video URL
-        
+    Download best audio from YouTube using yt-dlp, then transcode to
+    **mono WebM (Opus)** for faster uploads and smaller size.
+
     Returns:
-        str: Path to downloaded audio file
+        str: Path to the transcoded .webm file (ends with .mono.webm)
     """
+    raw_download_path = None
+    webm_path = None
+
     try:
-        # Create temporary file
+        # Temporary base names
         temp_dir = tempfile.gettempdir()
-        audio_path = os.path.join(temp_dir, f"audio_{hash(video_url)}.wav")
-        
-        # yt-dlp options for audio extraction
+        base = os.path.join(temp_dir, f"yt_{abs(hash(video_url))}")
+        webm_path = base + ".mono.webm"   # <-- ensure output is a different filename
+
+        # 1) Download bestaudio (no conversion here)
         ydl_opts = {
-            'format': 'bestaudio/best',
-            'outtmpl': audio_path,
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'wav',
-                'preferredquality': '192',
-            }],
-            'quiet': True,
-            'no_warnings': True,
+            "format": "bestaudio/best",
+            "outtmpl": base + ".%(ext)s",
+            "noplaylist": True,
+            "quiet": True,
+            "no_warnings": True,
+            "retries": 3,
+            "fragment_retries": 3,
+            "postprocessors": [],
         }
-        
-        # Download audio
+
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([video_url])
-        
-        # yt-dlp adds .wav extension
-        final_audio_path = audio_path + ".wav"
-        
-        if not os.path.exists(final_audio_path):
-            raise Exception(f"Audio file not created at {final_audio_path}")
-        
-        return final_audio_path
-        
+            info = ydl.extract_info(video_url, download=True)
+            # Resolve the actual downloaded file path
+            raw_download_path = (
+                info.get("requested_downloads", [{}])[0].get("filepath")
+                or base + f".{info.get('ext','m4a')}"
+            )
+
+        if not raw_download_path or not os.path.exists(raw_download_path):
+            raise FileNotFoundError("yt-dlp did not produce a downloadable audio file.")
+
+        # If yt-dlp already wrote to the same name (it shouldn't now), adjust target again
+        if os.path.abspath(raw_download_path) == os.path.abspath(webm_path):
+            webm_path = base + ".transcoded.mono.webm"
+
+        # 2) Transcode to mono WebM (Opus) with ffmpeg
+        ffmpeg_cmd = [
+            "ffmpeg", "-hide_banner", "-nostdin", "-y",
+            "-i", raw_download_path,
+            "-ac", "1",
+            "-ar", "16000",
+            "-c:a", "libopus",
+            "-b:a", "24k",
+            "-application", "voip",
+            "-vn",
+            webm_path,
+        ]
+        proc = subprocess.run(ffmpeg_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if proc.returncode != 0 or not os.path.exists(webm_path):
+            raise RuntimeError(
+                f"ffmpeg failed: {proc.stderr.decode('utf-8', errors='ignore')}"
+            )
+
+        return webm_path
+
     except Exception as e:
-        logger.error(f"Failed to download audio from {video_url}: {e}")
+        logger.error(f"Failed to download/transcode audio from {video_url}: {e}")
         raise
+    finally:
+        # Clean up the original download; keep only the .mono.webm we return
+        try:
+            if raw_download_path and os.path.exists(raw_download_path):
+                os.remove(raw_download_path)
+        except Exception as ce:
+            logger.warning(f"Failed to remove temp raw file '{raw_download_path}': {ce}")
 
 
 async def transcribe_from_url_streaming(video_url: str) -> AsyncGenerator[Dict[str, any], None]:
@@ -167,7 +199,7 @@ async def transcribe_from_url_streaming(video_url: str) -> AsyncGenerator[Dict[s
     
     Yields sentences one by one with start timestamps
     
-    1. Download audio from YouTube URL using yt-dlp
+    1. Download audio from YouTube URL using yt-dlp (now as mono WebM/Opus)
     2. Call OpenAI Whisper API with verbose_json format
     3. Yield each sentence with start time as it's processed
     4. Clean up temporary audio file
@@ -181,9 +213,9 @@ async def transcribe_from_url_streaming(video_url: str) -> AsyncGenerator[Dict[s
     try:
         logger.info(f"Starting transcription for video: {video_url}")
         
-        # Step 1: Download audio from YouTube
+        # Step 1: Download & transcode to mono WebM/Opus
         audio_path = await download_audio_from_youtube(video_url)
-        logger.info(f"Audio downloaded to: {audio_path}")
+        logger.info(f"Audio downloaded/transcoded to: {audio_path}")
         
         # Step 2: Transcribe with OpenAI Whisper API
         logger.info("Starting Whisper API transcription...")
@@ -221,5 +253,3 @@ async def transcribe_from_url_streaming(video_url: str) -> AsyncGenerator[Dict[s
                 logger.info(f"Cleaned up audio file: {audio_path}")
             except Exception as e:
                 logger.warning(f"Failed to cleanup audio file: {e}")
-
-
