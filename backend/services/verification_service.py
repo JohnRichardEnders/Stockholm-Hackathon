@@ -67,6 +67,7 @@ LOW CREDIBILITY SOURCES:
 
 from typing import Dict
 import logging
+from backend.models import ClaimStatus
 
 logger = logging.getLogger(__name__)
 
@@ -92,7 +93,7 @@ async def fact_check_claim(claim: str, context: str, metadata: Dict) -> Dict:
     
     if "vaccine" in claim.lower() and "autism" in claim.lower():
         return {
-            "status": "false",
+            "status": ClaimStatus.FALSE,
             "confidence": 0.98,
             "explanation": "Multiple large-scale studies have found no link between vaccines and autism. The original study suggesting this connection was retracted due to fraud.",
             "evidence": [
@@ -106,7 +107,7 @@ async def fact_check_claim(claim: str, context: str, metadata: Dict) -> Dict:
     
     elif "earth" in claim.lower() and "flat" in claim.lower():
         return {
-            "status": "false",
+            "status": ClaimStatus.FALSE,
             "confidence": 0.95,
             "explanation": "Scientific evidence conclusively shows the Earth is spherical. This includes satellite imagery, physics, and direct observation.",
             "evidence": [
@@ -120,7 +121,7 @@ async def fact_check_claim(claim: str, context: str, metadata: Dict) -> Dict:
     
     elif "climate change" in claim.lower() and "fake" in claim.lower():
         return {
-            "status": "false",
+            "status": ClaimStatus.FALSE,
             "confidence": 0.92,
             "explanation": "Climate change is supported by overwhelming scientific consensus. Multiple lines of evidence show human activities are causing global warming.",
             "evidence": [
@@ -134,14 +135,11 @@ async def fact_check_claim(claim: str, context: str, metadata: Dict) -> Dict:
     
     else:
         return {
-            "status": "inconclusive",
+            "status": ClaimStatus.INCONCLUSIVE,
             "confidence": 0.5,
             "explanation": "Unable to definitively verify or refute this claim based on available evidence.",
             "evidence": []
         }
-
-
-# TODO: Your colleague implements these helper functions
 
 def generate_search_queries(claim: str) -> list:
     """Generate targeted search queries for the claim"""
