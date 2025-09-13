@@ -3,6 +3,8 @@ How to use!
 
 pip install -r .\backend\app\core\youtube_requirements.txt
 
+Need a download folder for it. WHERE TO PUT THE mp3!
+
 
 
 Download ffmpeg for us to be able to download to mp3!
