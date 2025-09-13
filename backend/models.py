@@ -8,12 +8,8 @@ from typing import List, Dict, Any, Optional
 from enum import Enum
 
 
-class ClaimStatus(str, Enum):
-    """Status values for fact-checked claims"""
-    VERIFIED = "verified"  # Claim is accurate/true
-    FALSE = "false"  # Claim is demonstrably false
-    DISPUTED = "disputed"  # Mixed evidence, controversial
-    INCONCLUSIVE = "inconclusive"  # Insufficient evidence
+# ClaimStatus as simple string literals (categorical variable)
+ClaimStatus = str  # "verified", "false", "disputed", "inconclusive"
 
 class VideoRequest(BaseModel):
     """Request to process a video"""
@@ -40,9 +36,10 @@ class ClaimWithAllEvidence(BaseModel):
 
 
 class ClaimResponse(BaseModel):
+    """Final fact-check response with written summary"""
     claim: Claim
-    status: ClaimStatus
-    summary: str # overall summary of claim
+    status: str  # "verified", "false", "disputed", "inconclusive"
+    written_summary: str  # Written explanation of the fact-check result
     evidence: List[Evidence]
 
 class Sentence(BaseModel):

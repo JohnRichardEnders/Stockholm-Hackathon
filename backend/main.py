@@ -11,9 +11,11 @@ import asyncio
 from asyncio import Queue
 
 # Import services
+from services.transcription_service import transcribe_from_url_streaming
+from services.claim_service import extract_claims_from_sentence
+from services.fact_checking_service import fact_check_claim
 from api.endpoints import router
-from backend.services.extract_claims_service import extract_claims
-from models import VideoResponse
+from models import ClaimResponse
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -34,100 +36,84 @@ app.add_middleware(
 app.include_router(router)
 
 
-async def process_video(video_url: str) -> VideoResponse:
+async def process_video(video_url: str) -> dict:
     """
-    Main orchestration function - coordinates all services
+    Complete video processing pipeline using all three services
     
     Flow:
-    1. Get transcript from URL (transcription service handles audio download)
-    2. Extract claims from each segment → skip empty segments
-    3. Fact-check each claim
-    4. Return structured response
+    1. Stream sentences from transcription service (Whisper API)
+    2. Extract claims from each sentence (RunPod Deep Cogito v2 70B)
+    3. Fact-check each claim (ACI + OpenAI)
+    4. Return structured JSON with ClaimResponse objects
     """
     
     try:
         logger.info(f"Processing video: {video_url}")
         
-        # Step 1: Get transcript from URL
-        segments = await transcribe_from_url(video_url)
-        logger.info(f"Got {len(segments)} segments from transcription")
-        
-        # Step 2 & 3: Queue-based claim extraction and fact-checking
+        # Queue for async processing
         claim_queue = Queue()
-        fact_checked_claims = []
+        fact_check_results = []
         
-        # Producer: Extract claims and add to queue
-        async def extract_claims_worker():
+        # Producer: Stream sentences and extract claims
+        async def sentence_and_claim_worker():
             claims_found = 0
-            for segment in segments:
-                claims = extract_claims(segment)
+            sentences_processed = 0
+            
+            # Stream sentences from transcription service
+            async for sentence in transcribe_from_url_streaming(video_url):
+                sentences_processed += 1
+                logger.info(f"Processing sentence {sentences_processed}: '{sentence.text[:50]}...'")
                 
-                # Skip segments with no claims
+                # Extract claims from this sentence using RunPod
+                claims = await extract_claims_from_sentence(sentence)
+                
+                # Skip sentences with no claims
                 if not claims:
+                    logger.info(f"No claims found in sentence {sentences_processed}")
                     continue
-                    
-                # Add each claim to queue with timestamp info
+                
+                # Add each claim to queue for fact-checking
                 for claim in claims:
-                    await claim_queue.put({
-                        "start": segment["start"],
-                        "end": segment["end"],
-                        "claim": claim["text"],
-                        "category": claim["category"],
-                        "confidence": claim["confidence"]
-                    })
+                    await claim_queue.put(claim)
                     claims_found += 1
+                    logger.info(f"Added claim to queue: '{claim.claim}' at {claim.start}s")
             
             # Signal that we're done adding claims
             await claim_queue.put(None)
-            logger.info(f"Extracted {claims_found} claims from {len(segments)} segments")
+            logger.info(f"Processed {sentences_processed} sentences, found {claims_found} claims")
         
         # Consumer: Fact-check claims from queue
         async def fact_check_worker():
             while True:
-                claim_data = await claim_queue.get()
+                claim = await claim_queue.get()
                 
                 # Check for done signal
-                if claim_data is None:
+                if claim is None:
                     break
                 
-                # Fact-check the claim
-
-                fact_check_result = await fact_check_claim(
-                    claim=claim_data["claim"],
-                    context="",  # Could add surrounding text here
-                    metadata={"video_url": video_url}
-                )
+                logger.info(f"Fact-checking: '{claim.claim}' at {claim.start}s")
                 
-                # Combine claim with fact-check result
-                fact_checked_claims.append({
-                    "start": claim_data["start"],
-                    "end": claim_data["end"],
-                    "claim": claim_data["claim"],
-                    "category": claim_data["category"],
-                    "status": fact_check_result["status"],
-                    "confidence": fact_check_result["confidence"],
-                    "explanation": fact_check_result["explanation"],
-                    "evidence": fact_check_result.get("evidence", [])
-                })
+                # Fact-check the claim using ACI + OpenAI
+                fact_check_result = await fact_check_claim(claim)
+                fact_check_results.append(fact_check_result)
                 
-                logger.info(f"Fact-checked claim: '{claim_data['claim'][:50]}...' -> {fact_check_result['status']}")
+                logger.info(f"Fact-check completed: '{claim.claim}' -> {fact_check_result.status}")
         
         # Run producer and consumer concurrently
         await asyncio.gather(
-            extract_claims_worker(),
+            sentence_and_claim_worker(),
             fact_check_worker()
         )
         
-        # Step 4: Create summary
-        summary = create_summary(fact_checked_claims)
+        logger.info(f"Video processing completed: {len(fact_check_results)} claims fact-checked")
         
-        return VideoResponse(
-            video_id="video",
-            title="Video",
-            total_claims=len(fact_checked_claims),
-            claims=fact_checked_claims,
-            summary=summary
-        )
+        # Return structured JSON with all ClaimResponse objects
+        return {
+            "video_id": extract_video_id(video_url),
+            "title": "Processed Video",
+            "total_claims": len(fact_check_results),
+            "claim_responses": [result.dict() for result in fact_check_results]  # Full ClaimResponse objects
+        }
         
     except Exception as e:
         logger.error(f"Error processing video: {e}")
@@ -136,13 +122,25 @@ async def process_video(video_url: str) -> VideoResponse:
 
 
 
-def create_summary(claims: List[Dict]) -> Dict[str, int]:
-    """Create summary of fact-check results"""
+def create_summary_from_responses(fact_check_results: List[ClaimResponse]) -> Dict[str, int]:
+    """Create summary from ClaimResponse objects"""
     summary = {"verified": 0, "false": 0, "disputed": 0, "inconclusive": 0}
     
-    for claim in claims:
-        status = claim["status"]
+    for result in fact_check_results:
+        status = result.status  # Now just a string
         if status in summary:
             summary[status] += 1
     
     return summary
+
+
+def extract_video_id(video_url: str) -> str:
+    """Extract YouTube video ID from URL"""
+    try:
+        if "youtube.com/watch" in video_url:
+            return video_url.split("v=")[1].split("&")[0]
+        elif "youtu.be/" in video_url:
+            return video_url.split("youtu.be/")[1].split("?")[0]
+        return "unknown"
+    except:
+        return "unknown"

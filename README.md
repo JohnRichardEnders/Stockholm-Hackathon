@@ -1,64 +1,117 @@
-# Stockholm-Hackathon
+# YouTube Fact-Checker
 
-We are building a video-fact checker Chrome extension.
+Real-time fact-checking for YouTube videos using AI.
 
+## Architecture
 
+- **Chrome Extension** - Frontend overlay on YouTube videos
+- **FastAPI Backend** - Processing pipeline with async queues
+- **AI Services** - Whisper, RunPod Deep Cogito v2 70B, ACI, OpenAI
 
+## Backend Setup
 
-
-Setup Instructions
-
-1. Backend Setup
-```
-# Navigate to backend directory
+### 1. Install Dependencies
+```bash
 cd backend
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Create environment file to include all the api keys
-touch .env
-
-OPENAI_API_KEY=your_openai_api_key_here
-SUPABASE_URL=http://localhost:54321
-SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 ```
-2. DB Setup
 
-```aiignore
-# Install Supabase CLI (if not already installed)
-npm install -g supabase
+### 2. Environment Variables
+```bash
+# Copy the example file
+cp env.example .env
 
-# Start Supabase locally
+# Edit .env with your API keys:
+# OPENAI_API_KEY=sk-your-openai-api-key-here
+# RUNPOD_API_KEY=your-runpod-api-key-here  
+# ACI_API_KEY=your-aci-api-key-here
+```
+
+### 3. Install System Dependencies
+```bash
+# Install FFmpeg (required for yt-dlp audio processing)
+brew install ffmpeg  # macOS
+# sudo apt install ffmpeg  # Ubuntu/Debian
+```
+
+### 4. Run the Server
+```bash
 cd backend
-supabase start
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-3. Frontend Setup
+### 5. Test the API
+```bash
+# Health check
+curl http://localhost:8000/health
 
-```aiignore
-# Navigate to frontend directory
-cd frontend
-
-# Install dependencies
-pnpm install
-
-# Create environment file
-cp env.example .env.local
+# Process a video
+curl -X POST "http://localhost:8000/api/process-video" \
+  -H "Content-Type: application/json" \
+  -d '{"video_url": "https://www.youtube.com/watch?v=jNQXAC9IVRw"}'
 ```
 
-## Running the Project
+## API Endpoints
 
-Strat the backend
-```aiignore
-cd backend
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-python main.py
+- `GET /health` - Health check
+- `POST /api/process-video` - Process YouTube video for fact-checking
+
+### Request Format
+```json
+{
+  "video_url": "https://youtube.com/watch?v=VIDEO_ID"
+}
 ```
 
+### Response Format
+```json
+{
+  "video_id": "VIDEO_ID",
+  "title": "Processed Video",
+  "total_claims": 1,
+  "claim_responses": [
+    {
+      "claim": {
+        "start": 0.0,
+        "claim": "factual claim text"
+      },
+      "status": "verified|false|disputed|inconclusive",
+      "written_summary": "Detailed explanation of fact-check result...",
+      "evidence": [
+        {
+          "source_url": "https://example.com",
+          "source_title": "Source Title",
+          "snippet": "Evidence excerpt..."
+        }
+      ]
+    }
+  ]
+}
+```
 
+## Processing Pipeline
+
+1. **Transcription** - Download audio with yt-dlp → OpenAI Whisper API → Sentences with timestamps
+2. **Claim Extraction** - RunPod Deep Cogito v2 70B → Extract factual claims
+3. **Evidence Gathering** - ACI + EXA_AI → Find web sources and evidence
+4. **Fact-Checking** - OpenAI GPT-4 → Analyze evidence → Return verdict
+
+## Tech Stack
+
+- **FastAPI** - Async web framework
+- **OpenAI Whisper** - Audio transcription with timestamps
+- **RunPod Deep Cogito v2 70B** - Advanced claim extraction
+- **ACI + EXA_AI** - Evidence gathering and web search
+- **OpenAI GPT-4** - Fact-checking analysis
+- **yt-dlp** - YouTube audio download
+- **Pydantic** - Data validation and structured outputs
+
+## Development
+
+The backend uses async queues for concurrent processing:
+- Sentences are streamed from transcription
+- Claims are extracted in real-time
+- Fact-checking happens concurrently
+- Results are returned as structured JSON
+
+Perfect for hackathon development with clean separation of concerns and production-ready architecture.
