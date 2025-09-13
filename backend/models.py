@@ -46,6 +46,12 @@ class ClaimResponse(BaseModel):
     summary: str # overall summary of claim
     evidence: List[Evidence]
 
+class Sentence(BaseModel):
+    """A transcribed sentence with timestamp"""
+    start: float  # Start time in seconds
+    text: str     # Complete sentence text
+
+
 class VideoResponse(BaseModel):
     """Response after processing a video"""
     video_id: str
