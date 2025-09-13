@@ -3,7 +3,7 @@ API route definitions
 """
 
 from fastapi import APIRouter, HTTPException
-from models import VideoRequest, VideoResponse
+from models import VideoRequest
 import main
 
 router = APIRouter()
@@ -15,16 +15,16 @@ async def health_check():
     return {"status": "healthy", "service": "youtube-fact-checker"}
 
 
-@router.post("/api/process-video", response_model=VideoResponse)
+@router.post("/api/process-video")
 async def process_video_endpoint(request: VideoRequest):
     """
     Main endpoint: Process YouTube video for fact-checking
     
     Input: {"video_url": "https://youtube.com/watch?v=..."}
-    Output: VideoResponse with fact-checked claims
+    Output: JSON with complete fact-checking results
     """
     try:
         result = await main.process_video(request.video_url)
-        return result
+        return result  # Returns the JSON dict from main.process_video()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
