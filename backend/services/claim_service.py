@@ -42,7 +42,8 @@ async def extract_claims_from_sentence(sentence: Sentence) -> List[Claim]:
         response = client.chat.completions.create(
             model="deepcogito/cogito-v2-preview-llama-70B",
             messages=[
-                {"role": "user", "content": f"Extract claims that are factual and verifiable from: {text}. Return JSON: {{\"claims\": [\"claim1\", \"claim2\"]}}"}
+                {"role": "system", "content": "You extract factual claims from text. A claim is any statement that can be verified as true or false. Extract ALL factual statements, even controversial ones."},
+                {"role": "user", "content": f"Extract factual claims from this text: '{text}'\n\nReturn JSON with claims array. Example: {{\"claims\": [\"vaccines cause autism\", \"the Earth is flat\"]}}"}
             ],
             response_format={
                 "type": "json_schema",
@@ -67,8 +68,14 @@ async def extract_claims_from_sentence(sentence: Sentence) -> List[Claim]:
         )
         
         # Parse response and create Claim objects
-        result = json.loads(response.choices[0].message.content)
+        result_text = response.choices[0].message.content
+        logger.info(f"RunPod raw response: {result_text}")
+        
+        result = json.loads(result_text)
+        logger.info(f"Parsed result: {result}")
+        
         claim_texts = result.get("claims", [])
+        logger.info(f"Claim texts: {claim_texts}")
         
         # Create Claim objects with timestamps
         claims = [
@@ -81,7 +88,7 @@ async def extract_claims_from_sentence(sentence: Sentence) -> List[Claim]:
         
     except Exception as e:
         logger.error(f"RunPod extraction failed: {e}")
-        return mock_extract_claims(text, sentence["start"])
+        return mock_extract_claims(text, sentence.start)
 
 
 def mock_extract_claims(text: str, start_time: float) -> List[Claim]:
