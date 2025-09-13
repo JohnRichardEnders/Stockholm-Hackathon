@@ -1,0 +1,29 @@
+# Core FastAPI
+fastapi
+uvicorn[standard]
+python-multipart
+
+# Database & ORM
+supabase
+psycopg2-binary
+
+# Task Queue
+celery
+redis
+
+# Data Validation
+pydantic
+pydantic-settings
+
+# External APIs
+openai
+assemblyai
+google-api-python-client
+requests
+
+# Video Processing
+yt-dlp
+
+# Utilities
+python-dotenv
+typing-extensions
