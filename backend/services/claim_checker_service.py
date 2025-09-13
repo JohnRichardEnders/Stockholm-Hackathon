@@ -9,9 +9,14 @@ class ClaimCheckerService:
     def check_claim(self, claim: Claim) -> ClaimResponse:
         result = self.open_ai_service.get_response(prompt=claim.claim)
 
-        return ClaimResponse(
+        response = ClaimResponse(
             claim=claim,
-            status=ClaimStatus.INCONCLUSIVE,
-            summary=result.summary,
+            status=result["status"],
+            summary=result["summary"],
             evidence=list(),
         )
+        print(response)
+        return response
+
+service = OpenAIService()
+claim_service = ClaimCheckerService(service)
