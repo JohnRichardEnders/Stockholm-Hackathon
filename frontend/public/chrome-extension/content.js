@@ -224,31 +224,40 @@ class YouTubeFactChecker {
 
             marker.style.cssText = `
                 position: absolute;
-                top: 0;
+                top: -12px;
                 left: ${position}%;
-                width: 3px;
-                height: 100%;
+                width: 12px;
+                height: 12px;
                 background: ${this.getCategoryColor(factCheck.categoryOfLikeness)};
-                border-radius: 2px;
+                border: 2px solid rgba(255, 255, 255, 0.9);
+                border-radius: 50%;
                 cursor: pointer;
-                z-index: 100;
-                opacity: 0.8;
-                transition: all 0.2s ease;
-                box-shadow: 0 0 4px rgba(0,0,0,0.3);
+                z-index: 1000;
+                opacity: 0.9;
+                transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 0 ${this.getCategoryColor(factCheck.categoryOfLikeness)};
+                transform: translateX(-50%);
+                backdrop-filter: blur(4px);
             `;
 
             // Add hover effects
             marker.addEventListener('mouseenter', () => {
                 marker.style.opacity = '1';
-                marker.style.width = '4px';
-                marker.style.transform = 'translateX(-0.5px)';
+                marker.style.width = '16px';
+                marker.style.height = '16px';
+                marker.style.top = '-14px';
+                marker.style.transform = 'translateX(-50%) scale(1.1)';
+                marker.style.boxShadow = `0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 4px ${this.getCategoryColor(factCheck.categoryOfLikeness)}33`;
                 this.showTimelineTooltip(marker, factCheck);
             });
 
             marker.addEventListener('mouseleave', () => {
-                marker.style.opacity = '0.8';
-                marker.style.width = '3px';
-                marker.style.transform = 'translateX(0)';
+                marker.style.opacity = '0.9';
+                marker.style.width = '12px';
+                marker.style.height = '12px';
+                marker.style.top = '-12px';
+                marker.style.transform = 'translateX(-50%) scale(1)';
+                marker.style.boxShadow = `0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 0 ${this.getCategoryColor(factCheck.categoryOfLikeness)}`;
                 this.hideTimelineTooltip();
             });
 
@@ -272,23 +281,26 @@ class YouTubeFactChecker {
         tooltip.className = 'fact-check-timeline-tooltip';
         tooltip.style.cssText = `
             position: absolute;
-            bottom: 100%;
+            bottom: 160%;
+            margin-bottom: 12px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 10px 14px;
+            border-radius: 8px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 12px;
             white-space: nowrap;
-            z-index: 1000;
-            margin-bottom: 8px;
-            backdrop-filter: blur(10px);
+            z-index: 2000;
+            margin-bottom: 12px;
+            backdrop-filter: blur(12px);
             border: 1px solid ${this.getCategoryColor(factCheck.categoryOfLikeness)};
-            max-width: 200px;
+            max-width: 220px;
             white-space: normal;
-            line-height: 1.3;
+            line-height: 1.4;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: tooltipFadeIn 0.2s ease-out;
         `;
 
         tooltip.innerHTML = `
@@ -326,33 +338,77 @@ class YouTubeFactChecker {
             this.activeIndicator.remove();
         }
 
-        // Create active state indicator
+        // Create active state indicator with morph capabilities
         this.activeIndicator = document.createElement('div');
         this.activeIndicator.id = 'fact-checker-indicator';
+        this.activeIndicator.className = 'fact-checker-fab';
+
+        // iOS-style motion tokens and variables
+        this.motionTokens = {
+            duration: 320, // ms
+            springStiffness: 420,
+            springDamping: 38,
+            dampingRatio: 0.86,
+
+            // State dimensions
+            fab: {
+                width: 56,
+                height: 56,
+                borderRadius: 28,
+                shadow: '0 4px 12px rgba(10, 132, 255, 0.25)',
+                iconScale: 1,
+                iconOpacity: 1
+            },
+            card: {
+                width: 320,
+                height: 180,
+                borderRadius: 16,
+                shadow: '0 12px 40px rgba(10, 132, 255, 0.15)',
+                iconScale: 0.8,
+                iconOpacity: 0.9
+            },
+
+            // Timing
+            morphStart: 0,
+            backgroundBlurStart: 60,
+            contentFadeStart: 140
+        };
+
         this.activeIndicator.style.cssText = `
             position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 12px;
-            height: 12px;
-            background: #4caf50;
-            border: 2px solid rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
+            top: 20px;
+            right: 20px;
             z-index: 1001;
-            pointer-events: none;
-            animation: pulse 2s infinite;
+            cursor: pointer;
+            display: flex;
+            transition: all ${this.motionTokens.duration}ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: width, height, border-radius, box-shadow;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4), 0 8px 24px rgba(10, 132, 255, 0.3);
         `;
 
-        // Add pulse animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes pulse {
-                0% { opacity: 1; transform: scale(1); }
-                50% { opacity: 0.7; transform: scale(1.1); }
-                100% { opacity: 1; transform: scale(1); }
-            }
+        // Create plus icon with morph capabilities
+        const icon = document.createElement('div');
+        icon.className = 'fact-checker-icon';
+        icon.style.cssText = `
+            width: 24px;
+            height: 24px;
+            transition: all ${this.motionTokens.duration}ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: transform, opacity;
         `;
-        document.head.appendChild(style);
+
+        // Create plus icon paths
+        icon.innerHTML = `
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transition: inherit;">
+                <path d="M12 6v12M6 12h12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        `;
+
+        this.activeIndicator.appendChild(icon);
+
+        // Add morph animation styles and setup
+        this.addMorphStyles();
+        this.setupMorphInteractions();
 
         // Find YouTube player container and add indicator
         const playerContainer = document.querySelector('#movie_player') ||
@@ -362,6 +418,343 @@ class YouTubeFactChecker {
             playerContainer.style.position = 'relative';
             playerContainer.appendChild(this.activeIndicator);
         }
+
+        // Store reference to icon for morphing
+        this.indicatorIcon = icon;
+        this.isMorphed = false;
+    }
+
+    addMorphStyles() {
+        // Remove existing morph styles
+        const existingStyle = document.getElementById('fact-checker-morph-styles');
+        if (existingStyle) {
+            existingStyle.remove();
+        }
+
+        const style = document.createElement('style');
+        style.id = 'fact-checker-morph-styles';
+        style.textContent = `
+            /* iOS-style motion system with spring physics */
+            .fact-checker-fab {
+                --spring-easing: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                --reduced-motion-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                /* Ensure proper base state dimensions with glass effect */
+                width: 56px;
+                height: 56px;
+                border-radius: 28px;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4), 0 8px 24px rgba(10, 132, 255, 0.3);
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+            }
+
+            /* Morphed state styles */
+            .fact-checker-fab.morphed {
+                width: 320px !important;
+                height: 180px !important;
+                border-radius: 16px !important;
+                border: 2px solid rgba(255, 255, 255, 0.4) !important;
+                box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5), 0 12px 40px rgba(10, 132, 255, 0.15) !important;
+                align-items: flex-start !important;
+                justify-content: flex-start !important;
+                padding: 16px !important;
+            }
+
+            .fact-checker-fab.morphed .fact-checker-icon {
+                transform: scale(0.8) !important;
+                opacity: 0.9 !important;
+                position: absolute !important;
+                top: 16px !important;
+                right: 16px !important;
+            }
+
+            /* Ensure smooth transition back to base state */
+            .fact-checker-fab:not(.morphed) .fact-checker-icon {
+                transform: scale(1) !important;
+                opacity: 1 !important;
+                position: relative !important;
+                top: auto !important;
+                right: auto !important;
+            }
+
+            /* Content container for morphed state */
+            .fact-checker-content {
+                opacity: 0;
+                transform: translateY(8px);
+                transition: opacity 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                           transform 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                color: white;
+                width: 100%;
+                padding-right: 48px;
+                will-change: opacity, transform;
+                position: relative;
+                z-index: 2;
+                pointer-events: auto;
+                box-sizing: border-box;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                text-rendering: optimizeLegibility;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            .fact-checker-fab.morphed .fact-checker-content {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            /* Background SVG filter effect for video */
+            .video-background-blur {
+                transition: all 240ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                transition-delay: 60ms;
+            }
+
+            .video-background-blur.blurred {
+                filter: url(#fact-checker-filter) brightness(0.98);
+            }
+
+            /* Accessibility: Respect prefers-reduced-motion */
+            @media (prefers-reduced-motion: reduce) {
+                .fact-checker-fab,
+                .fact-checker-icon,
+                .fact-checker-content,
+                .video-background-blur {
+                    transition-duration: 150ms !important;
+                    transition-timing-function: var(--reduced-motion-easing) !important;
+                }
+                
+                .video-background-blur.blurred {
+                    filter: brightness(0.98) !important;
+                }
+            }
+
+            /* Hover effects for FAB state */
+            .fact-checker-fab:not(.morphed):hover {
+                transform: scale(1.05);
+                border: 2px solid rgba(255, 255, 255, 0.5);
+                box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6), 0 12px 32px rgba(10, 132, 255, 0.4);
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .fact-checker-fab:not(.morphed):hover {
+                    transform: none;
+                }
+            }
+        `;
+        // Add liquid glass layering and overrides
+        style.textContent += `
+            .fact-checker-fab { position: relative; overflow: hidden; }
+            .liquidGlass-effect { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+            .liquidGlass-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+            .liquidGlass-tint { position: absolute; inset: 0; z-index: 1; background: rgba(255,255,255,0.06); pointer-events: none; }
+            .liquidGlass-shine { position: absolute; inset: 0; z-index: 2; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35), inset 0 0 40px rgba(255,255,255,0.15); border-radius: 16px; pointer-events: none; }
+            .fact-checker-content { z-index: 3 !important; }
+        `;
+        document.head.appendChild(style);
+    }
+
+    setupMorphInteractions() {
+        if (!this.activeIndicator) return;
+
+        // Click handler for manual expansion (testing)
+        this.activeIndicator.addEventListener('click', () => {
+            if (!this.isMorphed) {
+                this.morphToCard();
+            } else {
+                this.morphToFab();
+            }
+        });
+    }
+
+    morphToCard(factCheckData = null) {
+        if (!this.activeIndicator || this.isMorphed) return;
+
+        this.isMorphed = true;
+
+        // Prepare content data first
+        const contentData = factCheckData || {
+            claim: "Sample fact-check claim for testing the morph animation",
+            categoryOfLikeness: "false",
+            judgement: {
+                summary: "This is a test of the iOS-style morph animation system"
+            },
+            timestamp: 45
+        };
+
+        // Inject content immediately with proper initial state
+        this.injectCardContent(contentData, true);
+
+        // Use requestAnimationFrame to ensure DOM is ready
+        requestAnimationFrame(() => {
+            // Add morphed class to trigger container transitions
+            this.activeIndicator.classList.add('morphed');
+
+            // Staggered content reveal - starts during container expansion
+            setTimeout(() => {
+                if (this.isMorphed) {
+                    this.showCardContent();
+                }
+            }, 140); // Earlier reveal for smoother flow
+
+            // Background blur slightly delayed for better coordination
+            setTimeout(() => {
+                this.applyBackgroundBlur(true);
+            }, 60);
+        });
+
+        console.log('Morphed to card state');
+    }
+
+    morphToFab() {
+        if (!this.activeIndicator || !this.isMorphed) return;
+
+        this.isMorphed = false;
+
+        // Coordinated reverse animation
+        requestAnimationFrame(() => {
+            // Start content fade immediately
+            this.hideCardContent();
+
+            // Remove background blur quickly
+            this.applyBackgroundBlur(false);
+
+            // Start container shrink after content starts fading
+            setTimeout(() => {
+                this.activeIndicator.classList.remove('morphed');
+            }, 60); // Reduced delay for tighter coordination
+
+            // Clean up content after animation completes
+            setTimeout(() => {
+                this.clearCardContent();
+            }, this.motionTokens.duration + 50);
+        });
+
+        console.log('Morphed to FAB state');
+    }
+
+    applyBackgroundBlur(shouldBlur) {
+        const video = document.querySelector('video');
+        if (!video) return;
+
+        if (shouldBlur) {
+            // Create SVG filter if it doesn't exist
+            this.createSVGFilter();
+            video.classList.add('video-background-blur', 'blurred');
+        } else {
+            video.classList.remove('blurred');
+            // Remove blur class after transition
+            setTimeout(() => {
+                video.classList.remove('video-background-blur');
+            }, 300);
+        }
+    }
+
+    createSVGFilter() {
+        // Check if SVG filter already exists
+        if (document.getElementById('fact-checker-svg-filter')) return;
+
+        // Create SVG element with filter
+        const svg = document.createElement('svg');
+        svg.id = 'fact-checker-svg-filter';
+        svg.style.cssText = 'display: none; position: absolute; width: 0; height: 0;';
+        svg.innerHTML = `
+            <filter id="fact-checker-filter" color-interpolation-filters="linearRGB" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse">
+                <feTurbulence type="fractalNoise" baseFrequency="0.010 0.010" numOctaves="1" seed="7" result="turbulence">
+                    <animate attributeName="baseFrequency" values="0.010 0.010;0.012 0.012;0.010 0.010" dur="8s" repeatCount="indefinite"/>
+                </feTurbulence>
+                <feGaussianBlur in="turbulence" stdDeviation="2.5" result="softMap"/>
+                <feSpecularLighting in="softMap" surfaceScale="5" specularConstant="1" specularExponent="100" lighting-color="white" result="specLight">
+                    <fePointLight x="-200" y="-200" z="300"/>
+                </feSpecularLighting>
+                <feComposite in="specLight" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litImage"/>
+                <feDisplacementMap in="SourceGraphic" in2="softMap" scale="80" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+        `;
+
+        // Add SVG to document
+        document.body.appendChild(svg);
+    }
+
+    injectCardContent(factCheckData, keepHidden = false) {
+        // Remove existing content
+        this.clearCardContent();
+
+        // Ensure liquid glass layers exist behind content
+        this.ensureCardGlassLayers();
+
+        const content = document.createElement('div');
+        content.className = 'fact-checker-content';
+
+        // Override CSS transitions for manual control
+        content.style.cssText = `
+            opacity: ${keepHidden ? '0' : '1'};
+            transform: translateY(${keepHidden ? '8px' : '0'});
+            transition: opacity 180ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                       transform 180ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            color: white;
+            width: 100%;
+            padding-right: 48px;
+            position: relative;
+            z-index: 2;
+            pointer-events: auto;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        `;
+
+        content.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9; white-space: nowrap; overflow: hidden;">
+                <span style="font-size: 14px; flex-shrink: 0;">${this.getCategoryIcon(factCheckData.categoryOfLikeness)}</span>
+                <span style="flex-shrink: 0;">${factCheckData.categoryOfLikeness}</span>
+                <span style="margin-left: auto; font-size: 10px; opacity: 0.7; flex-shrink: 0;">${this.formatTime(factCheckData.timestamp)}</span>
+            </div>
+            <div style="font-size: 14px; line-height: 1.4; font-weight: 500; margin-bottom: 8px; word-wrap: break-word; overflow-wrap: break-word; hyphens: auto;">
+                "${factCheckData.claim.substring(0, 140)}${factCheckData.claim.length > 140 ? '...' : ''}"
+            </div>
+            <div style="font-size: 12px; opacity: 0.85; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word;">
+                ${factCheckData.judgement.summary}
+            </div>
+        `;
+
+        this.activeIndicator.appendChild(content);
+    }
+
+    showCardContent() {
+        const content = this.activeIndicator.querySelector('.fact-checker-content');
+        if (content) {
+            // Force reflow then animate
+            content.offsetHeight; // Trigger reflow
+            content.style.opacity = '1';
+            content.style.transform = 'translateY(0)';
+        }
+    }
+
+    hideCardContent() {
+        const content = this.activeIndicator.querySelector('.fact-checker-content');
+        if (content) {
+            // Faster exit animation
+            content.style.transition = 'opacity 120ms ease-out, transform 120ms ease-out';
+            content.style.opacity = '0';
+            content.style.transform = 'translateY(8px)';
+        }
+        const effect = this.activeIndicator.querySelector('.liquidGlass-effect');
+        if (effect) effect.style.opacity = '0.9';
+    }
+
+    clearCardContent() {
+        const existingContent = this.activeIndicator.querySelector('.fact-checker-content');
+        if (existingContent) {
+            existingContent.remove();
+        }
+        // Also remove liquid glass layers when cleaning up
+        const existingEffect = this.activeIndicator.querySelector('.liquidGlass-effect');
+        if (existingEffect) existingEffect.remove();
+        const existingTint = this.activeIndicator.querySelector('.liquidGlass-tint');
+        if (existingTint) existingTint.remove();
+        const existingShine = this.activeIndicator.querySelector('.liquidGlass-shine');
+        if (existingShine) existingShine.remove();
     }
 
     clearTimeouts() {
@@ -514,7 +907,7 @@ class YouTubeFactChecker {
     }
 
     updateVisibleClaims() {
-        if (!this.overlayContainer || !this.mockMode || !this.mockFactChecks) return;
+        if (!this.mockMode || !this.mockFactChecks || !this.activeIndicator) return;
 
         // Get currently active claims (within their duration range)
         const activeClaims = this.mockFactChecks.filter(factCheck => {
@@ -523,26 +916,41 @@ class YouTubeFactChecker {
             return this.currentTime >= startTime && this.currentTime <= endTime;
         });
 
-        // Remove overlays for claims that are no longer active
-        const existingOverlays = this.overlayContainer.querySelectorAll('.fact-check-claim');
-        existingOverlays.forEach(overlay => {
-            const claimTimestamp = parseFloat(overlay.getAttribute('data-claim-timestamp'));
-            const isStillActive = activeClaims.some(factCheck => factCheck.timestamp === claimTimestamp);
-
-            if (!isStillActive) {
-                this.hideClaimOverlay(overlay);
+        // Handle morph state based on active claims
+        if (activeClaims.length > 0 && !this.isMorphed) {
+            // Morph to card and show the first active claim
+            const primaryClaim = activeClaims[0]; // Show the first/earliest claim
+            this.morphToCard(primaryClaim);
+            this.currentDisplayedClaim = primaryClaim;
+        } else if (activeClaims.length === 0 && this.isMorphed) {
+            // No active claims, morph back to FAB
+            this.morphToFab();
+            this.currentDisplayedClaim = null;
+        } else if (activeClaims.length > 0 && this.isMorphed) {
+            // Update content if showing different claim
+            const primaryClaim = activeClaims[0];
+            if (!this.currentDisplayedClaim || this.currentDisplayedClaim.timestamp !== primaryClaim.timestamp) {
+                this.injectCardContent(primaryClaim);
+                this.currentDisplayedClaim = primaryClaim;
             }
-        });
+        }
 
-        // Add overlays for new active claims
-        const newClaims = activeClaims.filter(factCheck =>
-            !this.overlayContainer.querySelector(`[data-claim-timestamp="${factCheck.timestamp}"]`)
-        );
+        // Update FAB state indicator based on claim urgency
+        if (this.activeIndicator && !this.isMorphed) {
+            const hasFalseClaims = activeClaims.some(claim => claim.categoryOfLikeness === 'false');
+            const hasNeutralClaims = activeClaims.some(claim => claim.categoryOfLikeness === 'neutral');
 
-        newClaims.forEach((factCheck, index) => {
-            const overlay = this.createClaimOverlay(factCheck, index);
-            overlay.setAttribute('data-claim-timestamp', factCheck.timestamp);
-        });
+            if (hasFalseClaims) {
+                this.activeIndicator.style.background = 'rgba(255, 59, 48, 0.8)'; // Red for false claims
+                this.activeIndicator.style.boxShadow = '0 0 0 1px rgba(255, 255, 255, 0.4), 0 8px 24px rgba(255, 59, 48, 0.3)';
+            } else if (hasNeutralClaims) {
+                this.activeIndicator.style.background = 'rgba(255, 149, 0, 0.8)'; // Orange for neutral
+                this.activeIndicator.style.boxShadow = '0 0 0 1px rgba(255, 255, 255, 0.4), 0 8px 24px rgba(255, 149, 0, 0.3)';
+            } else {
+                this.activeIndicator.style.background = 'rgba(0, 0, 0, 0.05)'; // Default blue
+                this.activeIndicator.style.boxShadow = '0 0 0 1px rgba(255, 255, 255, 0.4), 0 8px 24px rgba(10, 132, 255, 0.3)';
+            }
+        }
     }
 
     createClaimOverlay(factCheck, index) {
@@ -805,16 +1213,13 @@ class YouTubeFactChecker {
   }
 
     clearOverlays() {
-        if (this.overlayContainer) {
-            // Animate out existing overlays before clearing
-            const existingOverlays = this.overlayContainer.querySelectorAll('.fact-check-claim');
-            existingOverlays.forEach(overlay => {
-                this.hideClaimOverlay(overlay);
-            });
-            
-            // Clear timeouts
-            this.clearTimeouts();
+        // Morph back to FAB if currently showing card
+        if (this.isMorphed) {
+            this.morphToFab();
         }
+
+        // Clear timeouts
+        this.clearTimeouts();
 
         // Clear timeline markers
         const existingMarkers = document.querySelectorAll('.fact-check-timeline-marker');
@@ -822,6 +1227,54 @@ class YouTubeFactChecker {
 
         // Clear tooltips
         this.hideTimelineTooltip();
+
+        // Clear SVG filter
+        const svgFilter = document.getElementById('fact-checker-svg-filter');
+        if (svgFilter) {
+            svgFilter.remove();
+        }
+
+        // Clear current displayed claim reference
+        this.currentDisplayedClaim = null;
+    }
+
+    ensureCardGlassLayers() {
+        if (!this.activeIndicator) return;
+        // Avoid duplicating layers
+        if (this.activeIndicator.querySelector('.liquidGlass-effect')) return;
+
+        // Ensure the card has rounded radius before appending
+        this.activeIndicator.style.borderRadius = '16px';
+
+        // Create effect layer with inline SVG using the filter we inject on video as well
+        const effect = document.createElement('div');
+        effect.className = 'liquidGlass-effect';
+        effect.innerHTML = `
+            <svg class="liquidGlass-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="lg-liquid-card" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#8ec5ff"/>
+                        <stop offset="50%" stop-color="#b490ff"/>
+                        <stop offset="100%" stop-color="#ffd1ff"/>
+                        <animate attributeName="x1" values="0%;-50%;0%" dur="8s" repeatCount="indefinite"/>
+                        <animate attributeName="y1" values="0%;50%;0%" dur="8s" repeatCount="indefinite"/>
+                        <animate attributeName="x2" values="100%;150%;100%" dur="8s" repeatCount="indefinite"/>
+                        <animate attributeName="y2" values="100%;50%;100%" dur="8s" repeatCount="indefinite"/>
+                    </linearGradient>
+                </defs>
+                <rect x="0" y="0" width="100" height="100" fill="url(#lg-liquid-card)" filter="url(#fact-checker-filter)" rx="16" ry="16"/>
+            </svg>
+        `;
+
+        const tint = document.createElement('div');
+        tint.className = 'liquidGlass-tint';
+
+        const shine = document.createElement('div');
+        shine.className = 'liquidGlass-shine';
+
+        this.activeIndicator.appendChild(effect);
+        this.activeIndicator.appendChild(tint);
+        this.activeIndicator.appendChild(shine);
     }
 
   showCompletionNotification(data) {
