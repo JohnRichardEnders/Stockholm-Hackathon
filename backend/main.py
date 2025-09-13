@@ -5,17 +5,14 @@ Main FastAPI app with orchestration logic
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 from typing import List, Dict, Any
 import logging
 import asyncio
 from asyncio import Queue
 
 # Import services
-from services.transcription_service import transcribe_from_url
-from services.claim_service import extract_claims_from_segment
-from services.verification_service import fact_check_claim
 from api.endpoints import router
+from backend.services.extract_claims_service import extract_claims
 from models import VideoResponse
 
 # Setup logging
@@ -63,7 +60,7 @@ async def process_video(video_url: str) -> VideoResponse:
         async def extract_claims_worker():
             claims_found = 0
             for segment in segments:
-                claims = await extract_claims_from_segment(segment)
+                claims = extract_claims(segment)
                 
                 # Skip segments with no claims
                 if not claims:
@@ -94,6 +91,7 @@ async def process_video(video_url: str) -> VideoResponse:
                     break
                 
                 # Fact-check the claim
+
                 fact_check_result = await fact_check_claim(
                     claim=claim_data["claim"],
                     context="",  # Could add surrounding text here
