@@ -40,11 +40,17 @@
    - Popup shows 5 claims: 1 true, 1 neutral, 3 false
 
 4. **Verify Mock Data**
-   - At 15 seconds: False claim about "5-year industry revolution"
-   - At 45 seconds: False claim about "90% user preference"
-   - At 120 seconds: False claim about "$1 trillion market cap"
-   - At 180 seconds: True claim about "unique results"
-   - At 240 seconds: Neutral claim about "safety with no side effects"
+   - At 15 seconds: False claim about "5-year industry revolution" (2 sources)
+   - At 45 seconds: False claim about "90% user preference" (2 sources)
+   - At 120 seconds: False claim about "$1 trillion market cap" (2 sources)
+   - At 180 seconds: True claim about "unique results" (2 sources)
+   - At 240 seconds: Neutral claim about "safety with no side effects" (2 sources)
+
+5. **Test Sources Display**
+   - Hover over timeline markers: Should show source count in tooltip
+   - View overlay popups: Should show source domains as badges at bottom
+   - Click on overlays: Detailed modal should show clickable source links
+   - Sources should be displayed with domain names and link icons
 
 ## Mock Mode Configuration
 

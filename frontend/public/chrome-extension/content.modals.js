@@ -1,18 +1,18 @@
 // Modal dialogs for claim and fact-check details
 
-YouTubeFactChecker.prototype.showClaimDetails = function (claim, factCheck) {
-  const modal = document.createElement('div');
-  modal.style.cssText = `
+YouTubeFactChecker.prototype.showClaimDetails = function(claim, factCheck) {
+        const modal = document.createElement('div');
+        modal.style.cssText = `
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 20000; display: flex; align-items: center; justify-content: center;
   `;
 
-  const content = document.createElement('div');
-  content.style.cssText = `
+        const content = document.createElement('div');
+        content.style.cssText = `
     background: white; max-width: 600px; max-height: 80vh; overflow-y: auto; border-radius: 12px; padding: 24px; margin: 20px;
   `;
 
-  const status = factCheck ? factCheck.status : 'checking';
-  content.innerHTML = `
+        const status = factCheck ? factCheck.status : 'checking';
+        content.innerHTML = `
     <div style="display:flex; justify-content: between; align-items: center; margin-bottom: 20px;">
       <h2 style="margin: 0; color: #333;">Claim Details</h2>
       <button id="close-modal" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
@@ -94,12 +94,39 @@ YouTubeFactChecker.prototype.showFactCheckDetails = function (factCheck) {
     }</p></div>
     ${
       factCheck.sources && factCheck.sources.length > 0
-        ? `<div style=\"margin-bottom: 16px;\"><strong>Sources:</strong><ul style=\"margin: 8px 0; padding-left: 20px;\">${factCheck.sources
-            .map(
-              (source) => `
-          <li style=\"margin-bottom: 8px;\"><a href=\"${source}\" target=\"_blank\" style=\"color: #1976d2; text-decoration: none;\">${source}</a></li>`
-            )
-            .join('')}</ul></div>`
+        ? `<div style=\"margin-bottom: 16px;\">
+             <strong>Sources:</strong>
+             <div style=\"margin: 12px 0; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #1976d2;\">
+               ${factCheck.sources
+                 .map((source, index) => {
+                   try {
+                     const domain = new URL(source).hostname.replace('www.', '');
+                     const displayText = domain.length > 30 ? domain.substring(0, 30) + '...' : domain;
+                     return `
+                       <div style=\"margin-bottom: ${index < factCheck.sources.length - 1 ? '12px' : '0'}; padding-bottom: ${index < factCheck.sources.length - 1 ? '12px' : '0'}; ${index < factCheck.sources.length - 1 ? 'border-bottom: 1px solid #e9ecef;' : ''}\">
+                         <a href=\"${source}\" target=\"_blank\" style=\"color: #1976d2; text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 8px;\">
+                           <span style=\"font-size: 16px;\">🔗</span>
+                           <span>${displayText}</span>
+                           <span style=\"font-size: 12px; color: #666; margin-left: auto;\">↗</span>
+                         </a>
+                         <div style=\"font-size: 12px; color: #666; margin-top: 4px; margin-left: 24px; word-break: break-all;\">${source}</div>
+                       </div>`;
+                   } catch {
+                     // Fallback for invalid URLs
+                     const displayText = source.length > 50 ? source.substring(0, 50) + '...' : source;
+                     return `
+                       <div style=\"margin-bottom: ${index < factCheck.sources.length - 1 ? '12px' : '0'}; padding-bottom: ${index < factCheck.sources.length - 1 ? '12px' : '0'}; ${index < factCheck.sources.length - 1 ? 'border-bottom: 1px solid #e9ecef;' : ''}\">
+                         <a href=\"${source}\" target=\"_blank\" style=\"color: #1976d2; text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 8px;\">
+                           <span style=\"font-size: 16px;\">🔗</span>
+                           <span>${displayText}</span>
+                           <span style=\"font-size: 12px; color: #666; margin-left: auto;\">↗</span>
+                         </a>
+                       </div>`;
+                   }
+                 })
+                 .join('')}
+             </div>
+           </div>`
         : ''
     }
   `;
@@ -110,4 +137,3 @@ YouTubeFactChecker.prototype.showFactCheckDetails = function (factCheck) {
   modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
   content.querySelector('#close-modal').addEventListener('click', () => modal.remove());
 };
-

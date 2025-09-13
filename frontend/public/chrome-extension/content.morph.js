@@ -25,13 +25,30 @@ YouTubeFactChecker.prototype.createActiveIndicator = function() {
         contentFadeStart: 120,
     };
 
+    // Edge detection for FAB positioning
+    const playerElement = document.querySelector('#movie_player') || document.querySelector('.html5-video-player');
+    const containerRect = playerElement ? playerElement.getBoundingClientRect() : { width: window.innerWidth, height: window.innerHeight };
+
+    // Calculate position with edge detection
+    const fabSize = this.motionTokens.fab.width;
+    const cardWidth = this.motionTokens.card.width;
+    const margin = 20;
+
+    // Check if card would be cut off on the right when morphed
+    const wouldBeCutOffRight = (containerRect.width - margin) < cardWidth;
+    const horizontalPosition = wouldBeCutOffRight ? `left: ${margin}px` : `right: ${margin}px`;
+
+    // Check if would be cut off at the top (for smaller screens)
+    const topPosition = Math.max(margin, Math.min(margin, containerRect.height - this.motionTokens.card.height - margin));
+
     this.activeIndicator.style.cssText = `
-    position: absolute; top: 20px; right: 20px; z-index: 1001; cursor: pointer; display: flex;
+    position: absolute; top: ${topPosition}px; ${horizontalPosition}; z-index: 1001; cursor: pointer; display: flex;
     width: ${this.motionTokens.fab.width}px; height: ${this.motionTokens.fab.height}px; border-radius: ${this.motionTokens.fab.borderRadius}px;
     transition: all ${this.motionTokens.duration}ms cubic-bezier(0.34, 1.56, 0.64, 1);
     will-change: width, height, border-radius, box-shadow;
     box-shadow: 0 0 0 1px rgba(255,255,255,0.4), 0 8px 24px rgba(10,132,255,0.3);
     align-items: center; justify-content: center;
+    opacity: 0; transform: scale(0.8);
   `;
 
     // Liquid glass structure
@@ -56,6 +73,14 @@ YouTubeFactChecker.prototype.createActiveIndicator = function() {
     if (playerContainer) {
         playerContainer.style.position = 'relative';
         playerContainer.appendChild(this.activeIndicator);
+
+        // Entry delay animation for FAB
+        setTimeout(() => {
+            requestAnimationFrame(() => {
+                this.activeIndicator.style.opacity = '1';
+                this.activeIndicator.style.transform = 'scale(1)';
+            });
+        }, 200); // 200ms delay for FAB entrance
     }
 
     this.indicatorIcon = null;
@@ -74,7 +99,6 @@ YouTubeFactChecker.prototype.addMorphStyles = function() {
       --spring-easing: cubic-bezier(0.34, 1.56, 0.64, 1); 
       --reduced-motion-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94); 
       width: 56px; height: 56px; border-radius: 28px; 
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4), 0 8px 24px rgba(10, 132, 255, 0.3); 
       align-items: center; justify-content: center; padding: 0; overflow: hidden; 
       transition: all 280ms var(--spring-easing);
     }
@@ -100,10 +124,42 @@ YouTubeFactChecker.prototype.addMorphStyles = function() {
     .fact-checker-fab.morphed .fact-checker-content { opacity: 1; transform: translateY(0); }
     .video-background-blur { transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94); transition-delay: 50ms; }
     .video-background-blur.blurred { filter: blur(6px) brightness(0.98); }
+    
+    /* Enhanced entry animations for overlays */
+    .fact-check-claim {
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform, opacity;
+    }
+    .fact-check-claim.entering {
+      animation: slideInWithBounce 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    
+    @keyframes slideInWithBounce {
+      0% { transform: translateX(120%) scale(0.9); opacity: 0; }
+      60% { transform: translateX(-10%) scale(1.02); opacity: 0.9; }
+      100% { transform: translateX(0) scale(1); opacity: 1; }
+    }
+    
+    @keyframes slideInWithBounceLeft {
+      0% { transform: translateX(-120%) scale(0.9); opacity: 0; }
+      60% { transform: translateX(10%) scale(1.02); opacity: 0.9; }
+      100% { transform: translateX(0) scale(1); opacity: 1; }
+    }
+    
+    @keyframes fadeInScale {
+      0% { opacity: 0; transform: scale(0.8) translateY(10px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    
+    .fact-checker-fab {
+      animation: fadeInScale 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    
     @media (prefers-reduced-motion: reduce) { 
-      .fact-checker-fab, .fact-checker-icon, .fact-checker-content, .video-background-blur { 
+      .fact-checker-fab, .fact-checker-icon, .fact-checker-content, .video-background-blur, .fact-check-claim { 
         transition-duration: 120ms !important; 
         transition-timing-function: var(--reduced-motion-easing) !important; 
+        animation: none !important;
       } 
     }
     /* Keep pointer-events off for layers */
@@ -184,17 +240,42 @@ YouTubeFactChecker.prototype.createGlassFilter = function() {
 };
 
 YouTubeFactChecker.prototype.injectCardContent = function(factCheckData, keepHidden = false) {
-    this.clearCardContent();
-    this.ensureCardGlassLayers();
-    const content = document.createElement('div');
-    content.className = 'fact-checker-content';
-    content.style.cssText = `
+        this.clearCardContent();
+        this.ensureCardGlassLayers();
+        const content = document.createElement('div');
+        content.className = 'fact-checker-content';
+        content.style.cssText = `
     opacity: ${keepHidden ? '0' : '1'};
     transform: translateY(${keepHidden ? '8px' : '0'});
     transition: opacity 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     color: white; width: 100%; position: relative; z-index: 4; pointer-events: auto; box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
   `;
+        // Debug logging to check sources data in morph card
+        console.log('Creating morph card for fact check:', factCheckData);
+        console.log('Sources data in morph:', factCheckData.sources);
+
+        // Create sources preview for morph card
+        const sourcesPreview = factCheckData.sources && factCheckData.sources.length > 0 ?
+            `<div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.15);">
+           <div style="font-size: 10px; opacity: 0.7; margin-bottom: 4px;">Sources (${factCheckData.sources.length}):</div>
+           <div style="font-size: 10px; opacity: 0.8; line-height: 1.2; display: flex; flex-wrap: wrap; gap: 4px;">
+             ${factCheckData.sources.slice(0, 2).map(source => {
+               try {
+                 const domain = new URL(source).hostname.replace('www.', '');
+                 return `<span style="background: rgba(255,255,255,0.15); padding: 2px 6px; border-radius: 3px; flex-shrink: 0;">${domain}</span>`;
+               } catch {
+                 const fallbackDomain = source.includes('//') ? source.split('//')[1].split('/')[0] : source.substring(0, 20);
+                 return `<span style="background: rgba(255,255,255,0.15); padding: 2px 6px; border-radius: 3px; flex-shrink: 0;">${fallbackDomain}</span>`;
+               }
+             }).join('')}
+             ${factCheckData.sources.length > 2 ? `<span style="opacity: 0.6; font-size: 9px;">+${factCheckData.sources.length - 2} more</span>` : ''}
+           </div>
+         </div>` 
+      : '';
+    
+    console.log('Sources preview HTML for morph card:', sourcesPreview);
+
     content.innerHTML = `
     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9; white-space: nowrap; overflow: hidden;">
       <span style="font-size: 14px; flex-shrink: 0;">${this.getCategoryIcon(factCheckData.categoryOfLikeness)}</span>
@@ -202,7 +283,8 @@ YouTubeFactChecker.prototype.injectCardContent = function(factCheckData, keepHid
       <span style="margin-left: auto; font-size: 10px; opacity: 0.7; flex-shrink: 0;">${this.formatTime(factCheckData.timestamp)}</span>
     </div>
     <div style="font-size: 14px; line-height: 1.4; font-weight: 500; margin-bottom: 8px; word-wrap: break-word; overflow-wrap: break-word; hyphens: auto;">"${factCheckData.claim.substring(0, 140)}${factCheckData.claim.length > 140 ? '...' : ''}"</div>
-    <div style="font-size: 12px; opacity: 0.85; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word;">${factCheckData.judgement.summary}</div>
+    <div style="font-size: 12px; opacity: 0.85; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word; margin-bottom: 4px;">${factCheckData.judgement.summary}</div>
+    ${sourcesPreview}
   `;
     this.activeIndicator.appendChild(content);
 };

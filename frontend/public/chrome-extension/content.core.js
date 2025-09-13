@@ -16,6 +16,7 @@ class YouTubeFactChecker {
         this.motionTokens = null;
         this.indicatorIcon = null;
         this.isMorphed = false;
+        this.currentTooltip = null; // Track current tooltip
     }
 
     init() {
@@ -24,6 +25,7 @@ class YouTubeFactChecker {
             this.setupTimeTracking();
             this.createOverlayContainer();
             this.extractVideoId();
+            this.setupResizeListener(); // Add resize listener for dynamic repositioning
             this.isInitialized = true;
         });
 
