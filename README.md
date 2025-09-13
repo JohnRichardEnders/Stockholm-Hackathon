@@ -46,21 +46,17 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 curl http://localhost:8000/health
 
 # Process a video
-curl -X POST "http://localhost:8000/api/process-video" \
-  -H "Content-Type: application/json" \
-  -d '{"video_url": "https://www.youtube.com/watch?v=jNQXAC9IVRw"}'
+curl "http://localhost:8000/api/process-video?video_url=https://www.youtube.com/watch?v=jNQXAC9IVRw"
 ```
 
 ## API Endpoints
 
 - `GET /health` - Health check
-- `POST /api/process-video` - Process YouTube video for fact-checking
+- `GET /api/process-video?video_url=URL` - Process YouTube video for fact-checking
 
 ### Request Format
-```json
-{
-  "video_url": "https://youtube.com/watch?v=VIDEO_ID"
-}
+```
+GET /api/process-video?video_url=https://youtube.com/watch?v=VIDEO_ID
 ```
 
 ### Response Format
