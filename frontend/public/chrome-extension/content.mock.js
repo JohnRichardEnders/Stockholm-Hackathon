@@ -58,12 +58,13 @@ YouTubeFactChecker.prototype.processVideo = async function(videoUrl) {
     const API_BASE_URL = 'http://localhost:8000';
 
     try {
-        const response = await fetch(`${API_BASE_URL}/api/process-video`, {
-            method: 'POST',
+        // Encode the video URL as a query parameter
+        const encodedVideoUrl = encodeURIComponent(videoUrl);
+        const response = await fetch(`${API_BASE_URL}/api/process-video?video_url=${encodedVideoUrl}`, {
+            method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
+                'Accept': 'application/json',
             },
-            body: JSON.stringify({ video_url: videoUrl }),
         });
 
         if (!response.ok) {
@@ -80,18 +81,19 @@ YouTubeFactChecker.prototype.processVideo = async function(videoUrl) {
     }
 };
 
+
 YouTubeFactChecker.prototype.handleAnalysisComplete = function(result) {
     // Transform API response to match existing overlay format
-    if (result.claims && result.claims.length > 0) {
-        this.mockFactChecks = result.claims.map(claim => ({
-            timestamp: claim.start,
-            endTimestamp: claim.end,
-            claim: claim.claim,
-            categoryOfLikeness: this.mapApiStatusToCategory(claim.status),
-            sources: claim.evidence ? .map(ev => ev.source_url).filter(Boolean) || [],
+    if (result.claim_responses && result.claim_responses.length > 0) {
+        this.mockFactChecks = result.claim_responses.map(claimResponse => ({
+            timestamp: claimResponse.claim.start,
+            endTimestamp: claimResponse.claim.start + 10, // Default 10-second duration
+            claim: claimResponse.claim.claim,
+            categoryOfLikeness: this.mapApiStatusToCategory(claimResponse.status),
+            sources: claimResponse.evidence ? claimResponse.evidence.map(ev => ev.source_url).filter(Boolean) : [],
             judgement: {
-                reasoning: claim.explanation || 'No detailed explanation provided',
-                summary: claim.explanation || `Status: ${claim.status}`
+                reasoning: claimResponse.written_summary || 'No detailed explanation provided',
+                summary: claimResponse.written_summary || `Status: ${claimResponse.status}`
             }
         }));
 

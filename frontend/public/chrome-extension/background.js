@@ -171,12 +171,13 @@ async function processVideo(videoUrl) {
         return { job_id: 'mock-job-' + Date.now() };
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/process-video`, {
-        method: 'POST',
+    // Encode the video URL as a query parameter
+    const encodedVideoUrl = encodeURIComponent(videoUrl);
+    const response = await fetch(`${API_BASE_URL}/api/process-video?video_url=${encodedVideoUrl}`, {
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
+            'Accept': 'application/json',
         },
-        body: JSON.stringify({ video_url: videoUrl }),
     });
 
     if (!response.ok) {

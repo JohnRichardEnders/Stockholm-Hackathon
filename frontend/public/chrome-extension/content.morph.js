@@ -187,7 +187,7 @@ YouTubeFactChecker.prototype.createAnalyzeButton = function() {
 };
 
 YouTubeFactChecker.prototype.updateButtonState = function() {
-    const buttonContent = this.activeIndicator ? .querySelector('.analyze-button-content');
+    const buttonContent = this.activeIndicator ? this.activeIndicator.querySelector('.analyze-button-content') : null;
     if (!buttonContent) return;
 
     if (this.isAnalysisInProgress) {

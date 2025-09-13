@@ -107,12 +107,16 @@ async def process_video(video_url: str) -> dict:
         
         logger.info(f"Video processing completed: {len(fact_check_results)} claims fact-checked")
         
+        # Create summary from results
+        summary = create_summary_from_responses(fact_check_results)
+        
         # Return structured JSON with all ClaimResponse objects
         return {
             "video_id": extract_video_id(video_url),
             "title": "Processed Video",
             "total_claims": len(fact_check_results),
-            "claim_responses": [result.dict() for result in fact_check_results]  # Full ClaimResponse objects
+            "claim_responses": [result.dict() for result in fact_check_results],  # Full ClaimResponse objects
+            "summary": summary
         }
         
     except Exception as e:
