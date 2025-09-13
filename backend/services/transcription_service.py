@@ -55,6 +55,7 @@ import openai
 import tempfile
 import os
 from dotenv import load_dotenv
+from models import Sentence
 
 # Load environment variables
 load_dotenv()
@@ -161,7 +162,7 @@ async def download_audio_from_youtube(video_url: str) -> str:
         raise
 
 
-async def transcribe_from_url_streaming(video_url: str) -> AsyncGenerator[Dict[str, any], None]:
+async def transcribe_from_url_streaming(video_url: str) -> AsyncGenerator[Sentence, None]:
     """
     Stream sentences from YouTube URL as async generator
     
@@ -173,7 +174,7 @@ async def transcribe_from_url_streaming(video_url: str) -> AsyncGenerator[Dict[s
     4. Clean up temporary audio file
     
     Yields:
-        dict: {"start": 5.2, "text": "This is a sentence."}
+        Sentence: Pydantic model with start time and text
     """
     
     audio_path = None
@@ -202,8 +203,9 @@ async def transcribe_from_url_streaming(video_url: str) -> AsyncGenerator[Dict[s
         # Step 3: Chunk segments into full sentences
         sentences = chunk_segments_into_sentences(transcript.segments)
         
-        for sentence in sentences:
-            logger.info(f"Streaming sentence at {sentence['start']}s: '{sentence['text'][:50]}...'")
+        for sentence_dict in sentences:
+            sentence = Sentence(start=sentence_dict["start"], text=sentence_dict["text"])
+            logger.info(f"Streaming sentence at {sentence.start}s: '{sentence.text[:50]}...'")
             yield sentence
         
         logger.info("Finished streaming all sentences")

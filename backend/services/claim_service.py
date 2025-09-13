@@ -1,105 +1,101 @@
 """
-Claim Extraction Service - OpenAI Integration
+Claim Extraction Service - RunPod Deep Cogito v2 70B Integration
 
-FUNCTION TO IMPLEMENT:
-async def extract_claims_from_segment(segment: dict) -> List[dict]
-
-INPUT:
-Single segment with timestamp:
-{
-  "id": 1,
-  "start": 5.2,
-  "end": 9.8,
-  "text": "Today we'll discuss how vaccines cause autism."
-}
-
-OUTPUT:
-List of claims (empty list if no claims):
-[
-  {
-    "text": "vaccines cause autism",
-    "category": "health",
-    "confidence": 0.9
-  }
-]
-
-OR empty list [] if no verifiable claims in segment
-
-IMPLEMENTATION NOTES:
-- Use OpenAI GPT-4o-mini for cost efficiency
-- Analyze each segment individually
-- Only extract clear, verifiable factual claims
-- Skip opinions, questions, greetings, conclusions
-- Categories: "science", "health", "politics", "history", "technology", "other"
-- Confidence: 0.0 to 1.0 (how confident the extraction is)
-- Return empty list if no claims found
-
-PROMPT STRATEGY:
-- Ask LLM to identify factual claims that can be verified
-- Ignore subjective statements, opinions, questions
-- Focus on specific, testable assertions
-- Return structured JSON response
-
-DEPENDENCIES:
-- openai library
-- Set OPENAI_API_KEY environment variable
+Extract factual claims from sentences using RunPod Deep Cogito v2 70B model.
 """
 
 from typing import List, Dict
 import logging
+import os
+import json
+from openai import OpenAI
+from dotenv import load_dotenv
+from models import Claim, Sentence
+
+# Load environment variables
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
 
-async def extract_claims_from_segment(segment: Dict) -> List[Dict]:
+async def extract_claims_from_sentence(sentence: Sentence) -> List[Claim]:
     """
-    Extract verifiable claims from a transcript segment
+    Extract verifiable claims from a sentence using Deep Cogito v2 70B
     
-    TODO: Implement this function
-    1. Analyze segment text with OpenAI GPT-4o-mini
-    2. Identify factual claims that can be verified
-    3. Skip opinions, questions, greetings
-    4. Return structured claims with category and confidence
-    5. Return empty list if no claims found
+    Args:
+        sentence: Sentence object with start time and text
+        
+    Returns:
+        List[Claim]: List of Claim objects with start time and claim text
     """
     
-    text = segment["text"]
+    text = sentence.text
     
-    # TODO: Replace with real OpenAI implementation
-    # Mock implementation for testing
-    
-    # Mock logic: detect claims based on keywords
+    try:
+        # RunPod OpenAI-compatible client (from docs)
+        client = OpenAI(
+            api_key=os.getenv("RUNPOD_API_KEY"),
+            base_url="https://api.runpod.ai/v2/deep-cogito-v2-llama-70b/openai/v1"
+        )
+        
+        # Call RunPod to extract claims
+        response = client.chat.completions.create(
+            model="deepcogito/cogito-v2-preview-llama-70B",
+            messages=[
+                {"role": "user", "content": f"Extract claims that are factual and verifiable from: {text}. Return JSON: {{\"claims\": [\"claim1\", \"claim2\"]}}"}
+            ],
+            response_format={
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "claims_extraction",
+                    "strict": True,
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "claims": {
+                                "type": "array",
+                                "items": {"type": "string"}
+                            }
+                        },
+                        "required": ["claims"],
+                        "additionalProperties": False
+                    }
+                }
+            },
+            max_tokens=150,
+            temperature=0.1
+        )
+        
+        # Parse response and create Claim objects
+        result = json.loads(response.choices[0].message.content)
+        claim_texts = result.get("claims", [])
+        
+        # Create Claim objects with timestamps
+        claims = [
+            Claim(start=sentence.start, claim=claim_text)
+            for claim_text in claim_texts
+        ]
+        
+        logger.info(f"Extracted {len(claims)} claims from: '{text[:50]}...'")
+        return claims
+        
+    except Exception as e:
+        logger.error(f"RunPod extraction failed: {e}")
+        return mock_extract_claims(text, sentence["start"])
+
+
+def mock_extract_claims(text: str, start_time: float) -> List[Claim]:
+    """Simple fallback for testing"""
     claims = []
+    text_lower = text.lower()
     
-    if "vaccine" in text.lower() and "autism" in text.lower():
-        claims.append({
-            "text": "vaccines cause autism",
-            "category": "health",
-            "confidence": 0.9
-        })
+    if "vaccine" in text_lower and "autism" in text_lower:
+        claims.append(Claim(start=start_time, claim="vaccines cause autism"))
     
-    if "earth" in text.lower() and "flat" in text.lower():
-        claims.append({
-            "text": "the Earth is flat",
-            "category": "science",
-            "confidence": 0.95
-        })
+    if "earth" in text_lower and "flat" in text_lower:
+        claims.append(Claim(start=start_time, claim="the Earth is flat"))
     
-    if "climate change" in text.lower() and ("fake" in text.lower() or "hoax" in text.lower()):
-        claims.append({
-            "text": "climate change is fake",
-            "category": "science",
-            "confidence": 0.85
-        })
-    
-    # Skip segments with greetings, conclusions, or no factual content
-    greeting_words = ["hello", "welcome", "thanks", "goodbye", "see you"]
-    if any(word in text.lower() for word in greeting_words) and not claims:
-        claims = []
-    
-    if claims:
-        logger.info(f"Extracted {len(claims)} claims from segment: '{text[:50]}...'")
-    else:
-        logger.info(f"No claims found in segment: '{text[:50]}...'")
+    if "climate change" in text_lower and ("fake" in text_lower or "hoax" in text_lower):
+        claims.append(Claim(start=start_time, claim="climate change is fake"))
     
     return claims
