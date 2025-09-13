@@ -240,17 +240,42 @@ YouTubeFactChecker.prototype.createGlassFilter = function() {
 };
 
 YouTubeFactChecker.prototype.injectCardContent = function(factCheckData, keepHidden = false) {
-    this.clearCardContent();
-    this.ensureCardGlassLayers();
-    const content = document.createElement('div');
-    content.className = 'fact-checker-content';
-    content.style.cssText = `
+        this.clearCardContent();
+        this.ensureCardGlassLayers();
+        const content = document.createElement('div');
+        content.className = 'fact-checker-content';
+        content.style.cssText = `
     opacity: ${keepHidden ? '0' : '1'};
     transform: translateY(${keepHidden ? '8px' : '0'});
     transition: opacity 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     color: white; width: 100%; position: relative; z-index: 4; pointer-events: auto; box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
   `;
+        // Debug logging to check sources data in morph card
+        console.log('Creating morph card for fact check:', factCheckData);
+        console.log('Sources data in morph:', factCheckData.sources);
+
+        // Create sources preview for morph card
+        const sourcesPreview = factCheckData.sources && factCheckData.sources.length > 0 ?
+            `<div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.15);">
+           <div style="font-size: 10px; opacity: 0.7; margin-bottom: 4px;">Sources (${factCheckData.sources.length}):</div>
+           <div style="font-size: 10px; opacity: 0.8; line-height: 1.2; display: flex; flex-wrap: wrap; gap: 4px;">
+             ${factCheckData.sources.slice(0, 2).map(source => {
+               try {
+                 const domain = new URL(source).hostname.replace('www.', '');
+                 return `<span style="background: rgba(255,255,255,0.15); padding: 2px 6px; border-radius: 3px; flex-shrink: 0;">${domain}</span>`;
+               } catch {
+                 const fallbackDomain = source.includes('//') ? source.split('//')[1].split('/')[0] : source.substring(0, 20);
+                 return `<span style="background: rgba(255,255,255,0.15); padding: 2px 6px; border-radius: 3px; flex-shrink: 0;">${fallbackDomain}</span>`;
+               }
+             }).join('')}
+             ${factCheckData.sources.length > 2 ? `<span style="opacity: 0.6; font-size: 9px;">+${factCheckData.sources.length - 2} more</span>` : ''}
+           </div>
+         </div>` 
+      : '';
+    
+    console.log('Sources preview HTML for morph card:', sourcesPreview);
+
     content.innerHTML = `
     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9; white-space: nowrap; overflow: hidden;">
       <span style="font-size: 14px; flex-shrink: 0;">${this.getCategoryIcon(factCheckData.categoryOfLikeness)}</span>
@@ -258,7 +283,8 @@ YouTubeFactChecker.prototype.injectCardContent = function(factCheckData, keepHid
       <span style="margin-left: auto; font-size: 10px; opacity: 0.7; flex-shrink: 0;">${this.formatTime(factCheckData.timestamp)}</span>
     </div>
     <div style="font-size: 14px; line-height: 1.4; font-weight: 500; margin-bottom: 8px; word-wrap: break-word; overflow-wrap: break-word; hyphens: auto;">"${factCheckData.claim.substring(0, 140)}${factCheckData.claim.length > 140 ? '...' : ''}"</div>
-    <div style="font-size: 12px; opacity: 0.85; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word;">${factCheckData.judgement.summary}</div>
+    <div style="font-size: 12px; opacity: 0.85; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word; margin-bottom: 4px;">${factCheckData.judgement.summary}</div>
+    ${sourcesPreview}
   `;
     this.activeIndicator.appendChild(content);
 };
