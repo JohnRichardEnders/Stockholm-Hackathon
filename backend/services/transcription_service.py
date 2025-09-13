@@ -1,11 +1,11 @@
 """
-Transcription Service - Whisper API Integration
+Transcription Service - Full URL to Transcript
 
 FUNCTION TO IMPLEMENT:
-async def transcribe_audio(audio_path: str) -> List[dict]
+async def transcribe_from_url(video_url: str) -> List[dict]
 
 INPUT:
-- audio_path: "/tmp/audio_12345.wav" (path to downloaded audio file)
+- video_url: "https://youtube.com/watch?v=dQw4w9WgXcQ" (YouTube URL)
 
 OUTPUT:
 List of segments with exact timestamps:
@@ -30,16 +30,22 @@ List of segments with exact timestamps:
   }
 ]
 
-IMPLEMENTATION NOTES:
-- Use OpenAI Whisper API
-- Call with response_format="verbose_json" and timestamp_granularities=["segment"]
-- Convert response.segments to our format
-- Handle errors gracefully
-- Return empty list on failure
+IMPLEMENTATION STEPS:
+1. Download audio from YouTube URL using yt-dlp
+2. Call OpenAI Whisper API with response_format="verbose_json" and timestamp_granularities=["segment"]
+3. Convert response.segments to our format
+4. Clean up temporary audio file
+5. Return segments list
 
 DEPENDENCIES:
-- openai library
+- openai library (for Whisper API)
+- yt-dlp library (for YouTube audio download)
 - Set OPENAI_API_KEY environment variable
+
+ERROR HANDLING:
+- Return empty list on failure
+- Log errors for debugging
+- Clean up temp files even on error
 """
 
 from typing import List, Dict
@@ -48,15 +54,16 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-async def transcribe_audio(audio_path: str) -> List[Dict]:
+async def transcribe_from_url(video_url: str) -> List[Dict]:
     """
-    Transcribe audio file using Whisper API
+    Get full transcript from YouTube URL
     
     TODO: Implement this function
-    1. Open audio file
+    1. Download audio from YouTube URL using yt-dlp
     2. Call OpenAI Whisper API with segments
     3. Convert response to our format
-    4. Return list of segments with timestamps
+    4. Clean up temporary audio file
+    5. Return list of segments with timestamps
     """
     
     # TODO: Replace with real implementation

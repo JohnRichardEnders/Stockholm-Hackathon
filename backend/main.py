@@ -6,14 +6,11 @@ Main FastAPI app with orchestration logic
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import yt_dlp
-import tempfile
-import os
 from typing import List, Dict, Any
 import logging
 
 # Import services
-from services.transcription_service import transcribe_audio
+from services.transcription_service import transcribe_from_url
 from services.claim_service import extract_claims_from_segment
 from services.verification_service import fact_check_claim
 from api.endpoints import router
@@ -43,24 +40,20 @@ async def process_video(video_url: str) -> VideoResponse:
     Main orchestration function - coordinates all services
     
     Flow:
-    1. Download audio from YouTube
-    2. Transcribe with Whisper → segments
-    3. Extract claims from each segment → skip empty segments
-    4. Fact-check each claim
-    5. Return structured response
+    1. Get transcript from URL (transcription service handles audio download)
+    2. Extract claims from each segment → skip empty segments
+    3. Fact-check each claim
+    4. Return structured response
     """
     
     try:
         logger.info(f"Processing video: {video_url}")
         
-        # Step 1: Download audio
-        audio_path = download_audio(video_url)
-        
-        # Step 2: Transcribe with Whisper
-        segments = await transcribe_audio(audio_path)
+        # Step 1: Get transcript from URL
+        segments = await transcribe_from_url(video_url)
         logger.info(f"Got {len(segments)} segments from transcription")
         
-        # Step 3: Extract claims from segments (skip empty ones)
+        # Step 2: Extract claims from segments (skip empty ones)
         claims_with_timestamps = []
         
         for segment in segments:
@@ -82,17 +75,14 @@ async def process_video(video_url: str) -> VideoResponse:
         
         logger.info(f"Extracted {len(claims_with_timestamps)} claims from {len(segments)} segments")
         
-        # Step 4: Fact-check each claim
+        # Step 3: Fact-check each claim
         fact_checked_claims = []
         
         for claim_data in claims_with_timestamps:
             fact_check_result = await fact_check_claim(
                 claim=claim_data["claim"],
                 context="",  # Could add surrounding text here
-                metadata={
-                    "video_url": video_url,
-                    "title": extract_video_title(video_url)
-                }
+                metadata={"video_url": video_url}
             )
             
             # Combine claim with fact-check result
@@ -107,16 +97,12 @@ async def process_video(video_url: str) -> VideoResponse:
                 "evidence": fact_check_result.get("evidence", [])
             })
         
-        # Step 5: Create summary
+        # Step 4: Create summary
         summary = create_summary(fact_checked_claims)
         
-        # Cleanup
-        if os.path.exists(audio_path):
-            os.remove(audio_path)
-        
         return VideoResponse(
-            video_id=extract_video_id(video_url),
-            title=extract_video_title(video_url),
+            video_id="video",
+            title="Video",
             total_claims=len(fact_checked_claims),
             claims=fact_checked_claims,
             summary=summary
@@ -127,53 +113,6 @@ async def process_video(video_url: str) -> VideoResponse:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-def download_audio(video_url: str) -> str:
-    """Download audio from YouTube video using yt-dlp"""
-    try:
-        temp_dir = tempfile.gettempdir()
-        audio_path = os.path.join(temp_dir, f"audio_{hash(video_url)}.wav")
-        
-        ydl_opts = {
-            'format': 'bestaudio/best',
-            'outtmpl': audio_path,
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'wav',
-            }],
-            'quiet': True,
-        }
-        
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([video_url])
-        
-        return audio_path + ".wav"
-        
-    except Exception as e:
-        logger.error(f"Audio download failed: {e}")
-        raise
-
-
-def extract_video_id(url: str) -> str:
-    """Extract YouTube video ID from URL"""
-    try:
-        if "youtube.com/watch" in url:
-            return url.split("v=")[1].split("&")[0]
-        elif "youtu.be/" in url:
-            return url.split("youtu.be/")[1].split("?")[0]
-        return "unknown"
-    except:
-        return "unknown"
-
-
-def extract_video_title(url: str) -> str:
-    """Extract video title using yt-dlp"""
-    try:
-        ydl_opts = {'quiet': True}
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=False)
-            return info.get('title', 'Unknown Title')
-    except:
-        return "Unknown Title"
 
 
 def create_summary(claims: List[Dict]) -> Dict[str, int]:
