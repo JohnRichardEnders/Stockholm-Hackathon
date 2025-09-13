@@ -1,10 +1,19 @@
 """
 Pydantic data models for the YouTube Fact-Checker
 """
+from datetime import datetime
 
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
+from enum import Enum
 
+
+class ClaimStatus(str, Enum):
+    """Status values for fact-checked claims"""
+    VERIFIED = "verified"  # Claim is accurate/true
+    FALSE = "false"  # Claim is demonstrably false
+    DISPUTED = "disputed"  # Mixed evidence, controversial
+    INCONCLUSIVE = "inconclusive"  # Insufficient evidence
 
 class VideoRequest(BaseModel):
     """Request to process a video"""
@@ -15,7 +24,7 @@ class Evidence(BaseModel):
     """Evidence for a fact-check"""
     source_url: str
     source_title: str
-    excerpt: str
+    excerpt: str # short summary of source
 
 
 class Claim(BaseModel):
@@ -23,12 +32,12 @@ class Claim(BaseModel):
     start: float
     end: float
     claim: str
-    category: str
-    status: str  # "verified", "false", "disputed", "inconclusive"
-    confidence: float
-    explanation: str
-    evidence: List[Evidence] = []
 
+class ClaimResponse(BaseModel):
+    claim: Claim
+    status: ClaimStatus
+    summary: str # overall summary of claim
+    evidence: List[Evidence]
 
 class VideoResponse(BaseModel):
     """Response after processing a video"""
