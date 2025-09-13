@@ -9,7 +9,7 @@ class YouTubeFactChecker {
         this.currentTime = 0;
         this.player = null;
         this.isInitialized = false;
-        this.mockMode = true; // Enable mock data mode
+        this.mockMode = false; // Use real API by default (set to true for mock data)
         this.activeIndicator = null;
         this.popupTimeouts = [];
         this.currentDisplayedClaim = null;

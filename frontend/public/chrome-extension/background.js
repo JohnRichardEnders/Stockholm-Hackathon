@@ -2,8 +2,9 @@
 
 const API_BASE_URL = 'http://localhost:8000';
 
-// Mock mode flag - when true, no API calls are made
-const MOCK_MODE = true;
+// Mock mode flag - when true, no API calls are made  
+// Set to false to use real backend API
+const MOCK_MODE = false;
 
 // Track active fact-checking sessions
 const activeSessions = new Map();
@@ -44,44 +45,82 @@ async function handleVideoDetection(tabId, videoId, videoUrl) {
         // Check if video exists in backend
         const existingVideo = await checkVideoExists(videoId);
 
-        if (!existingVideo) {
-            // Start processing new video
+        // Since we're using direct processing, always process the video
+        console.log(`Starting video processing for: ${videoUrl}`);
+
+        // Notify content script that processing started
+        chrome.tabs.sendMessage(tabId, {
+            type: 'PROCESSING_STARTED',
+            data: { videoId }
+        });
+
+        activeSessions.set(videoId, {
+            tabId,
+            videoId,
+            status: 'processing'
+        });
+
+        try {
+            // Process video and get results directly
             const result = await processVideo(videoUrl);
+
+            // Update session status
             activeSessions.set(videoId, {
                 tabId,
                 videoId,
-                jobId: result.job_id,
-                status: 'processing'
+                status: 'completed'
             });
 
-            // Notify content script
+            // Convert API response to match content script expectations
+            const claims = result.claims.map(claim => ({
+                timestamp: claim.start,
+                endTimestamp: claim.end,
+                claim: claim.claim,
+                categoryOfLikeness: claim.status, // 'verified', 'false', 'disputed', 'inconclusive'
+                sources: claim.evidence.map(ev => ev.source_url).filter(Boolean),
+                judgement: {
+                    reasoning: claim.explanation,
+                    summary: `${claim.status} (confidence: ${Math.round(claim.confidence * 100)}%)`
+                }
+            }));
+
+            // Send processed data to content script
             chrome.tabs.sendMessage(tabId, {
-                type: 'PROCESSING_STARTED',
-                data: { videoId, jobId: result.job_id }
+                type: 'DATA_LOADED',
+                data: {
+                    videoId,
+                    claims,
+                    summary: result.summary
+                }
             });
 
-            // Start WebSocket connection for real-time updates
-            setupWebSocketConnection(videoId, tabId);
-        } else {
-            // Video already processed, load existing data
+            // Show completion notification
+            chrome.tabs.sendMessage(tabId, {
+                type: 'REALTIME_UPDATE',
+                data: {
+                    type: 'processing_complete',
+                    data: {
+                        total_claims: result.total_claims,
+                        summary: result.summary
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error('Error processing video:', error);
+
+            // Update session status
             activeSessions.set(videoId, {
                 tabId,
                 videoId,
-                status: existingVideo.status
+                status: 'error'
             });
 
-            if (existingVideo.status === 'completed') {
-                // Load claims and fact-checks
-                const [claims, factChecks] = await Promise.all([
-                    fetchClaims(videoId),
-                    fetchFactChecks(videoId)
-                ]);
-
-                chrome.tabs.sendMessage(tabId, {
-                    type: 'DATA_LOADED',
-                    data: { videoId, claims, factChecks }
-                });
-            }
+            // Notify content script of error
+            chrome.tabs.sendMessage(tabId, {
+                type: 'PROCESSING_ERROR',
+                data: { error: error.message }
+            });
         }
     } catch (error) {
         console.error('Error handling video detection:', error);
@@ -113,12 +152,12 @@ async function processVideo(videoUrl) {
         return { job_id: 'mock-job-' + Date.now() };
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/v1/videos/process`, {
+    const response = await fetch(`${API_BASE_URL}/api/process-video`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ url: videoUrl }),
+        body: JSON.stringify({ video_url: videoUrl }),
     });
 
     if (!response.ok) {
