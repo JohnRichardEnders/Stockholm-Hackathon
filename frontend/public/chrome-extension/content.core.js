@@ -16,6 +16,7 @@ class YouTubeFactChecker {
         this.motionTokens = null;
         this.indicatorIcon = null;
         this.isMorphed = false;
+        this.currentTooltip = null; // Track current tooltip
     }
 
     init() {

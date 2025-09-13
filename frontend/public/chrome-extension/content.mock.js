@@ -82,9 +82,12 @@ YouTubeFactChecker.prototype.loadMockData = function() {
 };
 
 YouTubeFactChecker.prototype.createTimelineMarkers = function() {
-    // Remove existing markers
+    // Remove existing markers and tooltips completely
     const existingMarkers = document.querySelectorAll('.fact-check-timeline-marker');
     existingMarkers.forEach((marker) => marker.remove());
+
+    // Also clear any existing tooltips
+    this.hideTimelineTooltip();
 
     if (!this.mockFactChecks || this.mockFactChecks.length === 0) return;
 
@@ -172,25 +175,36 @@ YouTubeFactChecker.prototype.createTimelineMarkers = function() {
         marker.appendChild(tint);
         marker.appendChild(shine);
 
-        // Add hover effects
+        // Add hover effects with immediate response
         marker.addEventListener('mouseenter', () => {
             console.log('Marker hover enter - showing tooltip');
+
+            // Immediate visual feedback
             marker.style.opacity = '1';
-            marker.style.width = '18px';
-            marker.style.height = '18px';
-            marker.style.top = '-16px';
-            marker.style.transform = 'translateX(-50%) scale(1.1)';
-            marker.style.boxShadow = `0 0 0 1px rgba(255, 255, 255, 0.5), 0 6px 20px rgba(10, 132, 255, 0.35)`;
+            marker.style.width = '20px';
+            marker.style.height = '20px';
+            marker.style.top = '-17px';
+            marker.style.transform = 'translateX(-50%) scale(1.15)';
+            marker.style.boxShadow = `0 0 0 2px rgba(255, 255, 255, 0.6), 
+                                     0 8px 24px rgba(10, 132, 255, 0.4),
+                                     0 0 20px ${this.getCategoryColor(factCheck.categoryOfLikeness)}60`;
+            marker.style.zIndex = '1001';
+
+            // Show tooltip immediately
             this.showTimelineTooltip(marker, factCheck);
         });
 
         marker.addEventListener('mouseleave', () => {
+            // Reset marker styles
             marker.style.opacity = '0.95';
             marker.style.width = '14px';
             marker.style.height = '14px';
             marker.style.top = '-14px';
             marker.style.transform = 'translateX(-50%) scale(1)';
             marker.style.boxShadow = `0 0 0 1px rgba(255, 255, 255, 0.4), 0 4px 12px rgba(10, 132, 255, 0.25)`;
+            marker.style.zIndex = '1000';
+
+            // Hide tooltip immediately
             this.hideTimelineTooltip();
         });
 
@@ -207,114 +221,60 @@ YouTubeFactChecker.prototype.createTimelineMarkers = function() {
 };
 
 YouTubeFactChecker.prototype.showTimelineTooltip = function(marker, factCheck) {
-    // Remove existing tooltip
+    // Remove existing tooltip immediately
     this.hideTimelineTooltip();
 
-    console.log('Creating timeline tooltip for:', factCheck.claim.substring(0, 50));
-
     const tooltip = document.createElement('div');
-    tooltip.className = 'fact-check-timeline-tooltip liquidGlass-wrapper';
-    // Get marker position for tooltip positioning
+    tooltip.className = 'fact-check-timeline-tooltip';
+
+    // Get the marker's exact position using getBoundingClientRect for pixel-perfect positioning
     const markerRect = marker.getBoundingClientRect();
-    const containerRect = (marker.closest('.ytp-progress-bar-container') || marker.closest('.ytp-progress-bar') || marker.parentElement).getBoundingClientRect();
-    const markerLeft = parseFloat(marker.style.left);
-
-    tooltip.style.cssText = `
-    position: absolute;
-    bottom: 100%;
-    left: ${markerLeft}%;
-    transform: translateX(-50%) translateY(-8px);
-    padding: 12px 16px;
-    border-radius: 12px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-size: 12px;
-    z-index: 10000;
-    max-width: 240px;
-    white-space: normal;
-    line-height: 1.4;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4), 0 8px 24px rgba(10, 132, 255, 0.3);
-    animation: tooltipFadeIn 0.2s ease-out;
-    overflow: visible;
-    display: block;
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-    background: rgba(0, 0, 0, 0.1);
-  `;
-
-    // Create liquid glass layers for tooltip
-    const effect = document.createElement('div');
-    effect.className = 'liquidGlass-effect';
-    effect.style.cssText = `
-    position: absolute; z-index: 0; inset: 0; border-radius: inherit; 
-    backdrop-filter: blur(2px) saturate(1.1); 
-    filter: url(#glass-distortion); 
-    overflow: hidden; isolation: isolate;
-    pointer-events: none;
-  `;
-
-    const tint = document.createElement('div');
-    tint.className = 'liquidGlass-tint';
-    tint.style.cssText = `
-    z-index: 1; position: absolute; inset: 0; border-radius: inherit; 
-    background: rgba(255, 255, 255, 0.15);
-    pointer-events: none;
-  `;
-
-    const shine = document.createElement('div');
-    shine.className = 'liquidGlass-shine';
-    shine.style.cssText = `
-    position: absolute; inset: 0; z-index: 2; border-radius: inherit; overflow: hidden; 
-    box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.1), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.1);
-    pointer-events: none;
-  `;
-
-    const content = document.createElement('div');
-    content.style.cssText = `
-    position: relative; z-index: 3; color: white; 
-    display: block; visibility: visible; opacity: 1;
-    pointer-events: none;
-  `;
-
-    content.innerHTML = `
-    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 11px;">
-      <span style="font-size: 12px;">${this.getCategoryIcon(factCheck.categoryOfLikeness)}</span>
-      <span style="font-weight: 600; text-transform: capitalize; color: white;">${
-        factCheck.categoryOfLikeness
-      }</span>
-      <span style="opacity: 0.8; color: rgba(255,255,255,0.8);">• ${this.formatTime(factCheck.timestamp)}</span>
-    </div>
-    <div style="font-size: 11px; line-height: 1.3; color: rgba(255,255,255,0.9);">
-      "${factCheck.claim.substring(0, 100)}${
-        factCheck.claim.length > 100 ? '...' : ''
-      }"
-    </div>
-  `;
-
-    tooltip.appendChild(effect);
-    tooltip.appendChild(tint);
-    tooltip.appendChild(shine);
-    tooltip.appendChild(content);
-
-    // Try adding tooltip to the progress container instead of marker for better positioning
     const progressContainer = marker.closest('.ytp-progress-bar-container') || marker.closest('.ytp-progress-bar') || marker.parentElement;
-    if (progressContainer) {
-        progressContainer.appendChild(tooltip);
-        console.log('Tooltip added to progress container:', tooltip);
-    } else {
-        marker.appendChild(tooltip);
-        console.log('Tooltip added to marker:', tooltip);
-    }
+    const containerRect = progressContainer.getBoundingClientRect();
 
-    // Store reference for cleanup
-    marker._tooltip = tooltip;
+    // Calculate tooltip position relative to the container
+    const markerCenterX = markerRect.left + (markerRect.width / 2) - containerRect.left;
+
+    // Position tooltip directly above marker center
+    tooltip.style.cssText = `
+        position: absolute;
+        top: -40px;
+        left: ${markerCenterX}px;
+        transform: translateX(-50%);
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 12px;
+        z-index: 10000;
+        white-space: nowrap;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        pointer-events: none;
+    `;
+
+    // Simple content
+    const endTime = factCheck.endTimestamp || (factCheck.timestamp + 10);
+    tooltip.innerHTML = `
+        ${this.getCategoryIcon(factCheck.categoryOfLikeness)} ${factCheck.categoryOfLikeness} • ${this.formatTime(factCheck.timestamp)}-${this.formatTime(endTime)}
+    `;
+
+    // Add to container
+    progressContainer.appendChild(tooltip);
+
+    // Store reference
+    this.currentTooltip = tooltip;
 };
 
 YouTubeFactChecker.prototype.hideTimelineTooltip = function() {
-    const existingTooltip = document.querySelector('.fact-check-timeline-tooltip');
-    if (existingTooltip) {
-        existingTooltip.remove();
+    if (this.currentTooltip && this.currentTooltip.parentNode) {
+        this.currentTooltip.remove();
+        this.currentTooltip = null;
     }
+
+    // Backup cleanup for any orphaned tooltips
+    const existingTooltips = document.querySelectorAll('.fact-check-timeline-tooltip');
+    existingTooltips.forEach(tooltip => tooltip.remove());
 };
 
 YouTubeFactChecker.prototype.jumpToTimestamp = function(timestamp) {
@@ -332,14 +292,9 @@ YouTubeFactChecker.prototype.addTooltipStyles = function() {
     const style = document.createElement('style');
     style.id = 'timeline-tooltip-styles';
     style.textContent = `
-        @keyframes tooltipFadeIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(4px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .fact-check-timeline-marker {
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .fact-check-timeline-tooltip { pointer-events: auto !important; }
-        .fact-check-timeline-tooltip .liquidGlass-effect,
-        .fact-check-timeline-tooltip .liquidGlass-tint,
-        .fact-check-timeline-tooltip .liquidGlass-shine { pointer-events: none; }
     `;
     document.head.appendChild(style);
 };
