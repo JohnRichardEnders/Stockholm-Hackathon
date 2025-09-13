@@ -19,7 +19,18 @@
     },
     "content_scripts": [{
         "matches": ["*://www.youtube.com/*", "*://youtube.com/*"],
-        "js": ["content.js"],
+        "js": [
+            "content.core.js",
+            "content.utils.js",
+            "content.player.js",
+            "content.messaging.js",
+            "content.overlay.js",
+            "content.mock.js",
+            "content.morph.js",
+            "content.modals.js",
+            "content.updates.js",
+            "bootstrap.js"
+        ],
         "run_at": "document_end"
     }],
     "action": {
