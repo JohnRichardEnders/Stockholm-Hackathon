@@ -89,12 +89,28 @@ class YouTubeFactChecker {
             this.currentTime = this.player.currentTime;
             this.updateVisibleClaims();
         });
+
+        // Listen for metadata loaded to create timeline markers
+        this.player.addEventListener('loadedmetadata', () => {
+            if (this.mockFactChecks) {
+                this.createTimelineMarkers();
+            }
+        });
+
+        // Also listen for duration change
+        this.player.addEventListener('durationchange', () => {
+            if (this.mockFactChecks) {
+                this.createTimelineMarkers();
+            }
+        });
     }
 
     loadMockData() {
         // Mock data with your specified structure: timestamp, claim, categoryOfLikeness, sources, judgement
+        // Added endTimestamp for proper duration handling
         this.mockFactChecks = [{
                 timestamp: 15,
+                endTimestamp: 25, // 10 second duration
                 claim: "This technology will revolutionize the entire industry within 5 years",
                 categoryOfLikeness: "false",
                 sources: [
@@ -108,6 +124,7 @@ class YouTubeFactChecker {
             },
             {
                 timestamp: 45,
+                endTimestamp: 55, // 10 second duration
                 claim: "Studies show that 90% of users prefer this method over traditional approaches",
                 categoryOfLikeness: "false",
                 sources: [
@@ -121,6 +138,7 @@ class YouTubeFactChecker {
             },
             {
                 timestamp: 120,
+                endTimestamp: 130, // 10 second duration
                 claim: "The market cap will reach $1 trillion by next year",
                 categoryOfLikeness: "false",
                 sources: [
@@ -134,6 +152,7 @@ class YouTubeFactChecker {
             },
             {
                 timestamp: 180,
+                endTimestamp: 190, // 10 second duration
                 claim: "No other company has been able to achieve these results",
                 categoryOfLikeness: "true",
                 sources: [
@@ -147,6 +166,7 @@ class YouTubeFactChecker {
             },
             {
                 timestamp: 240,
+                endTimestamp: 250, // 10 second duration
                 claim: "This approach is completely safe with no side effects",
                 categoryOfLikeness: "neutral",
                 sources: [
@@ -161,6 +181,143 @@ class YouTubeFactChecker {
         ];
 
         console.log('Mock fact-check data loaded:', this.mockFactChecks.length, 'claims');
+
+        // Create timeline markers after loading mock data
+        this.createTimelineMarkers();
+    }
+
+    createTimelineMarkers() {
+        // Remove existing markers
+        const existingMarkers = document.querySelectorAll('.fact-check-timeline-marker');
+        existingMarkers.forEach(marker => marker.remove());
+
+        if (!this.mockFactChecks || this.mockFactChecks.length === 0) return;
+
+        // Find YouTube progress bar container
+        const progressContainer = document.querySelector('.ytp-progress-bar-container') ||
+            document.querySelector('.ytp-progress-bar');
+
+        if (!progressContainer) {
+            // Retry after a delay if progress bar not found
+            setTimeout(() => this.createTimelineMarkers(), 1000);
+            return;
+        }
+
+        // Get video duration to calculate marker positions
+        const video = document.querySelector('video');
+        if (!video || !video.duration) {
+            setTimeout(() => this.createTimelineMarkers(), 1000);
+            return;
+        }
+
+        const videoDuration = video.duration;
+
+        // Create markers for each claim
+        this.mockFactChecks.forEach((factCheck, index) => {
+            const marker = document.createElement('div');
+            marker.className = 'fact-check-timeline-marker';
+            marker.setAttribute('data-claim-index', index);
+            marker.setAttribute('data-timestamp', factCheck.timestamp);
+
+            // Calculate position as percentage
+            const position = (factCheck.timestamp / videoDuration) * 100;
+
+            marker.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: ${position}%;
+                width: 3px;
+                height: 100%;
+                background: ${this.getCategoryColor(factCheck.categoryOfLikeness)};
+                border-radius: 2px;
+                cursor: pointer;
+                z-index: 100;
+                opacity: 0.8;
+                transition: all 0.2s ease;
+                box-shadow: 0 0 4px rgba(0,0,0,0.3);
+            `;
+
+            // Add hover effects
+            marker.addEventListener('mouseenter', () => {
+                marker.style.opacity = '1';
+                marker.style.width = '4px';
+                marker.style.transform = 'translateX(-0.5px)';
+                this.showTimelineTooltip(marker, factCheck);
+            });
+
+            marker.addEventListener('mouseleave', () => {
+                marker.style.opacity = '0.8';
+                marker.style.width = '3px';
+                marker.style.transform = 'translateX(0)';
+                this.hideTimelineTooltip();
+            });
+
+            // Add click handler to jump to timestamp
+            marker.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.jumpToTimestamp(factCheck.timestamp);
+            });
+
+            progressContainer.appendChild(marker);
+        });
+
+        console.log(`Created ${this.mockFactChecks.length} timeline markers`);
+    }
+
+    showTimelineTooltip(marker, factCheck) {
+        // Remove existing tooltip
+        this.hideTimelineTooltip();
+
+        const tooltip = document.createElement('div');
+        tooltip.className = 'fact-check-timeline-tooltip';
+        tooltip.style.cssText = `
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            margin-bottom: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid ${this.getCategoryColor(factCheck.categoryOfLikeness)};
+            max-width: 200px;
+            white-space: normal;
+            line-height: 1.3;
+        `;
+
+        tooltip.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                <span>${this.getCategoryIcon(factCheck.categoryOfLikeness)}</span>
+                <span style="font-weight: 600; text-transform: capitalize; font-size: 11px;">${factCheck.categoryOfLikeness}</span>
+                <span style="opacity: 0.7;">• ${this.formatTime(factCheck.timestamp)}</span>
+            </div>
+            <div style="font-size: 11px;">
+                ${factCheck.claim.substring(0, 100)}${factCheck.claim.length > 100 ? '...' : ''}
+            </div>
+        `;
+
+        marker.appendChild(tooltip);
+    }
+
+    hideTimelineTooltip() {
+        const existingTooltip = document.querySelector('.fact-check-timeline-tooltip');
+        if (existingTooltip) {
+            existingTooltip.remove();
+        }
+    }
+
+    jumpToTimestamp(timestamp) {
+        const video = document.querySelector('video');
+        if (video) {
+            video.currentTime = timestamp;
+            console.log(`Jumped to timestamp: ${this.formatTime(timestamp)}`);
+        }
     }
 
     createActiveIndicator() {
@@ -359,9 +516,26 @@ class YouTubeFactChecker {
     updateVisibleClaims() {
         if (!this.overlayContainer || !this.mockMode || !this.mockFactChecks) return;
 
-        // Check for claims that should be triggered at current time
-        const newClaims = this.mockFactChecks.filter(factCheck =>
-            Math.abs(this.currentTime - factCheck.timestamp) < 0.5 && // 0.5 second tolerance
+        // Get currently active claims (within their duration range)
+        const activeClaims = this.mockFactChecks.filter(factCheck => {
+            const startTime = factCheck.timestamp;
+            const endTime = factCheck.endTimestamp || (factCheck.timestamp + 10); // Default 10 second duration if endTimestamp not provided
+            return this.currentTime >= startTime && this.currentTime <= endTime;
+        });
+
+        // Remove overlays for claims that are no longer active
+        const existingOverlays = this.overlayContainer.querySelectorAll('.fact-check-claim');
+        existingOverlays.forEach(overlay => {
+            const claimTimestamp = parseFloat(overlay.getAttribute('data-claim-timestamp'));
+            const isStillActive = activeClaims.some(factCheck => factCheck.timestamp === claimTimestamp);
+
+            if (!isStillActive) {
+                this.hideClaimOverlay(overlay);
+            }
+        });
+
+        // Add overlays for new active claims
+        const newClaims = activeClaims.filter(factCheck =>
             !this.overlayContainer.querySelector(`[data-claim-timestamp="${factCheck.timestamp}"]`)
         );
 
@@ -427,13 +601,8 @@ class YouTubeFactChecker {
             overlay.style.opacity = '1';
         });
 
-        // Auto-hide after 8 seconds (good duration for reading)
-        const displayDuration = 8000;
-        const hideTimeout = setTimeout(() => {
-            this.hideClaimOverlay(overlay);
-        }, displayDuration);
-
-        this.popupTimeouts.push(hideTimeout);
+        // Note: Auto-hide is now handled by updateVisibleClaims() based on claim duration
+        // No need for manual timeout since claims are managed by their timestamp ranges
 
         return overlay;
     }
@@ -646,6 +815,13 @@ class YouTubeFactChecker {
             // Clear timeouts
             this.clearTimeouts();
         }
+
+        // Clear timeline markers
+        const existingMarkers = document.querySelectorAll('.fact-check-timeline-marker');
+        existingMarkers.forEach(marker => marker.remove());
+
+        // Clear tooltips
+        this.hideTimelineTooltip();
     }
 
   showCompletionNotification(data) {
