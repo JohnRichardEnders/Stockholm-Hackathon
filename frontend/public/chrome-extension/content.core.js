@@ -17,6 +17,8 @@ class YouTubeFactChecker {
         this.indicatorIcon = null;
         this.isMorphed = false;
         this.currentTooltip = null; // Track current tooltip
+        this.isAnalysisInProgress = false; // Track analysis state
+        this.mockFactChecks = []; // Store fact-check results
     }
 
     init() {
@@ -25,6 +27,7 @@ class YouTubeFactChecker {
             this.setupTimeTracking();
             this.createOverlayContainer();
             this.extractVideoId();
+            this.createActiveIndicator(); // Create analyze button
             this.setupResizeListener(); // Add resize listener for dynamic repositioning
             this.isInitialized = true;
         });

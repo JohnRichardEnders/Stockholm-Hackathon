@@ -1,84 +1,248 @@
-// Mock data loading and timeline markers
+// API service for real fact-checking data
 
-YouTubeFactChecker.prototype.loadMockData = function() {
-    // Mock data with structure: timestamp, claim, categoryOfLikeness, sources, judgement
-    // Added endTimestamp for proper duration handling
-    this.mockFactChecks = [{
-            timestamp: 15,
-            endTimestamp: 25, // 10 second duration
-            claim: 'This technology will revolutionize the entire industry within 5 years',
-            categoryOfLikeness: 'false',
-            sources: [
-                'https://example.com/tech-revolution-study',
-                'https://example.com/industry-transformation-timeline',
-            ],
-            judgement: {
-                reasoning: 'Historical analysis shows that revolutionary industry transformations typically take 10-15 years, not 5. Similar bold predictions in the past have proven overly optimistic.',
-                summary: 'Claim is overly optimistic based on historical precedent',
-            },
-        },
-        {
-            timestamp: 45,
-            endTimestamp: 55, // 10 second duration
-            claim: 'Studies show that 90% of users prefer this method over traditional approaches',
-            categoryOfLikeness: 'false',
-            sources: [
-                'https://example.com/user-preference-study',
-                'https://example.com/methodology-comparison',
-            ],
-            judgement: {
-                reasoning: 'Independent research indicates preference rates are actually 60-65%, not 90%. The referenced studies could not be independently verified.',
-                summary: 'Significantly overstated user preference statistics',
-            },
-        },
-        {
-            timestamp: 120,
-            endTimestamp: 130, // 10 second duration
-            claim: 'The market cap will reach $1 trillion by next year',
-            categoryOfLikeness: 'false',
-            sources: [
-                'https://example.com/market-analysis-report',
-                'https://example.com/financial-projections',
-            ],
-            judgement: {
-                reasoning: 'Current market trends and financial analyst consensus indicate this projection is unrealistic given current growth rates and market conditions.',
-                summary: 'Unrealistic market cap projection without supporting evidence',
-            },
-        },
-        {
-            timestamp: 180,
-            endTimestamp: 190, // 10 second duration
-            claim: 'No other company has been able to achieve these results',
-            categoryOfLikeness: 'true',
-            sources: [
-                'https://example.com/industry-benchmarks',
-                'https://example.com/competitive-analysis',
-            ],
-            judgement: {
-                reasoning: 'Comprehensive industry analysis confirms this claim. Peer-reviewed research and industry reports from the past 3 years support this assertion.',
-                summary: 'Accurate claim supported by industry data',
-            },
-        },
-        {
-            timestamp: 240,
-            endTimestamp: 250, // 10 second duration
-            claim: 'This approach is completely safe with no side effects',
-            categoryOfLikeness: 'neutral',
-            sources: [
-                'https://example.com/safety-study',
-                'https://example.com/clinical-trials',
-            ],
-            judgement: {
-                reasoning: "While initial studies show promise, long-term effects are still being studied. The claim of 'no side effects' cannot be definitively confirmed at this time.",
-                summary: 'Insufficient data to confirm absolute safety claims',
-            },
-        },
-    ];
+YouTubeFactChecker.prototype.startAnalysis = function() {
+    if (this.isAnalysisInProgress) {
+        console.log('Analysis already in progress');
+        return;
+    }
 
-    console.log('Mock fact-check data loaded:', this.mockFactChecks.length, 'claims');
+    const videoUrl = window.location.href;
+    console.log('Starting analysis for video:', videoUrl);
 
-    // Create timeline markers after loading mock data
-    this.createTimelineMarkers();
+    this.isAnalysisInProgress = true;
+    this.updateButtonState();
+    this.showProcessingIndicator();
+
+    // Extract video ID from URL
+    const videoId = this.extractVideoIdFromUrl(videoUrl);
+    if (!videoId) {
+        this.isAnalysisInProgress = false;
+        this.updateButtonState();
+        this.handleAnalysisError(new Error('Could not extract video ID from URL'));
+        return;
+    }
+
+    // Send message to background script to start analysis
+    chrome.runtime.sendMessage({
+        type: 'START_ANALYSIS',
+        videoId: videoId
+    }, (response) => {
+        if (chrome.runtime.lastError) {
+            console.error('Error sending message:', chrome.runtime.lastError);
+            this.isAnalysisInProgress = false;
+            this.updateButtonState();
+            this.handleAnalysisError(new Error('Failed to communicate with background script'));
+            return;
+        }
+
+        if (!response.success) {
+            this.isAnalysisInProgress = false;
+            this.updateButtonState();
+            this.handleAnalysisError(new Error(response.error));
+        }
+        // If successful, the background script will send the results via message
+    });
+};
+
+YouTubeFactChecker.prototype.extractVideoIdFromUrl = function(url) {
+    try {
+        const urlObj = new URL(url);
+        return urlObj.searchParams.get('v');
+    } catch (error) {
+        console.error('Error parsing URL:', error);
+        return null;
+    }
+};
+
+YouTubeFactChecker.prototype.processVideo = async function(videoUrl) {
+    const API_BASE_URL = 'http://localhost:8000';
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/process-video`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ video_url: videoUrl }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            throw new Error('Cannot connect to server. Make sure the backend is running on localhost:8000');
+        }
+        throw error;
+    }
+};
+
+YouTubeFactChecker.prototype.handleAnalysisComplete = function(result) {
+    // Transform API response to match existing overlay format
+    if (result.claims && result.claims.length > 0) {
+        this.mockFactChecks = result.claims.map(claim => ({
+            timestamp: claim.start,
+            endTimestamp: claim.end,
+            claim: claim.claim,
+            categoryOfLikeness: this.mapApiStatusToCategory(claim.status),
+            sources: claim.evidence ? .map(ev => ev.source_url).filter(Boolean) || [],
+            judgement: {
+                reasoning: claim.explanation || 'No detailed explanation provided',
+                summary: claim.explanation || `Status: ${claim.status}`
+            }
+        }));
+
+        console.log('Processed fact-check data:', this.mockFactChecks.length, 'claims');
+
+        // Create timeline markers with real data
+        this.createTimelineMarkers();
+
+        // Show completion notification
+        this.showCompletionNotification({
+            total_claims: result.total_claims || this.mockFactChecks.length,
+            summary: result.summary || this.createSummaryFromClaims()
+        });
+    } else {
+        // No claims found
+        this.showNoClaimsNotification();
+    }
+
+    this.hideProcessingIndicator();
+};
+
+YouTubeFactChecker.prototype.handleAnalysisError = function(error) {
+    this.hideProcessingIndicator();
+
+    const notification = document.createElement('div');
+    notification.id = 'fact-checker-error-notification';
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; background: #f44336; color: white; 
+        padding: 16px; border-radius: 8px; font-family: Arial, sans-serif; 
+        font-size: 14px; z-index: 10000; max-width: 300px;
+        box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+    `;
+    notification.innerHTML = `
+        <div style="font-weight: bold; margin-bottom: 8px;">❌ Analysis Failed</div>
+        <div style="font-size: 12px; margin-bottom: 8px;">${error.message}</div>
+        <div style="font-size: 11px; opacity: 0.8;">Try again or check if the backend server is running</div>
+    `;
+
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 8000);
+};
+
+YouTubeFactChecker.prototype.showNoClaimsNotification = function() {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; background: #2196F3; color: white; 
+        padding: 16px; border-radius: 8px; font-family: Arial, sans-serif; 
+        font-size: 14px; z-index: 10000; max-width: 300px;
+        box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+    `;
+    notification.innerHTML = `
+        <div style="font-weight: bold; margin-bottom: 8px;">ℹ️ Analysis Complete</div>
+        <div style="font-size: 12px;">No claims requiring fact-checking were found in this video.</div>
+    `;
+
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+};
+
+YouTubeFactChecker.prototype.mapApiStatusToCategory = function(status) {
+    // Map API response status to existing category system
+    const statusMapping = {
+        'verified': 'true',
+        'true': 'true',
+        'false': 'false',
+        'disputed': 'false',
+        'inconclusive': 'neutral',
+        'neutral': 'neutral'
+    };
+
+    return statusMapping[status.toLowerCase()] || 'neutral';
+};
+
+YouTubeFactChecker.prototype.createSummaryFromClaims = function() {
+    const summary = { verified: 0, false: 0, disputed: 0, inconclusive: 0 };
+
+    this.mockFactChecks.forEach(claim => {
+        const category = claim.categoryOfLikeness;
+        if (category === 'true') summary.verified++;
+        else if (category === 'false') summary.false++;
+        else if (category === 'neutral') summary.inconclusive++;
+    });
+
+    return summary;
+};
+
+YouTubeFactChecker.prototype.showCompletionNotification = function(data) {
+    const notification = document.createElement('div');
+    notification.id = 'fact-checker-completion-notification';
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; background: #4caf50; color: white; 
+        padding: 16px; border-radius: 8px; font-family: Arial, sans-serif; 
+        font-size: 14px; z-index: 10000; max-width: 300px;
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    `;
+    notification.innerHTML = `
+        <div style="font-weight: bold; margin-bottom: 8px;">✅ Analysis Complete!</div>
+        <div>Found ${data.total_claims} claims</div>
+        <div style="font-size: 12px; margin-top: 8px; opacity: 0.9;">
+            ${data.summary.verified || 0} verified, ${data.summary.disputed || 0} disputed, 
+            ${data.summary.false || 0} false, ${data.summary.inconclusive || 0} inconclusive
+        </div>
+    `;
+
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+};
+
+YouTubeFactChecker.prototype.showProcessingIndicator = function() {
+    // Remove any existing indicator first
+    const existingIndicator = document.getElementById('fact-checker-processing');
+    if (existingIndicator) existingIndicator.remove();
+
+    const indicator = document.createElement('div');
+    indicator.id = 'fact-checker-processing';
+    indicator.style.cssText = `
+        position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.8); color: white; 
+        padding: 12px 16px; border-radius: 8px; font-family: Arial, sans-serif; 
+        font-size: 14px; z-index: 10000; display: flex; align-items: center; gap: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    `;
+    indicator.innerHTML = `
+        <div style="width:16px;height:16px;border:2px solid #fff;border-top:2px solid transparent;border-radius:50%;animation:spin 1s linear infinite;"></div>
+        <span>Analyzing video for claims...</span>
+        <style>
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
+    `;
+    document.body.appendChild(indicator);
+};
+
+YouTubeFactChecker.prototype.hideProcessingIndicator = function() {
+    const indicator = document.getElementById('fact-checker-processing');
+    if (indicator) {
+        indicator.remove();
+    }
 };
 
 YouTubeFactChecker.prototype.createTimelineMarkers = function() {

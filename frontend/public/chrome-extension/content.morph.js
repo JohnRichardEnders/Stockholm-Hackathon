@@ -64,6 +64,9 @@ YouTubeFactChecker.prototype.createActiveIndicator = function() {
     this.activeIndicator.appendChild(tint);
     this.activeIndicator.appendChild(shine);
 
+    // Add analyze button icon and text
+    this.createAnalyzeButton();
+
     // Styles and interactions
     this.addMorphStyles();
     this.setupMorphInteractions();
@@ -168,12 +171,64 @@ YouTubeFactChecker.prototype.addMorphStyles = function() {
     document.head.appendChild(style);
 };
 
+YouTubeFactChecker.prototype.createAnalyzeButton = function() {
+    if (!this.activeIndicator) return;
+
+    const buttonContent = document.createElement('div');
+    buttonContent.className = 'analyze-button-content';
+    buttonContent.style.cssText = `
+        position: relative; z-index: 4; display: flex; align-items: center; justify-content: center;
+        width: 100%; height: 100%; color: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 24px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
+    `;
+
+    this.updateButtonState();
+    this.activeIndicator.appendChild(buttonContent);
+};
+
+YouTubeFactChecker.prototype.updateButtonState = function() {
+    const buttonContent = this.activeIndicator ? .querySelector('.analyze-button-content');
+    if (!buttonContent) return;
+
+    if (this.isAnalysisInProgress) {
+        buttonContent.innerHTML = `
+            <div style="width:20px;height:20px;border:2px solid #fff;border-top:2px solid transparent;border-radius:50%;animation:spin 1s linear infinite;"></div>
+            <style>
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            </style>
+        `;
+        buttonContent.style.cursor = 'not-allowed';
+    } else if (this.mockFactChecks && this.mockFactChecks.length > 0) {
+        buttonContent.innerHTML = '✅';
+        buttonContent.style.cursor = 'pointer';
+    } else {
+        buttonContent.innerHTML = '🔍';
+        buttonContent.style.cursor = 'pointer';
+    }
+};
+
 YouTubeFactChecker.prototype.setupMorphInteractions = function() {
     if (!this.activeIndicator) return;
-    // Click handler for manual expansion (testing)
+
+    // Click handler for analyze button
     this.activeIndicator.addEventListener('click', () => {
-        if (!this.isMorphed) this.morphToCard();
-        else this.morphToFab();
+        if (this.isAnalysisInProgress) {
+            console.log('Analysis already in progress, ignoring click');
+            return;
+        }
+
+        if (this.mockFactChecks && this.mockFactChecks.length > 0) {
+            // If already analyzed, show/hide results
+            if (!this.isMorphed) this.morphToCard();
+            else this.morphToFab();
+        } else {
+            // Start new analysis
+            console.log('Starting video analysis...');
+            this.startAnalysis();
+        }
     });
 };
 

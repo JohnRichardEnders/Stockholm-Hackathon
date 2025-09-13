@@ -9,6 +9,8 @@ YouTubeFactChecker.prototype.handleMessage = function(message) {
             console.log('Mock analysis complete from background');
             break;
         case 'PROCESSING_STARTED':
+            this.isAnalysisInProgress = true;
+            this.updateButtonState();
             this.showProcessingIndicator();
             break;
         case 'DATA_LOADED':
@@ -41,8 +43,16 @@ YouTubeFactChecker.prototype.loadData = function(data) {
 
         // Create timeline markers with real data
         this.createTimelineMarkers();
+
+        // Show completion notification
+        this.showCompletionNotification({
+            total_claims: data.claims.length,
+            summary: data.summary || this.createSummaryFromClaims()
+        });
     }
 
+    this.isAnalysisInProgress = false;
+    this.updateButtonState();
     this.hideProcessingIndicator();
     this.updateVisibleClaims();
 };
@@ -118,6 +128,8 @@ YouTubeFactChecker.prototype.showCompletionNotification = function(data) {
 };
 
 YouTubeFactChecker.prototype.handleProcessingError = function(data) {
+    this.isAnalysisInProgress = false;
+    this.updateButtonState();
     this.hideProcessingIndicator();
 
     const notification = document.createElement('div');

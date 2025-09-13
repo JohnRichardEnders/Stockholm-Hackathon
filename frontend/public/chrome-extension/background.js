@@ -16,11 +16,30 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         if (url.hostname === 'www.youtube.com' && url.pathname === '/watch') {
             const videoId = url.searchParams.get('v');
             if (videoId) {
-                handleVideoDetection(tabId, videoId, tab.url);
+                // Just initialize session, don't auto-start processing
+                initializeSession(tabId, videoId, tab.url);
             }
         }
     }
 });
+
+// Initialize session without starting processing
+async function initializeSession(tabId, videoId, videoUrl) {
+    try {
+        // Just mark as ready for manual analysis
+        activeSessions.set(videoId, {
+            tabId,
+            videoId,
+            videoUrl,
+            status: 'ready'
+        });
+
+        console.log(`Session initialized for video ${videoId} - ready for manual analysis`);
+
+    } catch (error) {
+        console.error('Error initializing session:', error);
+    }
+}
 
 // Handle video detection and start processing
 async function handleVideoDetection(tabId, videoId, videoUrl) {
@@ -252,6 +271,23 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const videoId = message.videoId;
         const session = activeSessions.get(videoId);
         sendResponse(session || null);
+    } else if (message.type === 'START_ANALYSIS') {
+        const videoId = message.videoId;
+        const tabId = sender.tab ? sender.tab.id : message.tabId;
+
+        if (videoId) {
+            const session = activeSessions.get(videoId);
+            if (session && session.status !== 'processing') {
+                // Start processing for this video
+                handleVideoDetection(tabId, videoId, session.videoUrl);
+                sendResponse({ success: true, status: 'processing' });
+            } else {
+                sendResponse({ success: false, error: 'Video already being processed or session not found' });
+            }
+        } else {
+            sendResponse({ success: false, error: 'Missing video ID' });
+        }
+        return true; // Keep message channel open for async response
     } else if (message.type === 'START_MOCK_ANALYSIS') {
         const videoId = message.videoId;
         const tabId = sender.tab ? sender.tab.id : message.tabId;
