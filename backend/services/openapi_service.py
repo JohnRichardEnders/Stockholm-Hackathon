@@ -1,7 +1,6 @@
 import openai
 from datetime import datetime
 from dotenv import load_dotenv
-from typing import Tuple, Optional, List
 import os
 
 from pydantic import BaseModel
@@ -24,7 +23,7 @@ class OpenAIService:
 
         self.client = openai.OpenAI(api_key=api_key)
 
-    def get_response(self, prompt: str, max_tokens: int = 1000):
+    def get_response(self, prompt: str):
         try:
             model = "gpt-4.1"
             response = self.client.responses.parse(
@@ -36,7 +35,7 @@ class OpenAIService:
                 text_format=ClaimGPTResponse,
             )
             print(response.output_parsed)
-            return response
+            return response.output_parsed
 
         except openai.APIError as e:
             return (f"OpenAI API Error: {str(e)}", datetime.now())
@@ -45,4 +44,4 @@ class OpenAIService:
 
 
 service = OpenAIService()
-service.get_response(prompt="Trump is the 1st president of the US")
+# service.get_response(prompt="today is saturdy")

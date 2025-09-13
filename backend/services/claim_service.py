@@ -48,10 +48,10 @@ DEPENDENCIES:
 from __future__ import annotations
 import asyncio
 import logging
+import os
 from typing import Dict, List, Any, Optional
-import random
-import time
 
+from dotenv import load_dotenv
 from openai import OpenAI
 from openai._exceptions import RateLimitError, APIStatusError
 
@@ -187,7 +187,7 @@ async def _call_openai_json(
                 raise
 
 # existing module-level client (prefer env var in real code)
-# _client = OpenAI()  
+# _client = OpenAI()
 
 async def extract_claims_from_segment(
     segment: Dict,
@@ -237,7 +237,7 @@ async def test():
         {"id": 112, "text": "See you tomorrow!"},  # farewell, skip
         {"id": 113, "text": "Mount Everest is the tallest mountain on Earth."},  # claim (science/geography)
         {"id": 114, "text": "My favorite color is blue."},  # personal preference, skip
-        {"id": 114, "text": "Donald trump just got shot."},  
+        {"id": 114, "text": "Donald trump just got shot."},
     ]
     segs = [
         {"id": 100, "text": "Vaccines cause autism."},

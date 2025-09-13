@@ -5,21 +5,15 @@ from aci import ACI
 from openai import OpenAI
 import sys
 
-
+from backend.models import Evidence, Claim, ClaimWithAllEvidence
 
 # Add the backend directory to the path so we can import models
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
-from models import Evidence, ClaimWithAllEvidence, Claim
-
 
 load_dotenv()
 
-
-
 ACI_API_KEY=os.getenv("ACI_API_KEY")
 OPENAI_API_KEY=os.getenv("OPENAI_API_KEY")
-
-
 
 aci = ACI()
 openai = OpenAI()
@@ -39,7 +33,7 @@ def parse_aci_result_to_evidence(result: dict) -> Evidence:
         return Evidence(source_url="", source_title="", snippet="")
 
 
-def main( claim: Claim) -> Evidence:
+def get_evidence(claim: Claim) -> ClaimWithAllEvidence:
     # For a list of all supported apps and functions, please go to the platform.aci.dev
     print("Getting function definition for EXA_AI__ANSWER")
     
@@ -111,7 +105,4 @@ def main( claim: Claim) -> Evidence:
             evidence=[]
         )
 
-
-if __name__ == "__main__":
-    output = main(Claim(start=0, end=0, claim="where was jesus born"))
-    print(output.evidence[0])
+get_evidence(Claim(start=0.1, end=0.2,claim="trump is the second US president"))
