@@ -4,14 +4,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ClaimCard } from '@/components/ClaimCard';
 import { ClaimDetailsPanel } from '@/components/ClaimDetailsPanel';
 import { ClassificationStats } from '@/components/ClassificationStats';
-import { AnimatedAppear } from '@/components/AnimatedAppear';
 import { MOCK_CLAIM_RESPONSES, ClaimResponse } from '@/lib/mock-data';
 
 export default function Dashboard() {
   const [url, setUrl] = useState('');
   const [selected, setSelected] = useState<ClaimResponse | null>(null);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
   const videoId = useMemo(() => extractYouTubeId(url), [url]);
   const embedUrl = useMemo(() => {
     if (!videoId) return null;
@@ -25,33 +22,12 @@ export default function Dashboard() {
 
     let canceled = false;
 
-    function onPlayerReady() {}
-
-    function onPlayerStateChange(event: any) {
-      const YTGlobal: any = (window as any).YT;
-      if (YTGlobal && event?.data === YTGlobal.PlayerState.PLAYING) {
-        console.log('IsPlaying');
-        setIsPlaying(true);
-      } else if (
-        YTGlobal &&
-        (event?.data === YTGlobal.PlayerState.PAUSED || event?.data === YTGlobal.PlayerState.ENDED)
-      ) {
-        console.log('IsStopped');
-        setIsPlaying(false);
-      }
-    }
-
     function createPlayer() {
       if (canceled) return;
       const YTGlobal: any = (window as any).YT;
       if (!YTGlobal || !YTGlobal.Player) return;
       try {
-        playerRef.current = new YTGlobal.Player('yt-iframe', {
-          events: {
-            onReady: onPlayerReady,
-            onStateChange: onPlayerStateChange,
-          },
-        });
+        playerRef.current = new YTGlobal.Player('yt-iframe', {});
       } catch (err) {
         // Swallow errors during rapid mounts/unmounts
       }
@@ -81,19 +57,17 @@ export default function Dashboard() {
     };
   }, [videoId]);
 
-  // Poll current playback time while playing
-  useEffect(() => {
-    if (!isPlaying || !playerRef.current) return;
-    const id = setInterval(() => {
-      try {
-        const t = typeof playerRef.current.getCurrentTime === 'function' ? playerRef.current.getCurrentTime() : 0;
-        if (typeof t === 'number' && !Number.isNaN(t)) {
-          setCurrentTime(t);
+  function handleSelectClaim(d: ClaimResponse) {
+    setSelected(d);
+    try {
+      if (playerRef.current && typeof playerRef.current.seekTo === 'function') {
+        playerRef.current.seekTo(d.claim.start, true);
+        if (typeof playerRef.current.playVideo === 'function') {
+          playerRef.current.playVideo();
         }
-      } catch {}
-    }, 300);
-    return () => clearInterval(id);
-  }, [isPlaying]);
+      }
+    } catch {}
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -138,13 +112,12 @@ export default function Dashboard() {
 
             <div className="mt-8 space-y-3">
               {MOCK_CLAIM_RESPONSES.slice(0, 4).map((cr, idx) => (
-                <AnimatedAppear key={idx} in={currentTime >= cr.claim.start}>
-                  <ClaimCard
-                    data={cr}
-                    selected={selected?.claim.claim === cr.claim.claim && selected?.claim.start === cr.claim.start}
-                    onSelect={(d) => setSelected(d)}
-                  />
-                </AnimatedAppear>
+                <ClaimCard
+                  key={idx}
+                  data={cr}
+                  selected={selected?.claim.claim === cr.claim.claim && selected?.claim.start === cr.claim.start}
+                  onSelect={handleSelectClaim}
+                />
               ))}
             </div>
           </div>
