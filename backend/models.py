@@ -27,14 +27,14 @@ class Evidence(BaseModel):
     snippet: str # short summary of source
 
 class Claim(BaseModel):
-    """A claim with timestamp"""
+    """A fact-checked claim with timestamp"""
     start: float
     claim: str
 
 class ClaimWithAllEvidence(BaseModel):
     """A fact-checked claim with all evidence"""
+    start: float
     claim: Claim # claim with timestamp
-    #Claimstatus?? 
     summary: str # overall summary of claim
     evidence: List[Evidence] # list of all evidence for the claim; multiple sources
 

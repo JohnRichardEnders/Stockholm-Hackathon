@@ -100,9 +100,10 @@ def get_evidence(claim: Claim) -> ClaimWithAllEvidence:
         print(f"Error: {e}")
         print("Make sure your ACI_API_KEY and OPENAI_API_KEY are set in your .env file")
         return ClaimWithAllEvidence(
+            start=claim.start,
             claim=claim,
             summary="Error occurred",
             evidence=[]
         )
 
-get_evidence(Claim(start=0.1, end=0.2,claim="trump is the second US president"))
+#get_evidence(Claim(start=0.1, end=0.2,claim="trump is the second US president"))
