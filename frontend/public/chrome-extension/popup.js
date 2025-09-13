@@ -69,6 +69,7 @@ class PopupController {
         // Load the same mock data structure as content script
         this.mockFactChecks = [{
                 timestamp: 15,
+                endTimestamp: 25, // 10 second duration
                 claim: "This technology will revolutionize the entire industry within 5 years",
                 categoryOfLikeness: "false",
                 sources: ["https://example.com/tech-revolution-study"],
@@ -79,6 +80,7 @@ class PopupController {
             },
             {
                 timestamp: 45,
+                endTimestamp: 55, // 10 second duration
                 claim: "Studies show that 90% of users prefer this method over traditional approaches",
                 categoryOfLikeness: "false",
                 sources: ["https://example.com/user-preference-study"],
@@ -89,6 +91,7 @@ class PopupController {
             },
             {
                 timestamp: 120,
+                endTimestamp: 130, // 10 second duration
                 claim: "The market cap will reach $1 trillion by next year",
                 categoryOfLikeness: "false",
                 sources: ["https://example.com/market-analysis-report"],
@@ -99,6 +102,7 @@ class PopupController {
             },
             {
                 timestamp: 180,
+                endTimestamp: 190, // 10 second duration
                 claim: "No other company has been able to achieve these results",
                 categoryOfLikeness: "true",
                 sources: ["https://example.com/industry-benchmarks"],
@@ -109,6 +113,7 @@ class PopupController {
             },
             {
                 timestamp: 240,
+                endTimestamp: 250, // 10 second duration
                 claim: "This approach is completely safe with no side effects",
                 categoryOfLikeness: "neutral",
                 sources: ["https://example.com/safety-study"],
