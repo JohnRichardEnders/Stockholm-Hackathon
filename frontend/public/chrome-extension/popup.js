@@ -225,7 +225,6 @@ class PopupController {
                 </div>
                 <div class="liquidGlass-tint"></div>
                 <div class="liquidGlass-shine"></div>
-                <div class="liquidGlass-text"></div>
             `;
         }
     }
