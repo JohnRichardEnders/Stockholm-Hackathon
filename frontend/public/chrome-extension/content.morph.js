@@ -25,13 +25,30 @@ YouTubeFactChecker.prototype.createActiveIndicator = function() {
         contentFadeStart: 120,
     };
 
+    // Edge detection for FAB positioning
+    const playerElement = document.querySelector('#movie_player') || document.querySelector('.html5-video-player');
+    const containerRect = playerElement ? playerElement.getBoundingClientRect() : { width: window.innerWidth, height: window.innerHeight };
+
+    // Calculate position with edge detection
+    const fabSize = this.motionTokens.fab.width;
+    const cardWidth = this.motionTokens.card.width;
+    const margin = 20;
+
+    // Check if card would be cut off on the right when morphed
+    const wouldBeCutOffRight = (containerRect.width - margin) < cardWidth;
+    const horizontalPosition = wouldBeCutOffRight ? `left: ${margin}px` : `right: ${margin}px`;
+
+    // Check if would be cut off at the top (for smaller screens)
+    const topPosition = Math.max(margin, Math.min(margin, containerRect.height - this.motionTokens.card.height - margin));
+
     this.activeIndicator.style.cssText = `
-    position: absolute; top: 20px; right: 20px; z-index: 1001; cursor: pointer; display: flex;
+    position: absolute; top: ${topPosition}px; ${horizontalPosition}; z-index: 1001; cursor: pointer; display: flex;
     width: ${this.motionTokens.fab.width}px; height: ${this.motionTokens.fab.height}px; border-radius: ${this.motionTokens.fab.borderRadius}px;
     transition: all ${this.motionTokens.duration}ms cubic-bezier(0.34, 1.56, 0.64, 1);
     will-change: width, height, border-radius, box-shadow;
     box-shadow: 0 0 0 1px rgba(255,255,255,0.4), 0 8px 24px rgba(10,132,255,0.3);
     align-items: center; justify-content: center;
+    opacity: 0; transform: scale(0.8);
   `;
 
     // Liquid glass structure
@@ -56,6 +73,14 @@ YouTubeFactChecker.prototype.createActiveIndicator = function() {
     if (playerContainer) {
         playerContainer.style.position = 'relative';
         playerContainer.appendChild(this.activeIndicator);
+
+        // Entry delay animation for FAB
+        setTimeout(() => {
+            requestAnimationFrame(() => {
+                this.activeIndicator.style.opacity = '1';
+                this.activeIndicator.style.transform = 'scale(1)';
+            });
+        }, 200); // 200ms delay for FAB entrance
     }
 
     this.indicatorIcon = null;
@@ -99,10 +124,42 @@ YouTubeFactChecker.prototype.addMorphStyles = function() {
     .fact-checker-fab.morphed .fact-checker-content { opacity: 1; transform: translateY(0); }
     .video-background-blur { transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94); transition-delay: 50ms; }
     .video-background-blur.blurred { filter: blur(6px) brightness(0.98); }
+    
+    /* Enhanced entry animations for overlays */
+    .fact-check-claim {
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform, opacity;
+    }
+    .fact-check-claim.entering {
+      animation: slideInWithBounce 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    
+    @keyframes slideInWithBounce {
+      0% { transform: translateX(120%) scale(0.9); opacity: 0; }
+      60% { transform: translateX(-10%) scale(1.02); opacity: 0.9; }
+      100% { transform: translateX(0) scale(1); opacity: 1; }
+    }
+    
+    @keyframes slideInWithBounceLeft {
+      0% { transform: translateX(-120%) scale(0.9); opacity: 0; }
+      60% { transform: translateX(10%) scale(1.02); opacity: 0.9; }
+      100% { transform: translateX(0) scale(1); opacity: 1; }
+    }
+    
+    @keyframes fadeInScale {
+      0% { opacity: 0; transform: scale(0.8) translateY(10px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    
+    .fact-checker-fab {
+      animation: fadeInScale 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    
     @media (prefers-reduced-motion: reduce) { 
-      .fact-checker-fab, .fact-checker-icon, .fact-checker-content, .video-background-blur { 
+      .fact-checker-fab, .fact-checker-icon, .fact-checker-content, .video-background-blur, .fact-check-claim { 
         transition-duration: 120ms !important; 
         transition-timing-function: var(--reduced-motion-easing) !important; 
+        animation: none !important;
       } 
     }
     /* Keep pointer-events off for layers */

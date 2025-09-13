@@ -25,6 +25,7 @@ class YouTubeFactChecker {
             this.setupTimeTracking();
             this.createOverlayContainer();
             this.extractVideoId();
+            this.setupResizeListener(); // Add resize listener for dynamic repositioning
             this.isInitialized = true;
         });
 
