@@ -48,7 +48,7 @@ ERROR HANDLING:
 - Clean up temp files even on error
 """
 
-from typing import List, Dict
+from typing import List, Dict, AsyncGenerator
 import logging
 import yt_dlp
 import openai
@@ -62,7 +62,7 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 
-def chunk_segments_into_sentences(segments):
+def chunk_segments_into_sentences(segments) -> List[Dict[str, any]]:
     """
     Combine transcript segments into complete sentences
     
@@ -70,7 +70,8 @@ def chunk_segments_into_sentences(segments):
         segments: List of transcript segments from Whisper API
         
     Returns:
-        List of sentences with start times from first segment
+        List[Dict]: List of sentence dictionaries with format:
+            {"start": float, "text": str}
     """
     if not segments:
         return []
@@ -160,7 +161,7 @@ async def download_audio_from_youtube(video_url: str) -> str:
         raise
 
 
-async def transcribe_from_url_streaming(video_url: str):
+async def transcribe_from_url_streaming(video_url: str) -> AsyncGenerator[Dict[str, any], None]:
     """
     Stream sentences from YouTube URL as async generator
     
