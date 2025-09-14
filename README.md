@@ -88,6 +88,9 @@ GET /api/process-video?video_url=https://youtube.com/watch?v=VIDEO_ID
 ```
 
 ## Frontend Setup
+We created interfaces.
+
+### Interface 1: Chrome extension v1 (demoed)
 Once you have the backend app running, you'll need to unpack the Chrome extension
 
 1. Go to Chrome, navigate the manu towards `Extensions` and then `Manage Extensions`
@@ -95,6 +98,20 @@ Once you have the backend app running, you'll need to unpack the Chrome extensio
 3. Click on `Load unpacked` and unpack the chrome-extension in the frontend project directory: `Stockholm-Hackathon/frontend/public/chrome-extension`
 4. You'll then see `YouTube Fact-Checker` extension. Re-open your browser.
 5. Go to Youtube, play a video, then click on the liquid-glass circle in the upper-right corner to activate fact checking
+
+
+### Interface 2: Chrome extension v2
+Once you have the backend app running, you'll need to unpack the Chrome extension
+
+1. Go to Chrome, navigate the manu towards `Extensions` and then `Manage Extensions`
+2. Switch on the `Developer mode` toggle
+3. Click on `Load unpacked` and unpack the chrome-extension in the frontend project directory: `Stockholm-Hackathon/yt-fact-checker-extension`
+4. You'll then see `YouTube Fact-Checker (Live)` extension. Re-open your browser.
+5. Go to Youtube, play a video, the fact-checker pop-up will be immediately available. Note that it takes a few seconds to start transcribing
+
+
+### Interface 3: Lovable dashboard
+
 
 ## Processing Pipeline
 
