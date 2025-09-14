@@ -83,9 +83,13 @@ def chunk_segments_into_sentences(segments) -> List[Dict[str, Any]]:
 
     for seg in segments:
         # segments can be dict-like from JSON; support both attribute and key access
-        text = (getattr(seg, "text", None) or seg.get("text", "")).strip()
+        text = getattr(seg, "text", None)
+        if text is None and hasattr(seg, 'get'):
+            text = seg.get("text", "")
+        text = (text or "").strip()
+        
         start = getattr(seg, "start", None)
-        if start is None:
+        if start is None and hasattr(seg, 'get'):
             start = seg.get("start", None)
 
         if not text:
@@ -103,7 +107,10 @@ def chunk_segments_into_sentences(segments) -> List[Dict[str, Any]]:
 
     if current_sentence.strip():
         # fallback start time to last segment if needed
-        fallback_start = float(getattr(segments[-1], "start", None) or segments[-1].get("start", 0.0))
+        fallback_start = getattr(segments[-1], "start", None)
+        if fallback_start is None and hasattr(segments[-1], 'get'):
+            fallback_start = segments[-1].get("start", 0.0)
+        fallback_start = float(fallback_start or 0.0)
         sentences.append({"start": current_start_time if current_start_time is not None else fallback_start,
                           "text": current_sentence.strip()})
 
@@ -195,15 +202,19 @@ def _segments_to_dict_list(segments) -> List[Dict[str, Any]]:
         start = getattr(seg, "start", None)
         end = getattr(seg, "end", None)
         text = getattr(seg, "text", None)
-        if start is None:
+        seg_id = getattr(seg, "id", None)
+        
+        if start is None and hasattr(seg, 'get'):
             start = seg.get("start", 0.0)
-        if end is None:
+        if end is None and hasattr(seg, 'get'):
             end = seg.get("end", 0.0)
-        if text is None:
+        if text is None and hasattr(seg, 'get'):
             text = seg.get("text", "")
+        if seg_id is None and hasattr(seg, 'get'):
+            seg_id = seg.get("id", i)
 
         out.append({
-            "id": getattr(seg, "id", seg.get("id", i)),
+            "id": seg_id or i,
             "start": float(start or 0.0),
             "end": float(end or 0.0),
             "text": str(text or "").strip(),
