@@ -11,6 +11,7 @@ import json
 from openai import OpenAI
 from dotenv import load_dotenv
 from models import Claim, Sentence
+import asyncio
 
 # Load environment variables
 load_dotenv()
@@ -116,34 +117,42 @@ async def extract_claims_from_sentence(sentence: Sentence) -> List[Claim]:
             base_url="https://api.runpod.ai/v2/deep-cogito-v2-llama-70b/openai/v1"
         )
         
-        # Call RunPod to extract claims
-        response = client.chat.completions.create(
-            model="deepcogito/cogito-v2-preview-llama-70B",
-            messages=[
-                {"role": "system", "content": "You extract factual claims from text. A claim is any statement that can be verified as true or false. Extract ALL factual statements, even controversial ones."},
-                {"role": "user", "content": f"Extract factual claims from this text: '{text}'\n\nReturn JSON with claims array. Example: {{\"claims\": [\"vaccines cause autism\", \"the Earth is flat\"]}}"}
-            ],
-            response_format={
-                "type": "json_schema",
-                "json_schema": {
-                    "name": "claims_extraction",
-                    "strict": True,
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "claims": {
-                                "type": "array",
-                                "items": {"type": "string"}
-                            }
-                        },
-                        "required": ["claims"],
-                        "additionalProperties": False
+        # Call RunPod to extract claims with timeout off the event loop thread
+        def _runpod_call():
+            return client.chat.completions.create(
+                model="deepcogito/cogito-v2-preview-llama-70B",
+                messages=[
+                    {"role": "system", "content": "You extract factual claims from text. A claim is any statement that can be verified as true or false. Extract ALL factual statements, even controversial ones."},
+                    {"role": "user", "content": f"Extract factual claims from this text: '{text}'\n\nReturn JSON with claims array. Example: {{\"claims\": [\"vaccines cause autism\", \"the Earth is flat\"]}}"}
+                ],
+                response_format={
+                    "type": "json_schema",
+                    "json_schema": {
+                        "name": "claims_extraction",
+                        "strict": True,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "claims": {
+                                    "type": "array",
+                                    "items": {"type": "string"}
+                                }
+                            },
+                            "required": ["claims"],
+                            "additionalProperties": False
+                        }
                     }
-                }
-            },
-            max_tokens=150,
-            temperature=0.1
-        )
+                },
+                max_tokens=150,
+                temperature=0.1,
+                timeout=2,
+            )
+
+        try:
+            response = await asyncio.wait_for(asyncio.to_thread(_runpod_call), timeout=25)
+        except asyncio.TimeoutError:
+            logger.error("RunPod extraction timed out; using mock extractor")
+            return mock_extract_claims(text, sentence.start)
         
         # Parse response and create Claim objects
         result_text = response.choices[0].message.content

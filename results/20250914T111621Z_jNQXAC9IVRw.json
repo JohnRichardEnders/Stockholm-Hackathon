@@ -1,0 +1,53 @@
+{
+  "video_id": "jNQXAC9IVRw",
+  "video_url": "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+  "title": "Processed Video",
+  "total_claims": 2,
+  "claim_responses": [
+    {
+      "claim": {
+        "start": 0.9399999976158142,
+        "claim": "the speaker is in front of elephants"
+      },
+      "status": "inconclusive",
+      "written_summary": "The evidence provided does not confirm or refute the claim that the speaker is physically in front of elephants. The search results include an analogy used by a motivational speaker involving elephants, but do not indicate the physical presence of elephants during the speech. Other sources mention personal experiences with elephants or general information about elephants, but none specifically relate to the speaker's physical location concerning elephants at the time of their speech.",
+      "evidence": [
+        {
+          "source_url": "https://thewildcatonline.com/4273/student-life/motivational-speaker-encourages-students-to-be-kind-to-one-another",
+          "source_title": "Motivational speaker encourages students to be kind to one another",
+          "snippet": "Cabe explained to students that little elephants are selfish and big elephants care about others. Cabe compared bullying behavior to elephants ..."
+        },
+        {
+          "source_url": "https://ieltsfever.org/talk-about-an-interesting-animal-speaking-cue-card",
+          "source_title": "Talk about an interesting animal Speaking Cue Card",
+          "snippet": "One person described seeing elephants up close at an Elephant Park and riding one."
+        },
+        {
+          "source_url": "https://animistsramblings.substack.com/p/living-in-elephant-country",
+          "source_title": "The boons and banes of living in Elephant Country",
+          "snippet": "One person describes an elephant standing right in front of their house."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 5.420000076293945,
+        "claim": "these guys have really long fronts"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim \"these guys have really long fronts\" is vague and lacks a clear definition of what constitutes \"fronts\" in this context. The provided evidence touches on different subjects: cars with long hoods and fish with long fins. The 1969 Pontiac Grand Prix is noted for having the longest hood in production car history, which is a 'front' characteristic related to cars. The mention of fish with long fins, such as the Veil Tail Oscar, also describes another type of 'front' related to their physical trait. However, without a more specific context or definition of \"these guys\" or \"fronts,\" it's difficult to conclusively verify or refute the claim entirely.",
+      "evidence": [
+        {
+          "source_url": "https://www.hagerty.com/valuation-tools/pontiac/grand_prix/1969/1969-pontiac-grand_prix-model_j",
+          "source_title": "1969 Pontiac Grand Prix Model J | Hagerty Valuation Tools",
+          "snippet": "The 1969 Pontiac Grand Prix Model J featured the longest hood in production car history."
+        },
+        {
+          "source_url": "https://www.aquariumadvice.com/threads/long-finned-oscar.45580",
+          "source_title": "Long Finned Oscar?",
+          "snippet": "Some fish, such as the Veil Tail Oscar, are bred to have long fins."
+        }
+      ]
+    }
+  ]
+}
