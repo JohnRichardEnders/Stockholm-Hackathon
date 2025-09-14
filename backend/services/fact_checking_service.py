@@ -193,6 +193,19 @@ async def analyze_claim_with_openai(claim_with_evidence: ClaimWithAllEvidence) -
         
         # Extract the parsed response
         claim_response = response.choices[0].message.parsed
+
+        # Preserve original claim (including accurate start timestamp)
+        try:
+            # Overwrite any model-generated claim to avoid losing timestamps
+            claim_response.claim = claim_with_evidence.claim
+        except Exception:
+            # If the parsed object is immutable or missing, fall back to constructing a new one
+            return ClaimResponse(
+                claim=claim_with_evidence.claim,
+                status=getattr(claim_response, "status", "inconclusive"),
+                written_summary=getattr(claim_response, "written_summary", ""),
+                evidence=getattr(claim_response, "evidence", []) or claim_with_evidence.evidence,
+            )
         
         logger.info(f"Analysis completed: {claim_response.status}")
         return claim_response
