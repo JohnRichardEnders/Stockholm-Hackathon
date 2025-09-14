@@ -109,6 +109,11 @@ function addSentence(start, text) {
   return rec;
 }
 
+function findSentenceForStart(start) {
+  // Find the sentence with the closest start time
+  return sentences.find(s => Math.abs(s.start - start) < 0.1) || sentences[sentences.length - 1];
+}
+
 function addClaim(start, claimText) {
   const s = findSentenceForStart(start);
   const box = document.createElement("div");
@@ -204,6 +209,7 @@ async function startStream(videoUrl) {
 
   try {
     while (true) {
+      console.log("reading");
       const { value, done } = await reader.read();
       if (done) break;
       buffer += decoder.decode(value, { stream: true });
@@ -213,6 +219,7 @@ async function startStream(videoUrl) {
         const line = buffer.slice(0, idx).trim();
         buffer = buffer.slice(idx + 1);
         if (!line) continue;
+        console.log("line", line);  
         handleLine(line);
       }
     }
