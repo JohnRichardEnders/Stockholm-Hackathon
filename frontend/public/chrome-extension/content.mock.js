@@ -13,7 +13,6 @@ YouTubeFactChecker.prototype.startAnalysis = function() {
 
     this.isAnalysisInProgress = true;
     this.updateButtonState();
-    this.showProcessingIndicator();
 
     // Extract video ID from URL
     const videoId = this.extractVideoIdFromUrl(videoUrl);
@@ -26,6 +25,40 @@ YouTubeFactChecker.prototype.startAnalysis = function() {
         this.handleAnalysisError(new Error('Could not extract video ID from URL'));
         return;
     }
+
+    // First check if video is in cache
+    this.checkVideoCache(videoId, videoUrl);
+};
+
+YouTubeFactChecker.prototype.checkVideoCache = function(videoId, videoUrl) {
+    console.log('🗄️ Checking cache for video:', videoId);
+    this.showProcessingIndicator('Checking cache...');
+
+    chrome.runtime.sendMessage({
+        type: 'CHECK_CACHE',
+        videoId: videoId
+    }, (response) => {
+        if (chrome.runtime.lastError) {
+            console.warn('⚠️ Cache check failed, proceeding with live analysis:', chrome.runtime.lastError);
+            this.startLiveAnalysis(videoId, videoUrl);
+            return;
+        }
+
+        if (response && response.inCache) {
+            console.log('✅ Video found in cache, loading cached data...');
+            this.showProcessingIndicator('🗄️ Loading cached data...');
+            this.startLiveAnalysis(videoId, videoUrl); // Backend will handle cache loading
+        } else {
+            console.log('📡 Video not in cache, starting live analysis...');
+            this.startLiveAnalysis(videoId, videoUrl);
+        }
+    });
+};
+
+YouTubeFactChecker.prototype.startLiveAnalysis = function(videoId, videoUrl) {
+    if (!this.isAnalysisInProgress) return; // Safety check
+
+    this.showProcessingIndicator('Analyzing video for claims...');
 
     console.log('📨 Sending message to background script:', {
         type: 'START_ANALYSIS',
@@ -114,7 +147,8 @@ YouTubeFactChecker.prototype.handleAnalysisComplete = function(result) {
             sources: claimResponse.evidence ? claimResponse.evidence.map(ev => ev.source_url).filter(Boolean) : [],
             judgement: {
                 reasoning: claimResponse.written_summary || 'No detailed explanation provided',
-                summary: claimResponse.written_summary || `Status: ${claimResponse.status}`
+                summary: claimResponse.written_summary ?
+                    claimResponse.written_summary.split('.')[0] + '.' : `Status: ${claimResponse.status}`
             }
         }));
 
@@ -127,14 +161,15 @@ YouTubeFactChecker.prototype.handleAnalysisComplete = function(result) {
         const summary = result.summary || this.createSummaryFromClaims();
         const notificationData = {
             total_claims: result.total_claims || this.mockFactChecks.length,
-            summary: summary
+            summary: summary,
+            fromCache: result.fromCache || false
         };
 
         console.log('🎯 Notification data being sent:', notificationData);
         this.showCompletionNotification(notificationData);
     } else {
         // No claims found
-        this.showNoClaimsNotification();
+        this.showNoClaimsNotification(result.fromCache);
     }
 };
 
@@ -168,8 +203,11 @@ YouTubeFactChecker.prototype.handleAnalysisError = function(error) {
     }, 8000);
 };
 
-YouTubeFactChecker.prototype.showNoClaimsNotification = function() {
+YouTubeFactChecker.prototype.showNoClaimsNotification = function(fromCache = false) {
     const notification = document.createElement('div');
+    const cacheIcon = fromCache ? '🗄️ ' : '';
+    const cacheText = fromCache ? ' (from cache)' : '';
+
     notification.style.cssText = `
         position: fixed; top: 20px; right: 20px; background: #2196F3; color: white; 
         padding: 16px; border-radius: 8px; font-family: Arial, sans-serif; 
@@ -177,7 +215,7 @@ YouTubeFactChecker.prototype.showNoClaimsNotification = function() {
         box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
     `;
     notification.innerHTML = `
-        <div style="font-weight: bold; margin-bottom: 8px;">ℹ️ Analysis Complete</div>
+        <div style="font-weight: bold; margin-bottom: 8px;">${cacheIcon}ℹ️ Analysis Complete${cacheText}</div>
         <div style="font-size: 12px;">No claims requiring fact-checking were found in this video.</div>
     `;
 
@@ -230,16 +268,22 @@ YouTubeFactChecker.prototype.showCompletionNotification = function(data) {
     const summary = data.summary || { verified: 0, false: 0, disputed: 0, inconclusive: 0 };
     console.log('📊 Summary for notification:', summary);
 
+    const fromCache = data.fromCache || false;
+    const cacheIcon = fromCache ? '🗄️ ' : '';
+    const cacheText = fromCache ? ' (from cache)' : '';
+    const backgroundColor = fromCache ? '#9c27b0' : '#4caf50'; // Purple for cache, green for live
+    const boxShadowColor = fromCache ? 'rgba(156, 39, 176, 0.3)' : 'rgba(76, 175, 80, 0.3)';
+
     const notification = document.createElement('div');
     notification.id = 'fact-checker-completion-notification';
     notification.style.cssText = `
-        position: fixed; top: 20px; right: 20px; background: #4caf50; color: white; 
+        position: fixed; top: 20px; right: 20px; background: ${backgroundColor}; color: white; 
         padding: 16px; border-radius: 8px; font-family: Arial, sans-serif; 
         font-size: 14px; z-index: 10000; max-width: 300px;
-        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        box-shadow: 0 4px 12px ${boxShadowColor};
     `;
     notification.innerHTML = `
-        <div style="font-weight: bold; margin-bottom: 8px;">✅ Analysis Complete!</div>
+        <div style="font-weight: bold; margin-bottom: 8px;">${cacheIcon}✅ Analysis Complete!${cacheText}</div>
         <div>Found ${data.total_claims || 0} claims</div>
         <div style="font-size: 12px; margin-top: 8px; opacity: 0.9;">
             ${summary.verified || 0} verified, ${summary.disputed || 0} disputed, 
@@ -255,7 +299,7 @@ YouTubeFactChecker.prototype.showCompletionNotification = function(data) {
     }, 5000);
 };
 
-YouTubeFactChecker.prototype.showProcessingIndicator = function() {
+YouTubeFactChecker.prototype.showProcessingIndicator = function(message = 'Analyzing video for claims...') {
     // Remove any existing indicator first
     const existingIndicator = document.getElementById('fact-checker-processing');
     if (existingIndicator) existingIndicator.remove();
@@ -270,7 +314,7 @@ YouTubeFactChecker.prototype.showProcessingIndicator = function() {
     `;
     indicator.innerHTML = `
         <div style="width:16px;height:16px;border:2px solid #fff;border-top:2px solid transparent;border-radius:50%;animation:spin 1s linear infinite;"></div>
-        <span>Analyzing video for claims...</span>
+        <span>${message}</span>
         <style>
             @keyframes spin {
                 0% { transform: rotate(0deg); }

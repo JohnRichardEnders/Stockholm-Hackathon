@@ -26,10 +26,16 @@ YouTubeFactChecker.prototype.extractVideoId = function() {
         this.clearOverlays();
         this.clearTimeouts();
 
+        // Reset interaction tracking for new video
+        this.userInteracted = false;
+        this.clearAutoCloseTimer();
+
+        // Create active indicator only once for this video
+        this.createActiveIndicator();
+
         if (this.mockMode) {
             // Load mock data instead of API calls
             this.loadMockData();
-            this.createActiveIndicator();
         } else {
             // Request session data from background script (this will trigger API call)
             chrome.runtime.sendMessage({
@@ -42,9 +48,6 @@ YouTubeFactChecker.prototype.extractVideoId = function() {
                     }
                 }
             );
-
-            // Also create active indicator for real API mode
-            this.createActiveIndicator();
         }
     }
 };

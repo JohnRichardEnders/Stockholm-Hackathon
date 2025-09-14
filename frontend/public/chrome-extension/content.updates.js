@@ -80,7 +80,8 @@ YouTubeFactChecker.prototype.repositionElements = function() {
 };
 
 YouTubeFactChecker.prototype.updateVisibleClaims = function() {
-    if (!this.mockMode || !this.mockFactChecks || !this.activeIndicator) return;
+    // Work with both real API data and mock data - removed mockMode restriction
+    if (!this.mockFactChecks || !this.activeIndicator || this.mockFactChecks.length === 0) return;
 
     // Get currently active claims (within their duration range)
     const activeClaims = this.mockFactChecks.filter((factCheck) => {
@@ -91,16 +92,24 @@ YouTubeFactChecker.prototype.updateVisibleClaims = function() {
 
     if (activeClaims.length > 0 && !this.isMorphed) {
         const primaryClaim = activeClaims[0];
-        this.morphToCard(primaryClaim);
+        this.morphToCard(primaryClaim, true); // true indicates auto-open
         this.currentDisplayedClaim = primaryClaim;
-    } else if (activeClaims.length === 0 && this.isMorphed) {
+
+        // Set up auto-close timer (default 8 seconds, configurable)
+        this.scheduleAutoClose(primaryClaim);
+    } else if (activeClaims.length === 0 && this.isMorphed && !this.userInteracted) {
+        // Only auto-close if user hasn't interacted with the card
         this.morphToFab();
         this.currentDisplayedClaim = null;
+        this.clearAutoCloseTimer();
     } else if (activeClaims.length > 0 && this.isMorphed) {
         const primaryClaim = activeClaims[0];
         if (!this.currentDisplayedClaim || this.currentDisplayedClaim.timestamp !== primaryClaim.timestamp) {
             this.injectCardContent(primaryClaim);
             this.currentDisplayedClaim = primaryClaim;
+
+            // Reschedule auto-close for new claim
+            this.scheduleAutoClose(primaryClaim);
         }
     }
 
@@ -116,5 +125,52 @@ YouTubeFactChecker.prototype.updateVisibleClaims = function() {
         } else {
             this.activeIndicator.style.background = 'rgba(0, 0, 0, 0.05)';
         }
+    }
+};
+
+// Auto-close functionality
+YouTubeFactChecker.prototype.scheduleAutoClose = function(claim) {
+    // Clear any existing auto-close timer
+    this.clearAutoCloseTimer();
+
+    // Don't auto-close if user has manually interacted with the card
+    if (this.userInteracted) {
+        console.log('Skipping auto-close - user has interacted with overlay');
+        return;
+    }
+
+    // Configure auto-close duration (in seconds)
+    const autoCloseDuration = claim.autoCloseDuration || 8; // Default 8 seconds
+
+    console.log(`⏰ Scheduling auto-close for claim at ${claim.timestamp}s in ${autoCloseDuration} seconds`);
+
+    this.autoCloseTimer = setTimeout(() => {
+        // Only auto-close if:
+        // 1. We're still morphed
+        // 2. User hasn't interacted
+        // 3. The current claim is still the same one we scheduled for
+        if (this.isMorphed && !this.userInteracted &&
+            this.currentDisplayedClaim &&
+            this.currentDisplayedClaim.timestamp === claim.timestamp) {
+
+            console.log('⏰ Auto-closing fact-check overlay after timeout');
+            this.morphToFab();
+            this.currentDisplayedClaim = null;
+        } else {
+            console.log('⏰ Auto-close cancelled - conditions not met:', {
+                isMorphed: this.isMorphed,
+                userInteracted: this.userInteracted,
+                hasCurrentClaim: !!this.currentDisplayedClaim,
+                timestampMatch: this.currentDisplayedClaim ? this.currentDisplayedClaim.timestamp === claim.timestamp : false
+            });
+        }
+        this.autoCloseTimer = null;
+    }, autoCloseDuration * 1000);
+};
+
+YouTubeFactChecker.prototype.clearAutoCloseTimer = function() {
+    if (this.autoCloseTimer) {
+        clearTimeout(this.autoCloseTimer);
+        this.autoCloseTimer = null;
     }
 };

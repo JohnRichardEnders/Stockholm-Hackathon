@@ -19,6 +19,8 @@ class YouTubeFactChecker {
         this.currentTooltip = null; // Track current tooltip
         this.isAnalysisInProgress = false; // Track analysis state
         this.mockFactChecks = []; // Store fact-check results
+        this.userInteracted = false; // Track if user has manually interacted with overlay
+        this.autoCloseTimer = null; // Timer for auto-closing overlay
     }
 
     init() {
@@ -26,8 +28,7 @@ class YouTubeFactChecker {
         this.waitForPlayer().then(() => {
             this.setupTimeTracking();
             this.createOverlayContainer();
-            this.extractVideoId();
-            this.createActiveIndicator(); // Create analyze button
+            this.extractVideoId(); // This will create the active indicator
             this.setupResizeListener(); // Add resize listener for dynamic repositioning
             this.isInitialized = true;
         });

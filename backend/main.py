@@ -3,6 +3,11 @@ YouTube Fact-Checker Backend
 Main FastAPI app with orchestration logic
 """
 
+# Load environment variables first
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Dict, Any

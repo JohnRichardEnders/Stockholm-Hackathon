@@ -1,0 +1,135 @@
+{
+    "video_id": "vyQEogrFi8Q",
+    "title": "Processed Video",
+    "total_claims": 5,
+    "claim_responses": [{
+            "claim": {
+                "start": 0.0,
+                "claim": "Donald Trump is not in charge of the law in the country."
+            },
+            "status": "verified",
+            "written_summary": "The claim that Donald Trump is not in charge of the law in the United States is verified. The U.S. government is based on a system of checks and balances, and no single individual, including the President or former President, has control over the judicial system. The ACLU article confirms that the Supreme Court ruled that Donald Trump is not above the law, which implies that he does not have unilateral authority over legal matters or the judicial process in the country. The separation of powers ensures that legal and judicial functions are outside the control of the executive branch where Trump would have served as President.",
+            "evidence": [{
+                    "source_url": "https://www.aclu.org/news/civil-liberties/supreme-court-correctly-rules-that-trump-is-not-above-the-law",
+                    "source_title": "Supreme Court Correctly Rules that Trump is Not Above the Law",
+                    "snippet": "Donald Trump's response was to file federal lawsuits in both New York and D.C. insisting that each of the subpoenas was invalid and therefore ..."
+                },
+                {
+                    "source_url": "https://ccrjustice.org/home/press-center/press-releases/supreme-court-puts-trump-above-law-and-moves-country-toward",
+                    "source_title": "Supreme Court Puts Trump Above the Law and Moves the Country ...",
+                    "snippet": "The Supreme Court's reactionary six-member majority ruled that the president of the United States has “absolute immunity” from criminal prosecution."
+                }
+            ]
+        },
+        {
+            "claim": {
+                "start": 11.920000076293945,
+                "claim": "Rosie O'Donnell is the only person being referred to."
+            },
+            "status": "disputed",
+            "written_summary": "The claim that Rosie O'Donnell is the only person being referred to appears disputed based on the context provided in the evidence. While the primary focus seems to be on Rosie O'Donnell, the evidence includes references to Donald Trump's comments about her, suggesting a broader context where Rosie O'Donnell is contrasted with other women he may have addressed similarly. In particular, the phrase 'Only Rosie O'Donnell' was used by Trump to specify a narrow reference point in an otherwise broader discussion. Hence, while she might be the primary figure of interest, the claim that she is the 'only person' being referred to does not align perfectly with the broader context, indicating it is disputed.",
+            "evidence": [{
+                    "source_url": "https://en.wikipedia.org/wiki/Rosie_O%27Donnell",
+                    "source_title": "Rosie O'Donnell - Wikipedia: Roseann O'Donnell (born March 21, 1962) is an American talk show host, comedian, and actress. She began her comedy career as a teenager and received her ...",
+                    "snippet": "Roseann O'Donnell (born March 21, 1962) is an American talk show host, comedian, and actress. She began her comedy career as a teenager and received her..."
+                },
+                {
+                    "source_url": "https://www.allamericanspeakers.com/celebritytalentbios/Rosie+O'Donnell/845",
+                    "source_title": "Rosie O'Donnell Biography | Booking Info for Speaking Engagements: ",
+                    "snippet": "Rosie O'Donnell, born Roseann O'Donnell on March 21, 1962. She gained recognition on \"Star Search\" in 1984 and later hosted \"The Rosie O'Donnell Show\"."
+                },
+                {
+                    "source_url": "https://www.allamericanspeakers.com/celebritytalentbios/Rosie+O'Donnell/845",
+                    "source_title": "Rosie O'Donnell Biography | Booking Info for Speaking Engagements: ",
+                    "snippet": "Rosie O'Donnell is an advocate for lesbian rights and gay adoption issues. "
+                },
+                {
+                    "source_url": "other source",
+                    "source_title": "Fact-checking Trump's threat to take away Rosie O'Donnell's U.S. ...",
+                    "snippet": "In a July 12 Truth Social post, Trump said O'Donnell's U.S. citizenship “is not in the best interests of our Great Country” and he called her a..."
+                },
+                {
+                    "source_url": "other source",
+                    "source_title": "Donald Trump: Women - YouTube",
+                    "snippet": "Donald Trump responds to calling women \"fat pigs, dogs, slobs and disgusting animals.\""
+                },
+                {
+                    "source_url": "other source",
+                    "source_title": "Creep of the Week: We Are All Rosie O'Donnell",
+                    "snippet": "But things started to get serious when, in 2015, Trump responded, “Only Rosie O'Donnell” when host Megyn Kelly asked him about calling women..."
+                },
+                {
+                    "source_url": "other source",
+                    "source_title": "Donald Trump Threatens to Take Away Rosie O'Donnell's Citizenship",
+                    "snippet": "Trump interrupted her, saying, \"Only Rosie O'Donnell.\" O'Donnell, meanwhile, has described Trump's comments against her as \"bullying.\"..."
+                },
+                {
+                    "source_url": "other source",
+                    "source_title": "Most Famous People Named Rosie - #1 is Rosie O'Donnell",
+                    "snippet": ""
+                }
+            ]
+        },
+        {
+            "claim": {
+                "start": 16.299999237060547,
+                "claim": "Barack Obama was tested for AIDS."
+            },
+            "status": "verified",
+            "written_summary": "The claim that Barack Obama was tested for AIDS is verified. According to credible sources, in 2006, Barack Obama along with his wife Michelle publicly got tested for HIV during a visit to Kenya. This was part of an effort to reduce stigma around HIV testing and raise awareness about the disease.",
+            "evidence": [{
+                "source_url": "https://www.nbcnews.com/id/wbna14500535",
+                "source_title": "Obama to take public AIDS test in Africa - NBC News",
+                "snippet": "Barack Obama and his wife Michelle got tested for HIV in Kenya in 2006."
+            }]
+        },
+        {
+            "claim": {
+                "start": 24.18000030517578,
+                "claim": "there is no problem."
+            },
+            "status": "inconclusive",
+            "written_summary": "The claim \"there is no problem\" is highly context-dependent. The evidence provided discusses how the phrase \"no problem\" is commonly used to reassure or to indicate that something is not an issue. However, whether or not there is an actual problem depends on the specific situation being referred to. Therefore, without additional context about what the claim specifically pertains to, it cannot be definitively verified or dismissed. Hence, the status is considered inconclusive.",
+            "evidence": [{
+                    "source_url": "https://www.merriam-webster.com/dictionary/no%20problem",
+                    "source_title": "NO PROBLEM Definition & Meaning - Merriam-Webster",
+                    "snippet": "used to say that one is not bothered by something. \"I'm sorry for interrupting you.\" \"No problem.\""
+                },
+                {
+                    "source_url": "https://7esl.com/ways-to-say-no-problem",
+                    "source_title": "Ways to Say 'No Problem' - 7esl.com",
+                    "snippet": "The key is to choose the phrase that best fits the context. “No ... There is no problem. Aucun souci, No worries. Tout va bien, Everything ..."
+                },
+                {
+                    "source_url": "https://textranch.com/c/no-problems-or-no-problem",
+                    "source_title": "no problems or no problem - TextRanch",
+                    "snippet": ""
+                }
+            ]
+        },
+        {
+            "claim": {
+                "start": 34.79999923706055,
+                "claim": "kids should hear words."
+            },
+            "status": "verified",
+            "written_summary": "The claim that kids should hear words is verified. Evidence consistently shows that hearing language is crucial for children's language development, vocabulary acquisition, and future academic success. Various sources highlight the benefits of children hearing words, as it helps them produce language and develop necessary brain connections for using language effectively. Interactive conversations specifically are emphasized as beneficial for both language and brain development in children.",
+            "evidence": [{
+                    "source_url": "https://my.chartered.college/early-childhood-hub/six-principles-of-language-development-and-how-to-support-them-in-early-childhood-settings",
+                    "source_title": "Six principles of language development and how to support them in early childhood settings",
+                    "snippet": "Children learn what they hear most It is well established in the research literature that there is a link between the amount of language children hear and their own language development. Simply put, the more language children hear, the more words they produce."
+                },
+                {
+                    "source_url": "https://www.firstthingsfirst.org/resources/language-and-literacy",
+                    "source_title": "Language and Early Literacy Development - First Things First",
+                    "snippet": "When babies and toddlers hear words and language from caring adults, their brains develop the connections they'll need to learn to use language and, later ..."
+                },
+                {
+                    "source_url": "https://www.aau.edu/research-scholarship/featured-research-topics/talking-your-children-important-their-brain",
+                    "source_title": "Talking to Your Children Is Important for Their Brain Development",
+                    "snippet": "A new study finds that engaging young children in conversation is more important for brain development than \"dumping words\" on them."
+                }
+            ]
+        }
+    ]
+}

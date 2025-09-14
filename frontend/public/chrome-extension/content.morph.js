@@ -1,7 +1,12 @@
 YouTubeFactChecker.prototype.createActiveIndicator = function() {
-    // Remove existing indicator
+    // Remove ALL existing indicators from DOM (from any previous instances)
+    const existingIndicators = document.querySelectorAll('#fact-checker-indicator, .fact-checker-fab');
+    existingIndicators.forEach(indicator => indicator.remove());
+
+    // Remove existing indicator from this instance
     if (this.activeIndicator) {
         this.activeIndicator.remove();
+        this.activeIndicator = null;
     }
 
     // Ensure global glass filter exists
@@ -19,7 +24,7 @@ YouTubeFactChecker.prototype.createActiveIndicator = function() {
         springDamping: 38,
         dampingRatio: 0.86,
         fab: { width: 56, height: 56, borderRadius: 28, shadow: '0 4px 12px rgba(10, 132, 255, 0.25)', iconScale: 1, iconOpacity: 1 },
-        card: { width: 320, height: 180, borderRadius: 16, shadow: '0 12px 40px rgba(10, 132, 255, 0.15)', iconScale: 0.8, iconOpacity: 0.9 },
+        card: { width: 380, height: 300, borderRadius: 16, shadow: '0 12px 40px rgba(10, 132, 255, 0.15)', iconScale: 0.8, iconOpacity: 0.9 },
         morphStart: 0,
         backgroundBlurStart: 50,
         contentFadeStart: 120,
@@ -106,7 +111,7 @@ YouTubeFactChecker.prototype.addMorphStyles = function() {
       transition: all 280ms var(--spring-easing);
     }
     .fact-checker-fab.morphed { 
-      width: 320px !important; height: 110px !important; overflow-y: scroll; border-radius: 16px !important; 
+      width: 380px !important; height: auto !important; max-height: 300px !important; overflow-y: auto; border-radius: 16px !important; 
       box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5), 0 12px 40px rgba(10, 132, 255, 0.15) !important; 
       align-items: flex-start !important; justify-content: flex-start !important; padding: 16px !important; 
     }
@@ -158,6 +163,18 @@ YouTubeFactChecker.prototype.addMorphStyles = function() {
       animation: fadeInScale 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
     
+    /* Auto-opened animation with subtle pulse */
+    .fact-checker-fab.auto-opened {
+      animation: autoOpenPulse 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    
+    @keyframes autoOpenPulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5), 0 12px 40px rgba(10, 132, 255, 0.15); }
+      30% { transform: scale(1.02); box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.7), 0 12px 40px rgba(10, 132, 255, 0.25); }
+      60% { transform: scale(1.01); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6), 0 12px 40px rgba(10, 132, 255, 0.2); }
+      100% { transform: scale(1); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5), 0 12px 40px rgba(10, 132, 255, 0.15); }
+    }
+    
     @media (prefers-reduced-motion: reduce) { 
       .fact-checker-fab, .fact-checker-icon, .fact-checker-content, .video-background-blur, .fact-check-claim { 
         transition-duration: 120ms !important; 
@@ -167,6 +184,13 @@ YouTubeFactChecker.prototype.addMorphStyles = function() {
     }
     /* Keep pointer-events off for layers */
     .liquidGlass-effect, .liquidGlass-tint, .liquidGlass-shine { pointer-events: none; }
+    
+    /* Button hover effects */
+    .fact-checker-content button:hover {
+      background: rgba(255,255,255,0.2) !important;
+      border-color: rgba(255,255,255,0.3) !important;
+      transform: translateY(-1px);
+    }
   `;
     document.head.appendChild(style);
 };
@@ -221,6 +245,10 @@ YouTubeFactChecker.prototype.setupMorphInteractions = function() {
             isMorphed: this.isMorphed
         });
 
+        // Mark as user interaction to prevent auto-closing
+        this.userInteracted = true;
+        this.clearAutoCloseTimer();
+
         if (this.isAnalysisInProgress) {
             console.log('Analysis already in progress, ignoring click');
             return;
@@ -240,7 +268,7 @@ YouTubeFactChecker.prototype.setupMorphInteractions = function() {
     });
 };
 
-YouTubeFactChecker.prototype.morphToCard = function(factCheckData = null) {
+YouTubeFactChecker.prototype.morphToCard = function(factCheckData = null, isAutoOpen = false) {
     if (!this.activeIndicator || this.isMorphed) return;
     this.isMorphed = true;
 
@@ -284,7 +312,25 @@ YouTubeFactChecker.prototype.morphToCard = function(factCheckData = null) {
 
     requestAnimationFrame(() => {
         this.activeIndicator.classList.add('morphed');
-        setTimeout(() => { if (this.isMorphed) this.showCardContent(); }, 120);
+
+        // Add auto-open class for enhanced animation if this is an auto-open
+        if (isAutoOpen) {
+            this.activeIndicator.classList.add('auto-opened');
+            console.log('Auto-opening fact-check overlay for claim at', contentData.timestamp + 's');
+        }
+
+        setTimeout(() => {
+            if (this.isMorphed) {
+                this.showCardContent();
+
+                // Remove auto-open class after content is shown
+                if (isAutoOpen) {
+                    setTimeout(() => {
+                        this.activeIndicator.classList.remove('auto-opened');
+                    }, 1000);
+                }
+            }
+        }, 120);
         // No background blur; keep only liquid glass effect
     });
 
@@ -295,10 +341,19 @@ YouTubeFactChecker.prototype.morphToFab = function() {
     if (!this.activeIndicator || !this.isMorphed) return;
     this.isMorphed = false;
 
+    // Clear auto-close timer when manually closing
+    this.clearAutoCloseTimer();
+
     requestAnimationFrame(() => {
         this.hideCardContent();
         setTimeout(() => { this.activeIndicator.classList.remove('morphed'); }, 50);
-        setTimeout(() => { this.clearCardContent(); }, this.motionTokens.duration + 50);
+        setTimeout(() => {
+            this.clearCardContent();
+            // Reset user interaction flag after a delay to allow future auto-opens
+            setTimeout(() => {
+                this.userInteracted = false;
+            }, 1000); // Reset after 1 second
+        }, this.motionTokens.duration + 50);
     });
 
     console.log('Morphed to FAB state');
@@ -392,17 +447,26 @@ YouTubeFactChecker.prototype.injectCardContent = function(factCheckData, keepHid
             <span style="flex-shrink: 0; color: ${this.getCategoryColor(factCheckData.categoryOfLikeness)};">${factCheckData.categoryOfLikeness}</span>
             <span style="margin-left: auto; font-size: 10px; opacity: 0.7; flex-shrink: 0; cursor: pointer;" onclick="window.factChecker.jumpToTimestamp(${factCheckData.timestamp})">${this.formatTime(factCheckData.timestamp)} ↗</span>
         </div>
-        <div style="font-size: 14px; line-height: 1.4; font-weight: 500; margin-bottom: 8px; word-wrap: break-word; overflow-wrap: break-word; hyphens: auto;">"${factCheckData.claim.substring(0, 140)}${factCheckData.claim.length > 140 ? '...' : ''}"</div>
-        <div style="font-size: 12px; opacity: 0.85; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word; margin-bottom: 4px;">${factCheckData.judgement.summary || factCheckData.judgement.reasoning || 'No explanation available'}</div>
+        <div style="font-size: 14px; line-height: 1.4; font-weight: 500; margin-bottom: 8px; word-wrap: break-word; overflow-wrap: break-word; hyphens: auto;">"${factCheckData.claim.substring(0, 180)}${factCheckData.claim.length > 180 ? '...' : ''}"</div>
+        <div style="font-size: 12px; opacity: 0.85; line-height: 1.4; word-wrap: break-word; overflow-wrap: break-word; margin-bottom: 8px;">
+            <div style="font-weight: 600; margin-bottom: 4px; color: rgba(255,255,255,0.9);">Analysis:</div>
+            ${factCheckData.judgement.reasoning || factCheckData.judgement.summary || 'No detailed explanation available'}
+        </div>
         ${sourcesPreview}
+        <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <button onclick="window.factChecker.showFactCheckDetails(window.factChecker.currentCardClaim)" 
+                    style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; 
+                           padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; 
+                           transition: all 0.2s ease; font-weight: 500;">
+                View Full Details
+            </button>
+        </div>
     `;
     
     this.activeIndicator.appendChild(content);
     
     // Make the fact checker available globally for navigation
-    if (!window.factChecker) {
-        window.factChecker = this;
-    }
+    window.factChecker = this;
 };
 
 YouTubeFactChecker.prototype.showCardContent = function() {
