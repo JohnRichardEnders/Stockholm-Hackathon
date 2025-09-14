@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Fact-Checker (Live)",
+  "version": "0.2.0",
+  "description": "Streams transcript and fact-checks for the current YouTube video.",
+  "permissions": ["storage"],
+  "host_permissions": ["http://localhost:8000/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

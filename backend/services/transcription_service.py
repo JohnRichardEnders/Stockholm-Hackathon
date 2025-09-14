@@ -48,180 +48,248 @@ ERROR HANDLING:
 - Clean up temp files even on error
 """
 
-from typing import List, Dict, AsyncGenerator
+from typing import List, Dict, AsyncGenerator, Any
 import logging
 import yt_dlp
 import openai
 import tempfile
 import os
+import subprocess
 from dotenv import load_dotenv
 from models import Sentence
 
 # Load environment variables
 load_dotenv()
-
 logger = logging.getLogger(__name__)
 
+# ---------- Helpers ----------
 
-def chunk_segments_into_sentences(segments) -> List[Dict[str, any]]:
+def chunk_segments_into_sentences(segments) -> List[Dict[str, Any]]:
     """
-    Combine transcript segments into complete sentences
-    
+    Combine transcript segments into complete sentences.
+
     Args:
-        segments: List of transcript segments from Whisper API
-        
+        segments: List of transcript segments from Whisper API (verbose_json)
+
     Returns:
-        List[Dict]: List of sentence dictionaries with format:
-            {"start": float, "text": str}
+        [{"start": float, "text": str}, ...]
     """
     if not segments:
         return []
-    
-    sentences = []
+
+    sentences: List[Dict[str, Any]] = []
     current_sentence = ""
     current_start_time = None
-    
-    for segment in segments:
-        text = segment.text.strip()
-        
-        # If this is the start of a new sentence, save the start time
+
+    for seg in segments:
+        # segments can be dict-like from JSON; support both attribute and key access
+        text = (getattr(seg, "text", None) or seg.get("text", "")).strip()
+        start = getattr(seg, "start", None)
+        if start is None:
+            start = seg.get("start", None)
+
+        if not text:
+            continue
+
         if current_start_time is None:
-            current_start_time = segment.start
-        
-        # Add this segment's text to current sentence
-        if current_sentence:
-            current_sentence += " " + text
-        else:
-            current_sentence = text
-        
-        # Check if this segment ends with sentence-ending punctuation
+            current_start_time = float(start or 0.0)
+
+        current_sentence = (current_sentence + " " + text).strip() if current_sentence else text
+
         if text.endswith(('.', '!', '?')):
-            # Complete sentence found
-            sentences.append({
-                "start": current_start_time,
-                "text": current_sentence.strip()
-            })
-            
-            # Reset for next sentence
+            sentences.append({"start": current_start_time, "text": current_sentence.strip()})
             current_sentence = ""
             current_start_time = None
-    
-    # Handle any remaining text that doesn't end with punctuation
+
     if current_sentence.strip():
-        sentences.append({
-            "start": current_start_time if current_start_time is not None else segments[-1].start,
-            "text": current_sentence.strip()
-        })
-    
+        # fallback start time to last segment if needed
+        fallback_start = float(getattr(segments[-1], "start", None) or segments[-1].get("start", 0.0))
+        sentences.append({"start": current_start_time if current_start_time is not None else fallback_start,
+                          "text": current_sentence.strip()})
+
     logger.info(f"Chunked {len(segments)} segments into {len(sentences)} complete sentences")
     return sentences
 
 
 async def download_audio_from_youtube(video_url: str) -> str:
     """
-    Download audio from YouTube video using yt-dlp
-    
-    Args:
-        video_url: YouTube video URL
-        
-    Returns:
-        str: Path to downloaded audio file
+    Download best audio via yt-dlp, then transcode to **mono WebM (Opus, 24 kbps, 16 kHz)**.
+    Returns the path to the resulting .mono.webm file.
+
+    Cleanup: removes the original download and leaves only the compact WebM.
     """
+    raw_download_path = None
+    webm_path = None
+
     try:
-        # Create temporary file
         temp_dir = tempfile.gettempdir()
-        audio_path = os.path.join(temp_dir, f"audio_{hash(video_url)}.wav")
-        
-        # yt-dlp options for audio extraction
+        base = os.path.join(temp_dir, f"yt_{abs(hash(video_url))}")
+        webm_path = base + ".mono.webm"
+
+        # 1) Download bestaudio (container/codec may vary). No postprocessors here.
         ydl_opts = {
-            'format': 'bestaudio/best',
-            'outtmpl': audio_path,
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'wav',
-                'preferredquality': '192',
-            }],
-            'quiet': True,
-            'no_warnings': True,
+            "format": "bestaudio/best",
+            "outtmpl": base + ".%(ext)s",
+            "noplaylist": True,
+            "quiet": True,
+            "no_warnings": True,
+            "retries": 3,
+            "fragment_retries": 3,
+            "postprocessors": [],
         }
-        
-        # Download audio
+
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([video_url])
-        
-        # yt-dlp adds .wav extension
-        final_audio_path = audio_path + ".wav"
-        
-        if not os.path.exists(final_audio_path):
-            raise Exception(f"Audio file not created at {final_audio_path}")
-        
-        return final_audio_path
-        
+            info = ydl.extract_info(video_url, download=True)
+            raw_download_path = (
+                info.get("requested_downloads", [{}])[0].get("filepath")
+                or base + f".{info.get('ext','m4a')}"
+            )
+
+        if not raw_download_path or not os.path.exists(raw_download_path):
+            raise FileNotFoundError("yt-dlp did not produce a downloadable audio file.")
+
+        # avoid accidental same-path overwrite (paranoia)
+        if os.path.abspath(raw_download_path) == os.path.abspath(webm_path):
+            webm_path = base + ".transcoded.mono.webm"
+
+        # 2) Transcode to compact mono WebM/Opus @16 kHz, ~24 kbps
+        ffmpeg_cmd = [
+            "ffmpeg", "-hide_banner", "-nostdin", "-y",
+            "-i", raw_download_path,
+            "-ac", "1",
+            "-ar", "16000",
+            "-c:a", "libopus",
+            "-b:a", "24k",
+            "-application", "voip",
+            "-vn",
+            webm_path,
+        ]
+        proc = subprocess.run(ffmpeg_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if proc.returncode != 0 or not os.path.exists(webm_path):
+            raise RuntimeError(f"ffmpeg failed: {proc.stderr.decode('utf-8', errors='ignore')}")
+
+        return webm_path
+
     except Exception as e:
-        logger.error(f"Failed to download audio from {video_url}: {e}")
+        logger.error(f"Failed to download/transcode audio from {video_url}: {e}")
         raise
+    finally:
+        # Always remove the raw original; keep the compact .mono.webm
+        try:
+            if raw_download_path and os.path.exists(raw_download_path):
+                os.remove(raw_download_path)
+        except Exception as ce:
+            logger.warning(f"Failed to remove temp raw file '{raw_download_path}': {ce}")
 
 
-async def transcribe_from_url_streaming(video_url: str) -> AsyncGenerator[Sentence, None]:
+# ---------- Whisper calls ----------
+
+def _segments_to_dict_list(segments) -> List[Dict[str, Any]]:
     """
-    Stream sentences from YouTube URL as async generator
-    
-    Yields sentences one by one with start timestamps
-    
-    1. Download audio from YouTube URL using yt-dlp
-    2. Call OpenAI Whisper API with verbose_json format
-    3. Yield each sentence with start time as it's processed
-    4. Clean up temporary audio file
-    
-    Yields:
-        Sentence: Pydantic model with start time and text
+    Convert Whisper verbose_json segments to the required output shape:
+    [{"id": int, "start": float, "end": float, "text": str}, ...]
     """
-    
+    out: List[Dict[str, Any]] = []
+    for i, seg in enumerate(segments):
+        # tolerate dict or object
+        start = getattr(seg, "start", None)
+        end = getattr(seg, "end", None)
+        text = getattr(seg, "text", None)
+        if start is None:
+            start = seg.get("start", 0.0)
+        if end is None:
+            end = seg.get("end", 0.0)
+        if text is None:
+            text = seg.get("text", "")
+
+        out.append({
+            "id": getattr(seg, "id", seg.get("id", i)),
+            "start": float(start or 0.0),
+            "end": float(end or 0.0),
+            "text": str(text or "").strip(),
+        })
+    return out
+
+
+async def transcribe_from_url(video_url: str) -> List[Dict[str, Any]]:
+    """
+    Full URL -> Transcript (batch).
+    Returns a list of segments: [{"id": 0, "start": 0.0, "end": 5.2, "text": "..."}]
+
+    Error handling: returns [] on failure and logs errors.
+    """
     audio_path = None
-    
     try:
         logger.info(f"Starting transcription for video: {video_url}")
-        
-        # Step 1: Download audio from YouTube
         audio_path = await download_audio_from_youtube(video_url)
-        logger.info(f"Audio downloaded to: {audio_path}")
-        
-        # Step 2: Transcribe with OpenAI Whisper API
-        logger.info("Starting Whisper API transcription...")
-        
+        logger.info(f"Audio ready at: {audio_path}")
+
         with open(audio_path, "rb") as audio_file:
             client = openai.OpenAI()
             transcript = client.audio.transcriptions.create(
                 model="whisper-1",
                 file=audio_file,
                 response_format="verbose_json",
-                timestamp_granularities=["segment"]
+                # keep segment and word timings available; we only return segments here,
+                # but word timing can be useful for downstream features/logging.
+                timestamp_granularities=["segment", "word"],
             )
-        
-        logger.info(f"Transcription completed. Found {len(transcript.segments)} segments")
-        
-        # Step 3: Chunk segments into full sentences
-        sentences = chunk_segments_into_sentences(transcript.segments)
-        
-        for sentence_dict in sentences:
-            sentence = Sentence(start=sentence_dict["start"], text=sentence_dict["text"])
-            logger.info(f"Streaming sentence at {sentence.start}s: '{sentence.text[:50]}...'")
-            yield sentence
-        
-        logger.info("Finished streaming all sentences")
-        
+
+        segs = getattr(transcript, "segments", None) or transcript.get("segments", [])
+        logger.info(f"Transcription completed. Found {len(segs)} segments")
+        return _segments_to_dict_list(segs)
+
     except Exception as e:
-        logger.error(f"Error in transcription: {e}")
-        # Yield empty result on error
-        return
-        
+        logger.error(f"Error in transcribe_from_url: {e}")
+        return []
     finally:
-        # Step 4: Cleanup temporary audio file
         if audio_path and os.path.exists(audio_path):
             try:
                 os.remove(audio_path)
                 logger.info(f"Cleaned up audio file: {audio_path}")
-            except Exception as e:
-                logger.warning(f"Failed to cleanup audio file: {e}")
+            except Exception as ce:
+                logger.warning(f"Failed to cleanup audio file '{audio_path}': {ce}")
 
 
+async def transcribe_from_url_streaming(video_url: str) -> AsyncGenerator[Sentence, None]:
+    """
+    Stream sentences from a YouTube URL as an async generator.
+
+    Yields Sentence(start: float, text: str) to match existing consumers.
+    """
+    audio_path = None
+    try:
+        logger.info(f"Starting streaming transcription for video: {video_url}")
+        audio_path = await download_audio_from_youtube(video_url)
+        logger.info(f"Audio downloaded/transcoded to: {audio_path}")
+
+        with open(audio_path, "rb") as audio_file:
+            client = openai.OpenAI()
+            transcript = client.audio.transcriptions.create(
+                model="whisper-1",
+                file=audio_file,
+                response_format="verbose_json",
+                timestamp_granularities=["segment", "word"],
+            )
+
+        segs = getattr(transcript, "segments", None) or transcript.get("segments", [])
+        logger.info(f"Transcription completed. Found {len(segs)} segments")
+
+        sentences = chunk_segments_into_sentences(segs)  # list of dicts
+        for s in sentences:
+            sent = Sentence(start=float(s["start"]), text=str(s["text"]))
+            logger.info(f"Streaming sentence at {sent.start:.2f}s: {sent.text[:80]!r}")
+            yield sent
+
+        logger.info("Finished streaming all sentences")
+
+    except Exception as e:
+        logger.error(f"Error in streaming transcription: {e}")
+        return
+    finally:
+        if audio_path and os.path.exists(audio_path):
+            try:
+                os.remove(audio_path)
+                logger.info(f"Cleaned up audio file: {audio_path}")
+            except Exception as ce:
+                logger.warning(f"Failed to cleanup audio file '{audio_path}': {ce}")

@@ -11,8 +11,10 @@ import asyncio
 from asyncio import Queue
 
 # Import services
+from services.endpoints_stream import router_stream
 from services.transcription_service import transcribe_from_url_streaming
 from services.claim_service import extract_claims_from_sentence
+from services.endpoints_sse import router_sse
 from services.fact_checking_service import fact_check_claim
 from api.endpoints import router
 from models import ClaimResponse
@@ -47,7 +49,9 @@ app.add_middleware(
 )
 
 # Include API routes
-app.include_router(router)
+app.include_router(router)         # existing
+app.include_router(router_stream)  # your JSONL route
+app.include_router(router_sse)     # ✅ new SSE route
 
 
 @app.on_event("startup")
