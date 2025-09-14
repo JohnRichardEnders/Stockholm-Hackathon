@@ -215,6 +215,12 @@ YouTubeFactChecker.prototype.setupMorphInteractions = function() {
 
     // Click handler for analyze button
     this.activeIndicator.addEventListener('click', () => {
+        console.log('Button clicked! Current state:', {
+            isAnalysisInProgress: this.isAnalysisInProgress,
+            hasFactChecks: this.mockFactChecks && this.mockFactChecks.length > 0,
+            isMorphed: this.isMorphed
+        });
+
         if (this.isAnalysisInProgress) {
             console.log('Analysis already in progress, ignoring click');
             return;
@@ -222,11 +228,13 @@ YouTubeFactChecker.prototype.setupMorphInteractions = function() {
 
         if (this.mockFactChecks && this.mockFactChecks.length > 0) {
             // If already analyzed, show/hide results
+            console.log('Toggling results display');
             if (!this.isMorphed) this.morphToCard();
             else this.morphToFab();
         } else {
             // Start new analysis
             console.log('Starting video analysis...');
+            console.log('Calling this.startAnalysis()');
             this.startAnalysis();
         }
     });
@@ -236,14 +244,40 @@ YouTubeFactChecker.prototype.morphToCard = function(factCheckData = null) {
     if (!this.activeIndicator || this.isMorphed) return;
     this.isMorphed = true;
 
-    // Prepare content data first
-    const contentData =
-        factCheckData || {
-            claim: 'Sample fact-check claim for testing the morph animation',
-            categoryOfLikeness: 'false',
-            judgement: { summary: 'This is a test of the iOS-style morph animation system' },
-            timestamp: 45,
+    // Use real API data or find current claim based on video timestamp
+    let contentData = factCheckData;
+
+    if (!contentData && this.mockFactChecks && this.mockFactChecks.length > 0) {
+        // Get current video time to find relevant claim
+        const video = document.querySelector('video');
+        const currentTime = video ? video.currentTime : 0;
+
+        // Find the most recent claim before or at current time
+        const relevantClaim = this.mockFactChecks
+            .filter(claim => claim.timestamp <= currentTime + 10) // Allow 10s buffer
+            .sort((a, b) => Math.abs((currentTime) - a.timestamp) - Math.abs((currentTime) - b.timestamp))[0];
+
+        // Use the found claim or default to the first one
+        contentData = relevantClaim || this.mockFactChecks[0];
+
+        console.log('Using fact-check data for morph card:', {
+            currentTime,
+            selectedClaim: contentData,
+            availableClaims: this.mockFactChecks.length
+        });
+    }
+
+    // Fallback to sample data only if no real data is available
+    if (!contentData) {
+        console.warn('No fact-check data available, using fallback');
+        contentData = {
+            claim: 'No claims found in this video',
+            categoryOfLikeness: 'neutral',
+            judgement: { summary: 'This video has been analyzed but no fact-checkable claims were detected.' },
+            timestamp: 0,
+            sources: []
         };
+    }
 
     // Inject content immediately with proper initial state
     this.injectCardContent(contentData, true);
@@ -297,51 +331,78 @@ YouTubeFactChecker.prototype.createGlassFilter = function() {
 YouTubeFactChecker.prototype.injectCardContent = function(factCheckData, keepHidden = false) {
         this.clearCardContent();
         this.ensureCardGlassLayers();
+
+        // Store current claim data for reference
+        this.currentCardClaim = factCheckData;
+
         const content = document.createElement('div');
         content.className = 'fact-checker-content';
         content.style.cssText = `
-    opacity: ${keepHidden ? '0' : '1'};
-    transform: translateY(${keepHidden ? '8px' : '0'});
-    transition: opacity 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    color: white; width: 100%; position: relative; z-index: 4; pointer-events: auto; box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-  `;
-        // Debug logging to check sources data in morph card
+        opacity: ${keepHidden ? '0' : '1'};
+        transform: translateY(${keepHidden ? '8px' : '0'});
+        transition: opacity 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        color: white; width: 100%; position: relative; z-index: 4; pointer-events: auto; box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+        text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    `;
+
+        // Debug logging
         console.log('Creating morph card for fact check:', factCheckData);
         console.log('Sources data in morph:', factCheckData.sources);
 
-        // Create sources preview for morph card
+        // Create navigation controls if multiple claims exist
+        const hasMultipleClaims = this.mockFactChecks && this.mockFactChecks.length > 1;
+        const currentIndex = hasMultipleClaims ? this.mockFactChecks.findIndex(claim =>
+            claim.claim === factCheckData.claim && claim.timestamp === factCheckData.timestamp
+        ) : -1;
+
+        const navigationHtml = hasMultipleClaims ? `
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <button onclick="window.factChecker.navigateToClaim(${Math.max(0, currentIndex - 1)})" 
+                    style="background: none; border: none; color: white; font-size: 16px; cursor: pointer; opacity: ${currentIndex > 0 ? '1' : '0.3'}; pointer-events: ${currentIndex > 0 ? 'auto' : 'none'};">‹</button>
+            <span style="font-size: 10px; opacity: 0.7;">${currentIndex + 1} of ${this.mockFactChecks.length}</span>
+            <button onclick="window.factChecker.navigateToClaim(${Math.min(this.mockFactChecks.length - 1, currentIndex + 1)})" 
+                    style="background: none; border: none; color: white; font-size: 16px; cursor: pointer; opacity: ${currentIndex < this.mockFactChecks.length - 1 ? '1' : '0.3'}; pointer-events: ${currentIndex < this.mockFactChecks.length - 1 ? 'auto' : 'none'};">›</button>
+        </div>
+    ` : '';
+
+        // Create sources preview with better error handling
         const sourcesPreview = factCheckData.sources && factCheckData.sources.length > 0 ?
             `<div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.15);">
-           <div style="font-size: 10px; opacity: 0.7; margin-bottom: 4px;">Sources (${factCheckData.sources.length}):</div>
-           <div style="font-size: 10px; opacity: 0.8; line-height: 1.2; display: flex; flex-wrap: wrap; gap: 4px;">
-             ${factCheckData.sources.slice(0, 2).map(source => {
-               try {
-                 const domain = new URL(source).hostname.replace('www.', '');
-                 return `<span style="background: rgba(255,255,255,0.15); padding: 2px 6px; border-radius: 3px; flex-shrink: 0;">${domain}</span>`;
-               } catch {
-                 const fallbackDomain = source.includes('//') ? source.split('//')[1].split('/')[0] : source.substring(0, 20);
-                 return `<span style="background: rgba(255,255,255,0.15); padding: 2px 6px; border-radius: 3px; flex-shrink: 0;">${fallbackDomain}</span>`;
-               }
-             }).join('')}
-             ${factCheckData.sources.length > 2 ? `<span style="opacity: 0.6; font-size: 9px;">+${factCheckData.sources.length - 2} more</span>` : ''}
-           </div>
-         </div>` 
-      : '';
-    
-    console.log('Sources preview HTML for morph card:', sourcesPreview);
+            <div style="font-size: 10px; opacity: 0.7; margin-bottom: 4px;">Sources (${factCheckData.sources.length}):</div>
+            <div style="font-size: 10px; opacity: 0.8; line-height: 1.2; display: flex; flex-wrap: wrap; gap: 4px;">
+                ${factCheckData.sources.slice(0, 2).map(source => {
+                    try {
+                        const domain = new URL(source).hostname.replace('www.', '');
+                        return `<span style="background: rgba(255,255,255,0.15); padding: 2px 6px; border-radius: 3px; flex-shrink: 0;">${domain}</span>`;
+                    } catch {
+                        const fallbackDomain = source.includes('//') ? source.split('//')[1].split('/')[0] : source.substring(0, 20);
+                        return `<span style="background: rgba(255,255,255,0.15); padding: 2px 6px; border-radius: 3px; flex-shrink: 0;">${fallbackDomain}</span>`;
+                    }
+                }).join('')}
+                ${factCheckData.sources.length > 2 ? `<span style="opacity: 0.6; font-size: 9px;">+${factCheckData.sources.length - 2} more</span>` : ''}
+            </div>
+        </div>` 
+        : '';
 
     content.innerHTML = `
-    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9; white-space: nowrap; overflow: hidden;">
-      <span style="font-size: 14px; flex-shrink: 0;">${this.getCategoryIcon(factCheckData.categoryOfLikeness)}</span>
-      <span style="flex-shrink: 0;">${factCheckData.categoryOfLikeness}</span>
-      <span style="margin-left: auto; font-size: 10px; opacity: 0.7; flex-shrink: 0;">${this.formatTime(factCheckData.timestamp)}</span>
-    </div>
-    <div style="font-size: 14px; line-height: 1.4; font-weight: 500; margin-bottom: 8px; word-wrap: break-word; overflow-wrap: break-word; hyphens: auto;">"${factCheckData.claim.substring(0, 140)}${factCheckData.claim.length > 140 ? '...' : ''}"</div>
-    <div style="font-size: 12px; opacity: 0.85; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word; margin-bottom: 4px;">${factCheckData.judgement.summary}</div>
-    ${sourcesPreview}
-  `;
+        ${navigationHtml}
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9; white-space: nowrap; overflow: hidden;">
+            <span style="font-size: 14px; flex-shrink: 0;">${this.getCategoryIcon(factCheckData.categoryOfLikeness)}</span>
+            <span style="flex-shrink: 0; color: ${this.getCategoryColor(factCheckData.categoryOfLikeness)};">${factCheckData.categoryOfLikeness}</span>
+            <span style="margin-left: auto; font-size: 10px; opacity: 0.7; flex-shrink: 0; cursor: pointer;" onclick="window.factChecker.jumpToTimestamp(${factCheckData.timestamp})">${this.formatTime(factCheckData.timestamp)} ↗</span>
+        </div>
+        <div style="font-size: 14px; line-height: 1.4; font-weight: 500; margin-bottom: 8px; word-wrap: break-word; overflow-wrap: break-word; hyphens: auto;">"${factCheckData.claim.substring(0, 140)}${factCheckData.claim.length > 140 ? '...' : ''}"</div>
+        <div style="font-size: 12px; opacity: 0.85; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word; margin-bottom: 4px;">${factCheckData.judgement.summary || factCheckData.judgement.reasoning || 'No explanation available'}</div>
+        ${sourcesPreview}
+    `;
+    
     this.activeIndicator.appendChild(content);
+    
+    // Make the fact checker available globally for navigation
+    if (!window.factChecker) {
+        window.factChecker = this;
+    }
 };
 
 YouTubeFactChecker.prototype.showCardContent = function() {
@@ -383,4 +444,20 @@ YouTubeFactChecker.prototype.ensureCardGlassLayers = function() {
         this.activeIndicator.appendChild(tint);
         this.activeIndicator.appendChild(shine);
     }
+};
+
+YouTubeFactChecker.prototype.navigateToClaim = function(claimIndex) {
+    if (!this.mockFactChecks || claimIndex < 0 || claimIndex >= this.mockFactChecks.length) {
+        console.warn('Invalid claim index for navigation:', claimIndex);
+        return;
+    }
+    
+    const targetClaim = this.mockFactChecks[claimIndex];
+    console.log('Navigating to claim:', claimIndex, targetClaim);
+    
+    // Update the card content with the new claim
+    this.injectCardContent(targetClaim, false);
+    
+    // Optionally jump to the timestamp
+    this.jumpToTimestamp(targetClaim.timestamp);
 };

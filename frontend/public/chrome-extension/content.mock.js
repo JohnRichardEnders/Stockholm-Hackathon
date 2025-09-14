@@ -1,13 +1,15 @@
 // API service for real fact-checking data
 
 YouTubeFactChecker.prototype.startAnalysis = function() {
+    console.log('🚀 startAnalysis called!');
+
     if (this.isAnalysisInProgress) {
         console.log('Analysis already in progress');
         return;
     }
 
     const videoUrl = window.location.href;
-    console.log('Starting analysis for video:', videoUrl);
+    console.log('📹 Starting analysis for video:', videoUrl);
 
     this.isAnalysisInProgress = true;
     this.updateButtonState();
@@ -15,18 +17,29 @@ YouTubeFactChecker.prototype.startAnalysis = function() {
 
     // Extract video ID from URL
     const videoId = this.extractVideoIdFromUrl(videoUrl);
+    console.log('🆔 Extracted video ID:', videoId);
+
     if (!videoId) {
+        console.error('❌ Could not extract video ID from URL:', videoUrl);
         this.isAnalysisInProgress = false;
         this.updateButtonState();
         this.handleAnalysisError(new Error('Could not extract video ID from URL'));
         return;
     }
 
+    console.log('📨 Sending message to background script:', {
+        type: 'START_ANALYSIS',
+        videoId: videoId,
+        videoUrl: videoUrl
+    });
+
     // Send message to background script to start analysis
     chrome.runtime.sendMessage({
         type: 'START_ANALYSIS',
-        videoId: videoId
+        videoId: videoId,
+        videoUrl: videoUrl
     }, (response) => {
+        console.log('📩 Received response from background script:', response);
         if (chrome.runtime.lastError) {
             console.error('Error sending message:', chrome.runtime.lastError);
             this.isAnalysisInProgress = false;
@@ -35,10 +48,11 @@ YouTubeFactChecker.prototype.startAnalysis = function() {
             return;
         }
 
-        if (!response.success) {
+        if (!response || !response.success) {
             this.isAnalysisInProgress = false;
             this.updateButtonState();
-            this.handleAnalysisError(new Error(response.error));
+        } else {
+            console.log('✅ Analysis started successfully, waiting for results...');
         }
         // If successful, the background script will send the results via message
     });
@@ -83,6 +97,13 @@ YouTubeFactChecker.prototype.processVideo = async function(videoUrl) {
 
 
 YouTubeFactChecker.prototype.handleAnalysisComplete = function(result) {
+    console.log('Analysis complete, processing result:', result);
+
+    // Reset analysis state
+    this.isAnalysisInProgress = false;
+    this.updateButtonState();
+    this.hideProcessingIndicator();
+
     // Transform API response to match existing overlay format
     if (result.claim_responses && result.claim_responses.length > 0) {
         this.mockFactChecks = result.claim_responses.map(claimResponse => ({
@@ -102,20 +123,27 @@ YouTubeFactChecker.prototype.handleAnalysisComplete = function(result) {
         // Create timeline markers with real data
         this.createTimelineMarkers();
 
-        // Show completion notification
-        this.showCompletionNotification({
+        // Create summary and show completion notification
+        const summary = result.summary || this.createSummaryFromClaims();
+        const notificationData = {
             total_claims: result.total_claims || this.mockFactChecks.length,
-            summary: result.summary || this.createSummaryFromClaims()
-        });
+            summary: summary
+        };
+
+        console.log('🎯 Notification data being sent:', notificationData);
+        this.showCompletionNotification(notificationData);
     } else {
         // No claims found
         this.showNoClaimsNotification();
     }
-
-    this.hideProcessingIndicator();
 };
 
 YouTubeFactChecker.prototype.handleAnalysisError = function(error) {
+    console.error('Analysis error:', error);
+
+    // Reset analysis state
+    this.isAnalysisInProgress = false;
+    this.updateButtonState();
     this.hideProcessingIndicator();
 
     const notification = document.createElement('div');
@@ -183,12 +211,25 @@ YouTubeFactChecker.prototype.createSummaryFromClaims = function() {
         if (category === 'true') summary.verified++;
         else if (category === 'false') summary.false++;
         else if (category === 'neutral') summary.inconclusive++;
+        // Note: 'disputed' would map to 'false' category in our system
     });
+
+    console.log('📊 Created summary from claims:', summary);
+    console.log('📊 Claims data:', this.mockFactChecks.map(c => ({
+        claim: c.claim,
+        category: c.categoryOfLikeness
+    })));
 
     return summary;
 };
 
 YouTubeFactChecker.prototype.showCompletionNotification = function(data) {
+    console.log('🎉 Showing completion notification with data:', data);
+
+    // Ensure summary exists with default values
+    const summary = data.summary || { verified: 0, false: 0, disputed: 0, inconclusive: 0 };
+    console.log('📊 Summary for notification:', summary);
+
     const notification = document.createElement('div');
     notification.id = 'fact-checker-completion-notification';
     notification.style.cssText = `
@@ -199,10 +240,10 @@ YouTubeFactChecker.prototype.showCompletionNotification = function(data) {
     `;
     notification.innerHTML = `
         <div style="font-weight: bold; margin-bottom: 8px;">✅ Analysis Complete!</div>
-        <div>Found ${data.total_claims} claims</div>
+        <div>Found ${data.total_claims || 0} claims</div>
         <div style="font-size: 12px; margin-top: 8px; opacity: 0.9;">
-            ${data.summary.verified || 0} verified, ${data.summary.disputed || 0} disputed, 
-            ${data.summary.false || 0} false, ${data.summary.inconclusive || 0} inconclusive
+            ${summary.verified || 0} verified, ${summary.disputed || 0} disputed, 
+            ${summary.false || 0} false, ${summary.inconclusive || 0} inconclusive
         </div>
     `;
 

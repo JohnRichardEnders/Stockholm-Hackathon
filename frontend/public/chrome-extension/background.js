@@ -44,39 +44,20 @@ async function initializeSession(tabId, videoId, videoUrl) {
 // Handle video detection and start processing
 async function handleVideoDetection(tabId, videoId, videoUrl) {
     try {
-        // Check if video is already being processed
-        if (activeSessions.has(videoId)) {
-            console.log(`Video ${videoId} already being processed`);
-            return;
-        }
+        console.log(`🎬 Starting video processing for: ${videoUrl}`);
 
-        if (MOCK_MODE) {
-            // In mock mode, just set up a session without API calls
-            activeSessions.set(videoId, {
-                tabId,
-                videoId,
-                status: 'ready'
-            });
-            console.log(`Mock mode: Video ${videoId} ready for analysis`);
-            return;
-        }
-
-        // Check if video exists in backend
-        const existingVideo = await checkVideoExists(videoId);
-
-        // Since we're using direct processing, always process the video
-        console.log(`Starting video processing for: ${videoUrl}`);
+        // Mark session as processing
+        activeSessions.set(videoId, {
+            tabId,
+            videoId,
+            videoUrl,
+            status: 'processing'
+        });
 
         // Notify content script that processing started
         chrome.tabs.sendMessage(tabId, {
             type: 'PROCESSING_STARTED',
             data: { videoId }
-        });
-
-        activeSessions.set(videoId, {
-            tabId,
-            videoId,
-            status: 'processing'
         });
 
         try {
@@ -87,173 +68,75 @@ async function handleVideoDetection(tabId, videoId, videoUrl) {
             activeSessions.set(videoId, {
                 tabId,
                 videoId,
+                videoUrl,
                 status: 'completed'
             });
 
-            // Convert API response to match content script expectations
-            const claims = result.claims.map(claim => ({
-                timestamp: claim.start,
-                endTimestamp: claim.end,
-                claim: claim.claim,
-                categoryOfLikeness: claim.status, // 'verified', 'false', 'disputed', 'inconclusive'
-                sources: claim.evidence.map(ev => ev.source_url).filter(Boolean),
-                judgement: {
-                    reasoning: claim.explanation,
-                    summary: `${claim.status} (confidence: ${Math.round(claim.confidence * 100)}%)`
-                }
-            }));
+            console.log('✅ API Response received:', result);
 
-            // Send processed data to content script
+            // Send processed data directly to content script
             chrome.tabs.sendMessage(tabId, {
-                type: 'DATA_LOADED',
-                data: {
-                    videoId,
-                    claims,
-                    summary: result.summary
-                }
-            });
-
-            // Show completion notification
-            chrome.tabs.sendMessage(tabId, {
-                type: 'REALTIME_UPDATE',
-                data: {
-                    type: 'processing_complete',
-                    data: {
-                        total_claims: result.total_claims,
-                        summary: result.summary
-                    }
-                }
+                type: 'ANALYSIS_COMPLETE',
+                data: result
             });
 
         } catch (error) {
-            console.error('Error processing video:', error);
+            console.error('❌ Error processing video:', error);
 
             // Update session status
             activeSessions.set(videoId, {
                 tabId,
                 videoId,
+                videoUrl,
                 status: 'error'
             });
 
             // Notify content script of error
             chrome.tabs.sendMessage(tabId, {
-                type: 'PROCESSING_ERROR',
+                type: 'ANALYSIS_ERROR',
                 data: { error: error.message }
             });
         }
     } catch (error) {
-        console.error('Error handling video detection:', error);
+        console.error('❌ Error handling video detection:', error);
     }
 }
 
 // API Functions
-async function checkVideoExists(videoId) {
-    if (MOCK_MODE) {
-        // In mock mode, always return null to simulate new video
-        return null;
-    }
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/api/v1/videos/${videoId}/status`);
-        if (response.ok) {
-            return await response.json();
-        }
-        return null;
-    } catch (error) {
-        console.error('Error checking video exists:', error);
-        return null;
-    }
-}
 
 async function processVideo(videoUrl) {
+    console.log('🌐 processVideo called with URL:', videoUrl);
+
     if (MOCK_MODE) {
+        console.log('🎭 Running in mock mode');
         // In mock mode, return a fake job ID
         return { job_id: 'mock-job-' + Date.now() };
     }
 
     // Encode the video URL as a query parameter
     const encodedVideoUrl = encodeURIComponent(videoUrl);
-    const response = await fetch(`${API_BASE_URL}/api/process-video?video_url=${encodedVideoUrl}`, {
+    const apiUrl = `${API_BASE_URL}/api/process-video?video_url=${encodedVideoUrl}`;
+    console.log('🚀 Making API call to:', apiUrl);
+
+    const response = await fetch(apiUrl, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
         },
     });
 
+    console.log('📡 API response status:', response.status, response.statusText);
+
     if (!response.ok) {
         throw new Error(`Failed to process video: ${response.statusText}`);
     }
 
-    return await response.json();
+    const result = await response.json();
+    console.log('📝 API response data:', result);
+
+    return result;
 }
 
-async function fetchClaims(videoId) {
-    if (MOCK_MODE) {
-        // Return empty array in mock mode
-        return [];
-    }
-
-    const response = await fetch(`${API_BASE_URL}/api/v1/videos/${videoId}/claims`);
-    if (response.ok) {
-        return await response.json();
-    }
-    return [];
-}
-
-async function fetchFactChecks(videoId) {
-    if (MOCK_MODE) {
-        // Return empty array in mock mode
-        return [];
-    }
-
-    const response = await fetch(`${API_BASE_URL}/api/v1/videos/${videoId}/fact-checks`);
-    if (response.ok) {
-        return await response.json();
-    }
-    return [];
-}
-
-// WebSocket connection for real-time updates
-function setupWebSocketConnection(videoId, tabId) {
-    if (MOCK_MODE) {
-        // In mock mode, don't create WebSocket connections
-        console.log(`Mock mode: Skipping WebSocket connection for video ${videoId}`);
-        return;
-    }
-
-    const ws = new WebSocket(`ws://localhost:8000/ws/video/${videoId}`);
-
-    ws.onopen = () => {
-        console.log(`WebSocket connected for video ${videoId}`);
-    };
-
-    ws.onmessage = (event) => {
-        const message = JSON.parse(event.data);
-
-        // Forward real-time updates to content script
-        chrome.tabs.sendMessage(tabId, {
-            type: 'REALTIME_UPDATE',
-            data: message
-        });
-
-        // Update session status
-        const session = activeSessions.get(videoId);
-        if (session) {
-            if (message.type === 'processing_complete') {
-                session.status = 'completed';
-                ws.close();
-            }
-        }
-    };
-
-    ws.onclose = () => {
-        console.log(`WebSocket disconnected for video ${videoId}`);
-    };
-
-    ws.onerror = (error) => {
-        console.error(`WebSocket error for video ${videoId}:`, error);
-    };
-}
 
 // Clean up when tabs are closed
 chrome.tabs.onRemoved.addListener((tabId) => {
@@ -273,20 +156,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const session = activeSessions.get(videoId);
         sendResponse(session || null);
     } else if (message.type === 'START_ANALYSIS') {
+        console.log('🎬 Background received START_ANALYSIS message:', message);
         const videoId = message.videoId;
+        const videoUrl = message.videoUrl;
         const tabId = sender.tab ? sender.tab.id : message.tabId;
+        console.log('📋 Processing analysis request:', { videoId, videoUrl, tabId });
 
-        if (videoId) {
-            const session = activeSessions.get(videoId);
-            if (session && session.status !== 'processing') {
-                // Start processing for this video
-                handleVideoDetection(tabId, videoId, session.videoUrl);
-                sendResponse({ success: true, status: 'processing' });
-            } else {
-                sendResponse({ success: false, error: 'Video already being processed or session not found' });
-            }
+        if (videoId && videoUrl) {
+            console.log('✅ Starting analysis for video:', videoId);
+
+            // Start processing immediately
+            handleVideoDetection(tabId, videoId, videoUrl);
+            sendResponse({ success: true, status: 'processing' });
         } else {
-            sendResponse({ success: false, error: 'Missing video ID' });
+            console.error('❌ Missing video ID or URL:', { videoId, videoUrl });
+            sendResponse({ success: false, error: 'Missing video ID or URL' });
         }
         return true; // Keep message channel open for async response
     } else if (message.type === 'START_MOCK_ANALYSIS') {

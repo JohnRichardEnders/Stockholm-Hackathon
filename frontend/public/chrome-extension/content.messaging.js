@@ -16,6 +16,14 @@ YouTubeFactChecker.prototype.handleMessage = function(message) {
         case 'DATA_LOADED':
             this.loadData(message.data);
             break;
+        case 'ANALYSIS_COMPLETE':
+            console.log('Analysis complete from background:', message.data);
+            this.handleAnalysisComplete(message.data);
+            break;
+        case 'ANALYSIS_ERROR':
+            console.error('Analysis error from background:', message.data);
+            this.handleAnalysisError(new Error(message.data.error));
+            break;
         case 'REALTIME_UPDATE':
             this.handleRealtimeUpdate(message.data);
             break;
