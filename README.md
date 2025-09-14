@@ -8,6 +8,8 @@ Real-time fact-checking for YouTube videos using AI.
 - **FastAPI Backend** - Processing pipeline with async queues
 - **AI Services** - Whisper, RunPod Deep Cogito v2 70B, ACI, OpenAI
 
+![Screenshot 2025-09-14 at 13.14.12.png](backend.png)
+
 ## Backend Setup
 
 ### 1. Install Dependencies
