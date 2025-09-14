@@ -1,0 +1,397 @@
+{
+  "video_id": "3jXB0GebRrQ",
+  "video_url": "https://www.youtube.com/watch?v=3jXB0GebRrQ",
+  "title": "Processed Video",
+  "total_claims": 16,
+  "claim_responses": [
+    {
+      "claim": {
+        "start": 0.0,
+        "claim": "One thing I do is get rid of carried interest"
+      },
+      "status": "false",
+      "written_summary": "The claim that carried interest has been \"gotten rid of\" is false. While there have been proposals, including by former President Trump and various lawmakers, to eliminate the preferential tax treatment of carried interest, these proposals have not yet resulted in the removal of carried interest.. Legislative efforts to address this issue have been ongoing for years, but no definitive action has been taken to completely eliminate carried interest as of the latest available data.",
+      "evidence": [
+        {
+          "source_url": "https://www.claconnect.com/en/resources/blogs/real-estate/carried-interest-in-the-political-crosshairs",
+          "source_title": "CLA",
+          "snippet": "President Trump proposed eliminating the capital gains tax treatment on carried interest, reigniting the debate. Democrats in the House and Senate introduced bills to eliminate this tax treatment, signaling potential bipartisan agreement."
+        },
+        {
+          "source_url": "https://bipartisanpolicy.org/explainer/the-2025-tax-debate-carried-interest-and-tax-breaks-for-sports-teams",
+          "source_title": "Bipartisan Policy",
+          "snippet": "Taxing carried interest as ordinary income could raise billions in revenue over a decade."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 6.880000114440918,
+        "claim": "I give up a lot when I run"
+      },
+      "status": "false",
+      "written_summary": "The claim \"I give up a lot when I run\" is false. The evidence indicates that running provides numerous health benefits rather than constituting a sacrifice. Running can improve mood, increase happiness, reduce anger and depression, enhance physical health by reducing the risk of heart disease, diabetes, and obesity, and increase longevity by approximately 3 years compared to non-runners. These benefits suggest that running adds significantly to one's well-being rather than causing loss.",
+      "evidence": [
+        {
+          "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7663387",
+          "source_title": "A Scoping Review of the Relationship between Running and Mental ...",
+          "snippet": "Running increased mood, happiness and outlook, while relieving anger, depression and aggression, but none reported the size of changes or significance; 36.4% of ..."
+        },
+        {
+          "source_url": "https://pitjournal.unc.edu/2023/01/12/long-distance-running-an-investigation-into-its-impact-on-human-health",
+          "source_title": "Long-Distance Running: An Investigation Into its Impact on Human ...",
+          "snippet": "Studies show that running can ease depression and anxiety. It can reduce risk of heart disease, diabetes, and obesity."
+        },
+        {
+          "source_url": "https://www.sciencedirect.com/science/article/abs/pii/S0033062017300488",
+          "source_title": "Running as a Key Lifestyle Medicine for Longevity - ScienceDirect.com",
+          "snippet": "In general, runners have a 25%–40% reduced risk of premature mortality and live approximately 3 years longer than non-runners."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 12.699999809265137,
+        "claim": "She was a United States senator"
+      },
+      "status": "verified",
+      "written_summary": "The claim that \"She was a United States senator\" is verified. The evidence includes multiple sources which confirm that women, such as Kay Bailey Hutchison, Kyrsten Sinema, and Elizabeth Warren, have served as United States Senators. Specifically, Kay Bailey Hutchison served as a Senator from Texas from 1993 to 2013, and the evidence also mentions other confirmed female senators, verifying the possibility of the claim depending on the specific individual in reference.",
+      "evidence": [
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Kay_Bailey_Hutchison",
+          "source_title": "Kay Bailey Hutchison - Wikipedia",
+          "snippet": "A member of the Republican Party, she was a United States Senator from Texas from 1993 to 2013. Kay Bailey Hutchison."
+        },
+        {
+          "source_url": "https://www.sinema.senate.gov/about-kyrsten",
+          "source_title": "sinema.senate.gov",
+          "snippet": "Currently, there are several women who are serving as United States Senators, including Kyrsten Sinema of Arizona."
+        },
+        {
+          "source_url": "https://www.warren.senate.gov",
+          "source_title": "Home | U.S. Senator Elizabeth Warren of Massachusetts",
+          "snippet": "About Kyrsten: Elizabeth Warren of Massachusetts is a United States Senator."
+        },
+        {
+          "source_url": "https://www.wikidata.org/wiki/Q4416090",
+          "source_title": "Wikidata",
+          "snippet": "A United States Senator is a member of the United States Senate, representing a state."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 15.539999961853027,
+        "claim": "Donald Trump took advantage of the tax code"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that Donald Trump took advantage of the tax code is inconclusive due to the error in evidence gathering and the lack of evidence provided. This claim generally implies that he used legal mechanisms within the tax code to minimize tax payments, a common practice among many wealthy individuals. However, without specific evidence or details about his tax filings and the specifics of how the tax code was leveraged, a definitive conclusion cannot be made.",
+      "evidence": []
+    },
+    {
+      "claim": {
+        "start": 26.579999923706055,
+        "claim": "There are provisions in the tax code that could be changed"
+      },
+      "status": "verified",
+      "written_summary": "The claim is verified. Evidence shows that the tax code has provisions that are subject to change. The \"One Big Beautiful Bill Act\" signed into law on July 4, 2025, introduces provisions that impact tax deductions, such as those for vehicle loan interest, tips, and overtime compensation, starting in 2025. Additionally, it includes a new deduction for seniors. Furthermore, the 2017 Tax Cuts and Jobs Act has provisions that are set to expire at the end of 2025, including changes to standard deduction amounts, individual income tax rates, and limits on state and local tax deductions. All these indicate that the tax code can and does undergo changes.",
+      "evidence": [
+        {
+          "source_url": "https://www.irs.gov/newsroom/one-big-beautiful-bill-act-tax-deductions-for-working-americans-and-seniors",
+          "source_title": "IRS",
+          "snippet": "Several provisions in the tax code are subject to change. The \"One Big Beautiful Bill Act\" signed into law on July 4, 2025, includes provisions that go into effect for 2025, such as new deductions for vehicle loan interest, tips, and overtime compensation."
+        },
+        {
+          "source_url": "https://www.usbank.com/wealth-management/financial-perspectives/financial-planning/tax-brackets.html",
+          "source_title": "U.S. Bank",
+          "snippet": "Furthermore, the 2017 Tax Cuts and Jobs Act (TCJA) has provisions set to expire at the end of 2025, including standard deduction amounts, individual income tax rates, and limits on state and local tax deductions."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 39.2400016784668,
+        "claim": "Hillary has complained about many different things over the years"
+      },
+      "status": "verified",
+      "written_summary": "The claim that Hillary Clinton has complained about many different things over the years is verified. Evidence shows that throughout her career, Clinton has been involved in various controversies and has publicly complained about numerous issues. These include political controversies such as Whitewater, Benghazi, and her email server investigation. Furthermore, after the 2016 election, Clinton publicly attributed her electoral loss to multiple factors like James Comey, Vladimir Putin, and the media. This pattern of raising concerns across different contexts supports the claim.",
+      "evidence": [
+        {
+          "source_url": "https://www.npr.org/2016/06/12/481718785/clinton-scandals-a-guide-from-whitewater-to-the-clinton-foundation",
+          "source_title": "NPR",
+          "snippet": "Hillary Clinton has faced various controversies and complaints throughout her career."
+        },
+        {
+          "source_url": "https://www.pbs.org/weta/washingtonweek/article/2016/07/16-hillary-clintons-most-controversial-statements",
+          "source_title": "PBS",
+          "snippet": "During the 2016 election, Clinton made several controversial statements, including comments about coal miners, her email server, and the Keystone Pipeline."
+        },
+        {
+          "source_url": "https://www.bbc.com/news/world-us-canada-41244474",
+          "source_title": "BBC",
+          "snippet": "After the election, she attributed her loss to various factors, including James Comey, Vladimir Putin, the media, and others."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 43.79999923706055,
+        "claim": "she has been there for 30 years"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim \"she has been there for 30 years\" is too ambiguous without additional context as it has been used to describe different individuals in various scenarios. For example, it has referred to Hillary Clinton's long career in politics, Linda Greenhouse's tenure as a Supreme Court reporter, and someone's mother working at National Grid. Without specific contextual information about who \"she\" refers to in a particular instance, the claim remains inconclusive.",
+      "evidence": [
+        {
+          "source_url": "https://www.facebook.com/story.php?story_fbid=10157875152605725&id=100044274887410",
+          "source_title": "Facebook",
+          "snippet": "Crooked Hillary Clinton likes to talk about the things she will do but she has been there for 30 years - why didn't she do them?"
+        },
+        {
+          "source_url": "https://www.wmur.com/article/updated-in-bedford-trump-hammers-clinton-corruption/5269614",
+          "source_title": "WMUR",
+          "snippet": "“She has been there for 30 years, and has never done anything for you and your family.” “Our campaign is about breaking up the special interest monopoly in ..."
+        },
+        {
+          "source_url": "https://www.npr.org/2008/07/12/92489115/supreme-court-reporter-linda-greenhouse-retires",
+          "source_title": "Supreme Court Reporter Linda Greenhouse Retires - NPR",
+          "snippet": "Greenhouse took over the high court beat for The New York Times in 1978. Her 30-year tenure has been longer than any sitting justice except ..."
+        },
+        {
+          "source_url": "https://www.oswego.edu/news/spotlight/leea-sinay",
+          "source_title": "Spotlight: Leea Sinay | SUNY Oswego news + events",
+          "snippet": "My mom works at National Grid; she has been there for 30 years. She was a big proponent of my getting a job there, too. My dad is a ..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 46.720001220703125,
+        "claim": "She never will change"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim \"She never will change\" is a general statement about a person's inability to change their fundamental character or behavior. While the phrase is similar to the idiom \"a leopard can't change its spots,\" which suggests that people do not change their inherent nature, there is no objective evidence provided to verify this for any specific individual. The saying is metaphorical and reflects a belief about human nature rather than a factual statement that can be universally applied or scientifically tested. Therefore, the claim is inconclusive as it depends on personal opinions and specific contexts rather than verifiable facts.",
+      "evidence": [
+        {
+          "source_url": "https://www.grammar-monster.com/sayings_proverbs/a_leopard_cant_change_his_spots.htm",
+          "source_title": "Grammar-Monster.com",
+          "snippet": "The phrase \"She never will change\" implies that a person's fundamental character or behavior is unlikely to alter, even if they try or claim otherwise."
+        },
+        {
+          "source_url": "https://writingexplained.org/idiom-dictionary/a-leopard-cannot-change-its-spots",
+          "source_title": "WritingExplained.org",
+          "snippet": "This is similar to the idiom \"a leopard can't change its spots,\" which originates from the Bible (Jeremiah 13:23) and suggests that people's innate nature is constant."
+        },
+        {
+          "source_url": "https://idioms.thefreedictionary.com/leopard+can%27t+change+its+spots",
+          "source_title": "idioms.thefreedictionary.com",
+          "snippet": "The idiom \"a leopard can't change its spots\" suggests that people do not change their inherent nature."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 50.81999969482422,
+        "claim": "carried interest provisions are being eliminated"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that carried interest provisions are being eliminated is currently inconclusive. The Carried Interest Fairness Act has been introduced with the intention of eliminating the preferential tax treatment for carried interest, proposing to tax it at ordinary income rates instead of the lower capital gains rate. However, this is a proposed change and has not yet been enacted into law. There is debate regarding the potential economic impact of such a change, with arguments on both sides regarding job losses and revenue implications. Furthermore, while former President Trump and some lawmakers have shown interest in this change, the legislative process required to actually eliminate the provisions has not been completed. Therefore, the carried interest provisions have not yet been officially eliminated.",
+      "evidence": [
+        {
+          "source_url": "https://gluesenkampperez.house.gov/posts/gluesenkamp-perez-beyer-introduce-bill-to-close-carried-interest-loophole-create-fairer-tax-system-for-working-families",
+          "source_title": "Gluesenkamp Perez, Beyer Introduce Bill to Close Carried Interest ...",
+          "snippet": "The Carried Interest Fairness Act requires carried interest income to be taxed at ordinary wage rates. According to the Treasury proposal, closing this loophole will raise $6.5 billion in revenue over 10 years."
+        },
+        {
+          "source_url": "https://aifundservices.com/carried-interest-fairness-act-2025",
+          "source_title": "Carried Interest Fairness Act 2025: What Investors Must Know",
+          "snippet": "The Carried Interest Fairness Act seeks to eliminate the preferential tax treatment that currently applies to carried interest. Instead of qualifying for long- ..."
+        },
+        {
+          "source_url": "https://ideas.darden.virginia.edu/carried-interest-taxation",
+          "source_title": "Carried Interest Under Fire: The Controversial Tax Break Trump ...",
+          "snippet": "The carried interest rule allows investment managers to pay the long-term capital gains rate of 20% on the retained portion of the gains ..."
+        },
+        {
+          "source_url": "https://www.investmentcouncil.org/politico-morning-tax-new-study-finds-eliminating-carried-interest-could-cost-jobs-and-revenue",
+          "source_title": "POLITICO Morning Tax: New Study Finds Eliminating Carried ...",
+          "snippet": "Eliminating the current tax treatment of carried interest capital gains could cost the federal government nearly $13 billion annually and lead to 1.23 million ..."
+        },
+        {
+          "source_url": "https://elliottdavis.com/insights/tax-alert-proposal-to-end-carried-interest-loophole",
+          "source_title": "Tax Alert: Proposal to end carried interest loophole | Insights | Elliott Davis",
+          "snippet": ""
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 53.20000076293945,
+        "claim": "corporations are leaving"
+      },
+      "status": "disputed",
+      "written_summary": "The claim that corporations are leaving Delaware is partially supported by some evidence but also contested by other sources. Evidence from Business Insider highlights a trend, led by Elon Musk's move of SpaceX, of companies reincorporating from Delaware to states like Nevada, citing legal uncertainties. High-profile companies like Andreessen Horowitz, Roblox, and others are mentioned as leaving Delaware. However, the CLS Blue Sky Blog contests the severity of this trend, suggesting it's not a crisis and implying that the notion of a widespread corporate exodus from Delaware is exaggerated. Thus, the claim is disputed due to differing opinions on the scale and impact of this corporate relocation trend.",
+      "evidence": [
+        {
+          "source_url": "https://www.businessinsider.com/list-corporations-leaving-delaware-elon-musk-spacex-tesla-dropbox-roblox-2025-7",
+          "source_title": "Business Insider",
+          "snippet": "Multiple corporations are leaving Delaware, a state historically known for being business-friendly, with Elon Musk's move of SpaceX to Texas in 2024 sparking this trend."
+        },
+        {
+          "source_url": "https://www.businessinsider.com/list-corporations-leaving-delaware-elon-musk-spacex-tesla-dropbox-roblox-2025-7",
+          "source_title": "Business Insider",
+          "snippet": "Companies are reincorporating in states like Nevada, citing legal uncertainty and concerns about rulings from the Delaware Court of Chancery."
+        },
+        {
+          "source_url": "https://www.businessinsider.com/list-corporations-leaving-delaware-elon-musk-spacex-tesla-dropbox-roblox-2025-7",
+          "source_title": "Business Insider",
+          "snippet": "Other companies leaving Delaware include Andreessen Horowitz, Roblox, Dropbox, and Trump Media & Technology Group."
+        },
+        {
+          "source_url": "https://www.blue.law.columbia.edu/blog/2025/09/01/delawares-manufactured-corporate-crisis/",
+          "source_title": "CLS Blue Sky Blog",
+          "snippet": "Make no mistake: There is no crisis of companies leaving Delaware. To see why lawyers manufactured one, all you have to do is follow the money."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 62.02000045776367,
+        "claim": "removing regulations and lowering taxes are related actions"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that removing regulations and lowering taxes are related actions is inconclusive. The evidence suggests that both removing regulations and lowering taxes can potentially lead to economic growth and increased investment. According to EPIC for America, halting new regulations could boost the economy similarly to the effects of a tax cut. However, while tax cuts can reduce government revenue and lead to budget deficits, this is not directly addressed with regard to deregulation.\n\nThe relationship between removing regulations and lowering taxes is not inherently direct, as they target different mechanisms of economic policy. However, both actions can be motivated by similar economic philosophies, such as fiscal conservatism, and may have overlapping economic effects. The evidence does not conclusively establish a direct relationship between the two actions, instead, it suggests they can have comparable economic objectives or outcomes, depending on the specific policies implemented.",
+      "evidence": [
+        {
+          "source_url": "https://epicforamerica.org/the-economy/cutting-regulations-boosts-economic-growth",
+          "source_title": "Cutting Regulations Boosts Economic Growth - EPIC for America",
+          "snippet": "Our research finds that stopping new regulations for 10 years would boost the economy by 1.8%, similar to the benefits of a big tax cut."
+        },
+        {
+          "source_url": "https://www.investopedia.com/articles/07/tax_cuts.asp",
+          "source_title": "How Tax Cuts Affect the Economy - Investopedia",
+          "snippet": "Tax cuts reduce government revenues and lead to budget deficits or growth in government debt. Below, find out how tax cuts affect the economy."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 75.86000061035156,
+        "claim": "Hillary Clinton is raising taxes"
+      },
+      "status": "verified",
+      "written_summary": "The claim that Hillary Clinton is raising taxes is verified. Based on the evidence from the Tax Policy Center, as of March 3, 2016, Hillary Clinton proposed various tax changes that would predominantly affect high-income earners. Her proposals included a 4% surcharge on adjusted gross income over $5 million, a 30% minimum tax on incomes above $1 million (known as the 'Buffett Rule'), and limiting the tax value of certain deductions to 28%. These proposals were estimated to increase federal revenue by $1.1 trillion over a decade, with nearly all increases targeting the top 1% of earners.",
+      "evidence": [
+        {
+          "source_url": "https://www.urban.org/sites/default/files/publication/78346/2000638-an-analysis-of-hillary-clintons-tax-proposals.pdf",
+          "source_title": "AN ANALYSIS OF HILLARY CLINTON'S TAX PROPOSALS",
+          "snippet": "Specifically, Clinton proposes a 4 percent surcharge on adjusted gross income (AGI) above $5 million, requiring filers with AGI greater than $1 million to pay a 30 percent effective tax rate (i.e., the “Buffett Rule”), limiting the tax value of specified exemptions and deductions to 28 percent, and increasing the ..."
+        },
+        {
+          "source_url": "https://www.urban.org/sites/default/files/publication/78346/2000638-an-analysis-of-hillary-clintons-tax-proposals.pdf",
+          "source_title": "AN ANALYSIS OF HILLARY CLINTON'S TAX PROPOSALS",
+          "snippet": "Her plan would increase marginal tax rates for taxpayers with incomes over $5 million, enact a 30 percent minimum tax (the Buffett Rule), alter ..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 94.4000015258789,
+        "claim": "there is no growth in this country"
+      },
+      "status": "false",
+      "written_summary": "The claim that there is no growth in this country is false. The evidence from multiple reliable sources shows global economic growth is projected at 3.0% for 2025 and 3.1% in 2026. Additionally, specific countries such as South Sudan, Guyana, and Libya show significant economic growth rates. Real GDP in advanced economies is projected to grow by 1.4%, and emerging markets and developing economies are expected to grow by 3.7%. This indicates that many countries, including developed and developing ones, are experiencing economic growth, contradicting the claim that there is 'no growth.'",
+      "evidence": [
+        {
+          "source_url": "https://www.imf.org/en/Publications/WEO",
+          "source_title": "IMF.org",
+          "snippet": "The global economic growth is projected at 3.0% for 2025 and 3.1% in 2026."
+        },
+        {
+          "source_url": "https://www.imf.org/external/datamapper/index.php",
+          "source_title": "IMF.org",
+          "snippet": "The IMF projects that advanced economies will grow by 1.4%, while emerging market and developing economies are expected to grow by 3.7%."
+        },
+        {
+          "source_url": "https://www.globalcitizensolutions.com/fastest-growing-economies",
+          "source_title": "globalcitizensolutions.com",
+          "snippet": "Some of the fastest-growing economies include South Sudan (27.2%), Guyana (14.4%), and Libya (13.7%)."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 97.36000061035156,
+        "claim": "China has a GDP of 7%"
+      },
+      "status": "false",
+      "written_summary": "The claim that China has a GDP of 7% is false. The evidence indicates that China's GDP grew by 5.4% year-on-year in the first quarter of 2025. Historical data and projections do not support a 7% GDP growth rate for China recently. For instance, the GDP growth rate was 5.25% in 2023 and varied in previous years, but it has not reached 7% in recent available records.",
+      "evidence": [
+        {
+          "source_url": "https://tradingeconomics.com/china/gdp-growth-annual",
+          "source_title": "Trading Economics",
+          "snippet": "China's GDP grew by a seasonally adjusted 1.1% in Q2 2025, beating market forecasts of 0.9% despite slowing slightly from a 1.2% increase in Q1."
+        },
+        {
+          "source_url": "https://tradingeconomics.com/china/gdp-growth-annual",
+          "source_title": "Trading Economics",
+          "snippet": "China's GDP grew by 5.4% year-on-year in Q1 2025."
+        },
+        {
+          "source_url": "https://www.macrotrends.net/countries/CHN/china/gdp-growth-rate",
+          "source_title": "China GDP Growth Rate | Historical Chart & Data - Macrotrends",
+          "snippet": "China gdp growth rate for 2023 was 5.25%, a 2.3% increase from 2022."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 109.44000244140625,
+        "claim": "taxes are just about the highest in the world"
+      },
+      "status": "disputed",
+      "written_summary": "The claim that \"taxes are just about the highest in the world\" is disputed. While some countries indeed have very high tax rates, such as Ivory Coast (60%), Finland (56.95%), Japan (55.97%), and Denmark (55.9%), these are specific to income tax rates and do not represent all taxes or the tax burden as a whole. Additionally, the highest tax rates are concentrated in a few countries, whereas many others have significantly lower tax rates. Therefore, the blanket statement that taxes are among the highest globally is not universally accurate, as the tax burden varies widely depending on the country and specific tax categories considered.",
+      "evidence": [
+        {
+          "source_url": "https://www.foyerglobalhealth.com/blog/most-taxed-countries-in-the-world",
+          "source_title": "Most taxed countries in the World | Foyer Global Health",
+          "snippet": "France is often ranked among the highest taxed countries due to its progressive income tax system and extensive social security contributions. The country funds its well-developed public infrastructure, free healthcare, and generous social security programs through these high tax collections."
+        },
+        {
+          "source_url": "https://www.jagranjosh.com/general-knowledge/which-country-has-the-highest-income-tax-1749643266-1",
+          "source_title": "Which Country Has The Highest Income Tax? - Jagran Josh",
+          "snippet": "Which country pays the highest tax in the world? Ivory Coast has the highest income tax rate in the world, according to Data Panda's 2025 survey. The income tax rate for individuals earning a high income is as high as 60 percent."
+        },
+        {
+          "source_url": "https://www.investasian.com/offshore-banking/highest-tax-countries",
+          "source_title": "16 Countries With The Highest Taxes in 2025",
+          "snippet": "A considerable top marginal tax rate of 55.97 percent underpins the nation's strong work ethic, placing Japan as the third highest-taxed country in the world."
+        },
+        {
+          "source_url": "https://www.globalcitizensolutions.com/countries-with-the-highest-taxes",
+          "source_title": "15 Countries with the Highest Tax Rates in the World - InvestAsian",
+          "snippet": "Finland – 56.95%​​ Known for its excellent welfare system and high quality of life, Finland's tax rate is among the highest in the world. Residents pay up to 56. ..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 122.0999984741211,
+        "claim": "she is raising everybody's taxes massively"
+      },
+      "status": "false",
+      "written_summary": "The claim that Kamala Harris is raising everybody's taxes massively is false. Her economic proposals, as outlined in available evidence, do not involve a general increase in taxes for everyone. Instead, they focus on providing tax relief for small businesses and increasing taxes mainly on wealthy individuals and corporations. The changes include raising the capital gains tax rate for high-income earners and taxing unrealized gains on large inheritances, not a blanket tax increase on all Americans.",
+      "evidence": [
+        {
+          "source_url": "https://www.cnn.com/2024/09/03/politics/harris-economic-proposals",
+          "source_title": "CNN",
+          "snippet": "Vice President Kamala Harris is adding tax relief for small businesses to her economic policy platform aimed at helping middle-class and working Americans."
+        },
+        {
+          "source_url": "https://itep.org/analysis-of-kamala-harris-tax-plan",
+          "source_title": "A Distributional Analysis of Kamala Harris' Tax Plan - ITEP.org",
+          "snippet": "Harris' proposal would raise the top personal income tax rate on long-term capital gains and qualified dividends from 20 percent to 28 percent for taxable income in excess of $1 million."
+        }
+      ]
+    }
+  ]
+}

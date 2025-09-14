@@ -1,0 +1,413 @@
+{
+  "video_id": "Demzf23zaqo",
+  "video_url": "https://www.youtube.com/watch?v=Demzf23zaqo",
+  "title": "Processed Video",
+  "total_claims": 16,
+  "claim_responses": [
+    {
+      "claim": {
+        "start": 0.0,
+        "claim": "We can stop the political circus"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that \"We can stop the political circus\" is inconclusive. President Obama, in a 2011 speech, indeed called for an end to political antics to focus on economic recovery through the \"American Jobs Act.\" This indicates that efforts have been proposed to reduce political distractions. Meanwhile, there are suggestions from various sources that prioritizing mutual aid, innovation, and philanthropy over political contests could help mitigate political turmoil. However, these suggestions do not provide concrete evidence or examples of successfully ending or stopping the so-called political circus. Since the evidence largely consists of aspirations and proposals rather than proven outcomes, the claim remains speculative and lacks sufficient evidence to be verified or falsified.",
+      "evidence": [
+        {
+          "source_url": "https://www.csmonitor.com/USA/Politics/2011/0908/Obama-jobs-speech-Time-to-stop-the-political-circus",
+          "source_title": "CSMonitor.com",
+          "snippet": "Obama jobs speech: 'Time to stop the political circus' - CSMonitor.com: In his speech to a joint session of Congress, President Obama proposed a $447 billion \"American Jobs Act\" to help those 14 million Americans ..."
+        },
+        {
+          "source_url": "https://radicalmoderatesguide.substack.com/p/politics-makes-us-immoderate-how",
+          "source_title": "Substack",
+          "snippet": "Politics Makes Us Immoderate... How to Stop: ... suggests that reducing focus on political contests and increasing mutual aid, innovation, and philanthropy can help."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 0.0,
+        "claim": "We can actually do something to help the economy"
+      },
+      "status": "verified",
+      "written_summary": "The available evidence supports the claim that individuals and governments can take concrete actions to help the economy. Various sources, including the United Nations and GovPilot, suggest actions such as supporting local businesses, advocating for fair workplace practices, and investing in infrastructure. These actions can stimulate local economies and encourage broader economic growth, thereby confirming that people and institutions can indeed contribute positively to the economy.",
+      "evidence": [
+        {
+          "source_url": "https://www.un.org/en/actnow/ten-actions-economy",
+          "source_title": "United Nations",
+          "snippet": "To help the economy, individuals can take several actions, including donating to charities, mentoring young people, advocating for better work conditions, paying fair wages, and purchasing from employee-friendly businesses and fair-trade products."
+        },
+        {
+          "source_url": "https://local-first.org/local-first-2025",
+          "source_title": "Local-First",
+          "snippet": "Supporting local businesses by shopping at local stores, recommending them to friends, and eating at local restaurants can boost the local economy."
+        },
+        {
+          "source_url": "https://www.govpilot.com/blog/the-key-ways-to-stimulate-your-local-economy-govpilot",
+          "source_title": "GovPilot",
+          "snippet": "Governments can also stimulate the economy by investing in infrastructure, offering business development incentives, and encouraging entrepreneurship."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 4.260000228881836,
+        "claim": "There are steps we can take right now to improve people's lives"
+      },
+      "status": "verified",
+      "written_summary": "The claim that there are steps we can take right now to improve people's lives is verified. Evidence indicates that various small actions, such as waking up earlier, drinking more water, taking a walk, practicing deep breathing, listening to uplifting music, reading, making a to-do list, practicing kindness, and planning one's day, can contribute to immediate improvements in life quality. Multiple sources support the notion that these actions can help enhance daily experiences and general well-being.",
+      "evidence": [
+        {
+          "source_url": "https://www.becomingminimalist.com/100-simple-ways-to-immediately-improve-your-life",
+          "source_title": "Becoming Minimalist",
+          "snippet": "100 Simple Ways to Immediately Improve Your Life: 100 Simple Ways to Immediately Improve Your Life\n 1. Wake up 15 minutes earlier.\n 2. Drink more water.\n 3. Take a 10 minute walk each day to clear your head.\n 4. Take some deep breaths.\n 5. Listen to uplifting music.\n 6. Read 1 chapter in a book.\n 7. Make a 3-item to-do list every morning."
+        },
+        {
+          "source_url": "https://www.mentorist.app/action/increase-happiness-by-wishing_118",
+          "source_title": "mentorist.app",
+          "snippet": "Increase happiness by wishing for random people to be happy."
+        },
+        {
+          "source_url": "https://ggia.berkeley.edu/practice/random_acts_of_kindness",
+          "source_title": "Greater Good in Action",
+          "snippet": "Random Acts of Kindness"
+        },
+        {
+          "source_url": "https://www.hcorealestates.com/post/manage-your-life-in-24-hours",
+          "source_title": "Way to Manage Your Life in 24 Hours - Hcorealestates",
+          "snippet": "Plan Your Day. Believe me nothing is better than a planning, if you will plan your whole day you will see you have extra hours left for your activities as well."
+        },
+        {
+          "source_url": "https://michaelmehlberg.com/blog/improveyourlife",
+          "source_title": "michaelmehlberg.com",
+          "snippet": "What's the one thing you start doing that improve your life significantly?"
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 8.199999809265137,
+        "claim": "It's called the American Jobs Act"
+      },
+      "status": "verified",
+      "written_summary": "The claim that the legislative proposal is called the \"American Jobs Act\" is verified. This proposal was recommended by President Barack Obama in September 2011 to address unemployment issues following the Great Recession. Various sources, including Wikipedia and official documents from The White House, confirm the name \"American Jobs Act\" and detail its contents and intentions, such as cutting payroll taxes, investing in infrastructure, and extending unemployment benefits. Although the bill did not pass in the Senate, the name \"American Jobs Act\" is accurate and widely used in official and public contexts.",
+      "evidence": [
+        {
+          "source_url": "https://en.wikipedia.org/wiki/American_Jobs_Act",
+          "source_title": "American Jobs Act - Wikipedia",
+          "snippet": "The American Jobs Act was a legislative proposal recommended by President Barack Obama in September 2011, in response to high unemployment rates following the Great Recession."
+        },
+        {
+          "source_url": "https://obamawhitehouse.archives.gov/economy/jobsact",
+          "source_title": "American Jobs Act | The White House",
+          "snippet": "The President's plan will cut in half the taxes paid by businesses on their first $5 million in payroll, providing a tax but targeting the benefit to the 98 ..."
+        },
+        {
+          "source_url": "https://obamawhitehouse.archives.gov/economy/jobsact/read-the-bill",
+          "source_title": "Read the American Jobs Act (FULL TEXT) | The White House",
+          "snippet": "First, the American Jobs Act of 2011 provides a tax cut for small businesses, to help them hire and expand now, and an additional tax cut to any business that hires or increases wages."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 24.559999465942383,
+        "claim": "Payroll taxes will be cut in half next year"
+      },
+      "status": "false",
+      "written_summary": "The claim that payroll taxes will be cut in half next year is false. The evidence searched does not provide any information supporting such a significant reduction in payroll taxes. Instead, it discusses other tax-related topics such as new deductions, the expiration of the Tax Cuts and Jobs Act in 2025, and past proposals for payroll tax elimination. There is no credible evidence that payroll taxes are set to be cut in half next year.",
+      "evidence": [
+        {
+          "source_url": "https://itep.org/trumps-proposed-payroll-tax-elimination",
+          "source_title": "Trump's Proposed Payroll Tax Elimination - ITEP.org",
+          "snippet": "President Trump has proposed to eliminate payroll taxes that fund Social Security and Medicare through the end of the year."
+        },
+        {
+          "source_url": "https://www.cnn.com/2021/03/12/politics/trump-payroll-tax-cut-explainer/index.html",
+          "source_title": "Trump keeps pushing for a payroll tax cut. Here's what that means. - CNN",
+          "snippet": "A payroll tax cut would reduce the amount taken out of workers' paychecks to fund federal programs including Social Security and Medicare. Congress would have to decide how much to reduce the rate and how long the tax holiday would last."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 38.7400016784668,
+        "claim": "It will put people to work right now"
+      },
+      "status": "disputed",
+      "written_summary": "The claim that a modern Civilian Climate Corps will put people to work \"right now\" is not fully supported by the evidence. While plans for such a program could potentially create hundreds of thousands of jobs in areas like solar panel installation and environmental restoration, the implementation of these programs, hiring, and training processes can take time. Additionally, although there are currently over 13,000 manual labor positions available in the U.S., it's not clear how quickly these jobs can be filled or how they directly relate to the proposed Climate Corps program. Thus, while there is potential for job creation, the immediacy of employment is uncertain, making the claim disputed.",
+      "evidence": [
+        {
+          "source_url": "https://hardware.slashdot.org/story/21/09/11/2129228/can-the-us-create-hundreds-of-thousands-of-jobs-with-a-civilian-climate-corps",
+          "source_title": "Can the US Create Hundreds of Thousands of Jobs With a Civilian Climate Corps? - Slashdot",
+          "snippet": "A modern Civilian Climate Corps could create hundreds of thousands of jobs by installing solar panels, planting trees, and restoring streams."
+        },
+        {
+          "source_url": "https://www.linkedin.com/jobs/manual-labor-jobs-10960",
+          "source_title": "14,000+ Manual Labor jobs in United States",
+          "snippet": "The U.S. is also seeing a need for manual labor jobs, with over 13,000 such positions available."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 40.900001525878906,
+        "claim": "No more earmarks"
+      },
+      "status": "false",
+      "written_summary": "The claim that there are 'No more earmarks' is false. Earmarks were indeed banned in 2011 but were reinstated in 2021 after a decade. They are now officially allowed under specific conditions, such as capped at 1% of discretionary spending and not being directed toward for-profit entities. The 2011 ban was part of an intraparty rule among House Republicans rather than a legal prohibition. Thus, earmarks currently exist, albeit with revised rules and limitations.",
+      "evidence": [
+        {
+          "source_url": "https://www.congressionalinstitute.org/2016/09/15/the-case-for-earmarks-were-they-really-that-bad",
+          "source_title": "Congressional Institute",
+          "snippet": "Since 2010 Congress has banned the use of earmarks. For a long time, the generally accepted public opinion was that earmarks were ..."
+        },
+        {
+          "source_url": "https://www.pgpf.org/article/what-are-earmarks-and-what-purpose-do-they-serve-in-the-federal-budget",
+          "source_title": "PGPF",
+          "snippet": "Earmarks have been controversial, but nevertheless were reinstated by Congress in 2021 after a 10-year moratorium. Some argue that earmarks help ..."
+        },
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Earmark_(politics)",
+          "source_title": "Wikipedia",
+          "snippet": "In February 2011, Congress 'imposed a temporary ban on earmarks, money for projects that individual lawmakers slip into major Congressional budget bills to cater to local demands.'"
+        },
+        {
+          "source_url": "https://www.aaas.org/news/trends-earmarks-2024",
+          "source_title": "AAAS",
+          "snippet": "Earmarks are now capped at 1% of discretionary spending and they cannot be directed toward for-profit entities."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 52.380001068115234,
+        "claim": "teachers belong in the classroom"
+      },
+      "status": "verified",
+      "written_summary": "The claim that \"teachers belong in the classroom\" is verified. The evidence highlights the important role teachers play in education and society. Teachers are crucial for shaping young minds, imparting knowledge, and instilling values, which are essential functions within a classroom setting. They also contribute to students' personal and academic development by building positive relationships and fostering a sense of belonging and confidence in students. The evidence consistently supports that teachers' presence in the classroom is vital for effective education and the cultivation of well-rounded individuals.",
+      "evidence": [
+        {
+          "source_url": "https://www.teachersoftomorrow.org/blog/insights/reasons-why-teachers-play-a-crucial-role-in-society",
+          "source_title": "12 Reasons Why Teachers Play A Crucial Role In Society 2024",
+          "snippet": "Teachers belong in the classroom because they play a crucial role in society by shaping young minds and instilling essential values, contributing to the development of well-rounded citizens."
+        },
+        {
+          "source_url": "https://www.teachersoftomorrow.org/blog/insights/reasons-why-teachers-play-a-crucial-role-in-society",
+          "source_title": "12 Reasons Why Teachers Play A Crucial Role In Society 2024",
+          "snippet": "They are essential for passing knowledge to younger generations, developing critical thinking skills, and inspiring students and parents."
+        },
+        {
+          "source_url": "https://educationnorthwest.org/insights/positive-and-caring-relationships-teachers-are-critical-student-success",
+          "source_title": "Positive and Caring Relationships with Teachers are Critical to ...",
+          "snippet": "Teachers also build connections with students by demonstrating respect, trust, and empathy, which fosters a sense of belonging and connection to school, leading to academic success."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 57.41999816894531,
+        "claim": "Extra tax credits are available for hiring America's veterans"
+      },
+      "status": "verified",
+      "written_summary": "The claim that extra tax credits are available for hiring America's veterans is verified. Employers can receive the Work Opportunity Tax Credit (WOTC) for hiring veterans, with a potential credit of up to $9,600 for qualified veterans. The WOTC is applicable for veterans starting work on or before December 31, 2025. This information is corroborated by sources from the IRS and the Department of Labor, as well as additional industry sources.",
+      "evidence": [
+        {
+          "source_url": "https://www.irs.gov/businesses/small-businesses-self-employed/work-opportunity-tax-credit",
+          "source_title": "Work Opportunity Tax Credit | Internal Revenue Service",
+          "snippet": "The Work Opportunity Tax Credit (WOTC) is available to employers for hiring individuals from certain targeted groups who have faced barriers to employment."
+        },
+        {
+          "source_url": "https://www.dol.gov/agencies/eta/wotc",
+          "source_title": "Work Opportunity Tax Credit | U.S. Department of Labor",
+          "snippet": "The Work Opportunity Tax Credit (WOTC) is a federal tax credit available to employers who invest in American job seekers who have consistently faced barriers ..."
+        },
+        {
+          "source_url": "https://recruitmilitary.com/employer_resource/tax-credits-for-hiring-veterans-help-smart-employers-reap-dividends",
+          "source_title": "Tax Credits for Hiring Veterans Help Smart Employers Reap Dividends",
+          "snippet": "The Work Opportunity Tax Credit (WOTC) is a federal hiring incentive that provides a tax credit worth up to $9,600 for hires that come from a variety of groups, including qualified military veterans."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 66.26000213623047,
+        "claim": "The American Jobs Act will not add to the deficit"
+      },
+      "status": "disputed",
+      "written_summary": "The claim that the American Jobs Act will not add to the deficit is disputed. While the original proposal of the American Jobs Act in 2011, as mentioned on Wikipedia, was marketed with the intention of being deficit-neutral, the current economic landscape and recent legislative examples show that many such claims about financial legislation are debated. Other recent evidence related to similar financial policies suggests significant impacts on the deficit, implying that such claims must be cautiously evaluated. Given this, the assertion remains a matter of debate and can't be confirmed definitively based on the available evidence.",
+      "evidence": [
+        {
+          "source_url": "https://en.wikipedia.org/wiki/American_Jobs_Act",
+          "source_title": "Wikipedia",
+          "snippet": "The American Jobs Act, proposed in 2011, was presented with the claim that it would not add to the national deficit and would be fully paid for."
+        },
+        {
+          "source_url": "https://www.cbsnews.com/news/gop-tax-bill-reconcilation-deficit-moodys-debt-spending",
+          "source_title": "CBS News",
+          "snippet": "One analysis of a GOP tax and spending bill suggests it could add trillions to the U.S. deficit."
+        },
+        {
+          "source_url": "https://www.crfb.org/blogs/tax-cut-extensions-would-add-37-trillion-debt-2054",
+          "source_title": "CRFB",
+          "snippet": "Extending tax cuts could add trillions to the debt over the next 30 years."
+        },
+        {
+          "source_url": "https://www.crapo.senate.gov/news/in-the-news/weekly-column-despite-false-claims-the-one-big-beautiful-bill-reduces-the-deficit",
+          "source_title": "crapo.senate.gov",
+          "snippet": "A specific bill would reduce the deficit, according to more accurate estimates."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 69.0199966430664,
+        "claim": "It will be paid for"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim 'It will be paid for' lacks context to determine its truthfulness. The evidence provided discusses how acquisition agreements outline the payment structure for transactions, specifying how and when payments are made. However, without specific details about what 'it' refers to in this claim, it is not possible to verify its accuracy or applicability. Therefore, the claim is inconclusive based solely on the information provided.",
+      "evidence": [
+        {
+          "source_url": "https://www.lw.com/admin/Upload/Documents/OilAndGasMandA/General Concepts/Consolidated_General_Concepts_Part_II_Key_Provisions.pdf",
+          "source_title": "lw.com",
+          "snippet": "The phrase how / when it will be paid for is used in acquisition agreements to describe the structure of the acquisition. It specifies how and when the purchase will be paid for."
+        },
+        {
+          "source_url": "https://www.lw.com/admin/Upload/Documents/OilAndGasMandA/General Concepts/Consolidated_General_Concepts_Part_II_Key_Provisions.pdf",
+          "source_title": "lw.com",
+          "snippet": "This is a key element in the Description of the Deal section of acquisition agreements, along with the identification of assets and liabilities, and the amount and form of consideration."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 70.22000122070312,
+        "claim": "Our tax code gives an advantage to companies that can afford the best connected lobbyists"
+      },
+      "status": "verified",
+      "written_summary": "The claim is verified based on the presented evidence. Companies with substantial lobbying capabilities are shown to gain advantages related to the tax code. Public Citizen reports that a significant portion of federal lobbyists work on tax issues, predominantly representing corporate interests. The U.S. Chamber of Commerce and several Fortune 500 companies had substantial tax lobbying efforts. Major lobbying firms, which these companies may hire, have generated significant revenue from influencing tax policy; these efforts have coincided with beneficial changes in tax legislation for corporations. This evidence supports the claim that the tax code can be advantageous to companies that can afford top lobbyists.",
+      "evidence": [
+        {
+          "source_url": "https://www.citizen.org/article/corporate-america-dominates-tax-lobbying",
+          "source_title": "Corporate America Dominates Tax Lobbying",
+          "snippet": "In 2024, nearly half of all federal lobbyists worked on tax issues, with over 85% of those lobbyists representing corporate interests."
+        },
+        {
+          "source_url": "https://www.citizen.org/article/corporate-america-dominates-tax-lobbying",
+          "source_title": "Corporate America Dominates Tax Lobbying",
+          "snippet": "The U.S. Chamber of Commerce had the most tax lobbyists in 2024, followed by Verizon, Intuit, Blue Cross and Blue Shield, and the Business Roundtable."
+        },
+        {
+          "source_url": "https://about.bgov.com/insights/public-affairs-strategies/what-are-the-top-10-lobbying-firms-in-the-u-s",
+          "source_title": "What Are the Top 10 Lobbying Firms in the U.S.?",
+          "snippet": "Some of the top lobbying firms in 2024... These firms and their clients benefit from influencing tax policy."
+        },
+        {
+          "source_url": "https://news.bloomberglaw.com/business-and-practice/lobby-giants-cash-in-on-trump-tax-bill-as-brownstein-hits-record",
+          "source_title": "Lobby Giants Cash in on Trump Tax Bill as Brownstein Hits Record",
+          "snippet": "Major lobbying firms and their clients benefit from influencing tax policy, as seen with the recent tax bill."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 75.13999938964844,
+        "claim": "Companies that invest and create jobs in the United States of America should receive an advantage"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that companies investing and creating jobs in the USA should receive an advantage is primarily a policy opinion rather than a fact. The evidence presented suggests that private equity and small businesses contribute significantly to job creation and economic growth in the United States. For example, private equity-backed companies directly employed a significant number of workers in 2024, and small businesses have created the majority of net new jobs since 2019. However, while these contributions highlight the positive impacts of investment, whether companies \"should\" receive an advantage is a matter of policy debate and preference, not a verifiable fact. Therefore, the claim remains inconclusive as it involves subjective judgment about policy priorities.",
+      "evidence": [
+        {
+          "source_url": "https://www.investmentcouncil.org/new-ey-report-shows-private-equity-strengthens-u-s-economy-with-more-jobs-higher-pay-and-increased-investment",
+          "source_title": "American Investment Council",
+          "snippet": "Companies that invest in the United States can create jobs, strengthen communities, and contribute to economic growth"
+        },
+        {
+          "source_url": "https://home.treasury.gov/news/featured-stories/small-business-and-entrepreneurship-in-the-post-covid-expansion",
+          "source_title": "U.S. Treasury",
+          "snippet": "Small businesses created over 70 percent of net new jobs since 2019."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 89.83999633789062,
+        "claim": "there is an economic crisis"
+      },
+      "status": "inconclusive",
+      "written_summary": "The evidence indicates significant economic challenges in 2023, such as high inflation, rising interest rates, and uncertainties due to global events like the war in Ukraine and the COVID-19 pandemic. However, these challenges, while serious, do not definitively amount to a global economic crisis. Projections from significant financial institutions like the IMF and the World Bank suggest a slowdown in global growth, with growth rates declining from previous years but not entirely ceasing. While there is mention of a risk of recession, notably by the World Bank, this risk has not universally materialized into an economic crisis as of the information available. Therefore, while there are downturn indicators and potential risks, the claim of an ongoing economic crisis is inconclusive based on current evidence.",
+      "evidence": [
+        {
+          "source_url": "https://www.imf.org/en/Publications/WEO/Issues/2023/04/11/world-economic-outlook-april-2023",
+          "source_title": "IMF World Economic Outlook, April 2023",
+          "snippet": "The global economic outlook for 2023 was marked by several challenges, including high inflation, rising interest rates, and uncertainties stemming from the war in Ukraine and the ongoing effects of the COVID-19 pandemic."
+        },
+        {
+          "source_url": "https://www.un.org/en/desa/5-things-you-need-know-about-global-economy-2023",
+          "source_title": "UN",
+          "snippet": "Global growth was projected to slow from 3.1% in 2022 to 2.3% in 2023."
+        },
+        {
+          "source_url": "https://www.imf.org/en/Publications/WEO/Issues/2023/04/11/world-economic-outlook-april-2023",
+          "source_title": "IMF",
+          "snippet": "The IMF's April 2023 forecast indicated a decline in global growth to 2.8% in 2023, with advanced economies experiencing a slowdown to 1.3%."
+        },
+        {
+          "source_url": "https://www.worldbank.org/en/news/press-release/2022/09/15/risk-of-global-recession-in-2023-rises-amid-simultaneous-rate-hikes",
+          "source_title": "World Bank",
+          "snippet": "There was also a risk of a global recession in 2023."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 89.83999633789062,
+        "claim": "Americans have had basic protections for decades"
+      },
+      "status": "verified",
+      "written_summary": "The claim that Americans have had basic protections for decades is verified. The evidence supports this claim by referencing several key documents and legislative acts in American history. The Bill of Rights, ratified in 1791, is a foundational document guaranteeing fundamental rights such as freedom of speech and religion, and the right to a fair trial, providing early protections for citizens. The Civil Rights Act of 1964 and the Voting Rights Act of 1965 expanded these protections further by addressing discriminatory practices, marking significant advancements in civil rights. Additionally, consumer protection laws such as the Pure Food and Drug Act of 1906 and the Federal Trade Commission Act of 1914 have contributed to safeguarding citizens' rights in the commercial domain. These historical milestones collectively demonstrate that Americans have had basic protections for decades.",
+      "evidence": [
+        {
+          "source_url": "https://www.aclu.org/documents/bill-rights-brief-history",
+          "source_title": "The Bill of Rights: A Brief History | American Civil Liberties Union",
+          "snippet": "The Bill of Rights, ratified in 1791, guarantees fundamental rights such as freedom of speech, religion, and the right to a fair trial."
+        },
+        {
+          "source_url": "https://www.archives.gov/founding-docs/bill-of-rights-transcript",
+          "source_title": "The Bill of Rights: A Transcription - National Archives",
+          "snippet": "The first ten amendments to the Constitution were ratified December 15, 1791, and form what is known as the \"Bill of Rights.\""
+        },
+        {
+          "source_url": "https://www.loc.gov/classroom-materials/united-states-history-primary-source-timeline/post-war-united-states-1945-1968/civil-rights-movement",
+          "source_title": "The Civil Rights Movement | U.S. History Primary Source Timeline",
+          "snippet": "The Civil Rights Act of 1964 and the Voting Rights Act of 1965 further expanded protections by outlawing discrimination based on race, color, religion, sex, or national origin."
+        },
+        {
+          "source_url": "https://www.historycentral.com/BookReviews/consumer.html",
+          "source_title": "History of Consumer Protectionism in Law and Practice in the US",
+          "snippet": "Consumer protection has also evolved over time, with the Pure Food and Drug Act of 1906 and the Federal Trade Commission Act of 1914 establishing agencies to ensure product safety and fair business practices."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 115.83999633789062,
+        "claim": "the speaker intends to take a message to every corner of the country"
+      },
+      "status": "false",
+      "written_summary": "The claim that the speaker intends to take a message to every corner of the country is false. According to the available evidence, specifically from LiveMint, the plan was to relay Prime Minister Narendra Modi's message about a special package only to every village in the state of Bihar, rather than the entire country. This involved using vehicles equipped with televisions and speakers to communicate the message locally in Bihar.",
+      "evidence": [
+        {
+          "source_url": "https://www.livemint.com/Politics/h1bqYmF4RsLncYmgqTlyrL/BJP-to-show-Narendra-Modis-special-package-speech-in-rural.html",
+          "source_title": "LiveMint",
+          "snippet": "The National Democratic Alliance (NDA) planned to take Prime Minister Narendra Modi's message about a special package for Bihar to every village in the state."
+        },
+        {
+          "source_url": "https://www.livemint.com/Politics/h1bqYmF4RsLncYmgqTlyrL/BJP-to-show-Narendra-Modis-special-package-speech-in-rural.html",
+          "source_title": "LiveMint",
+          "snippet": "The Bharatiya Janata Party (BJP) used over 250 vehicles equipped with television and speakers to relay Modi's speech."
+        }
+      ]
+    }
+  ]
+}

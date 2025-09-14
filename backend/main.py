@@ -9,6 +9,9 @@ from typing import List, Dict, Any
 import logging
 import asyncio
 from asyncio import Queue
+import os
+import json
+from datetime import datetime
 
 # Import services
 from services.endpoints_stream import router_stream
@@ -145,14 +148,35 @@ async def process_video(video_url: str) -> dict:
         )
         
         logger.info(f"Video processing completed: {len(fact_check_results)} claims fact-checked")
-        
-        # Return structured JSON with all ClaimResponse objects
-        return {
+
+        # Build result payload
+        result_payload = {
             "video_id": extract_video_id(video_url),
+            "video_url": video_url,
             "title": "Processed Video",
             "total_claims": len(fact_check_results),
-            "claim_responses": [result.dict() for result in fact_check_results]  # Full ClaimResponse objects
+            "claim_responses": [result.dict() for result in fact_check_results],  # Full ClaimResponse objects
         }
+
+        # Persist result JSON under repo root in /results
+        try:
+            repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+            results_dir = os.path.join(repo_root, "results")
+            os.makedirs(results_dir, exist_ok=True)
+
+            safe_video_id = result_payload.get("video_id") or "unknown"
+            safe_video_id = "".join(c for c in safe_video_id if c.isalnum() or c in ("-", "_")) or "unknown"
+            timestamp = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
+            out_path = os.path.join(results_dir, f"{timestamp}_{safe_video_id}.json")
+
+            with open(out_path, "w", encoding="utf-8") as f:
+                json.dump(result_payload, f, ensure_ascii=False, indent=2)
+            logger.info(f"💾 Saved processing result to: {out_path}")
+        except Exception as save_err:
+            logger.warning(f"Unable to save result JSON: {save_err}")
+
+        # Return structured JSON with all ClaimResponse objects
+        return result_payload
         
     except Exception as e:
         logger.error(f"Error processing video: {e}")

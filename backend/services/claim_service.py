@@ -67,7 +67,7 @@ async def extract_claims_from_sentence(sentence: Sentence) -> List[Claim]:
                 },
                 max_tokens=150,
                 temperature=0.1,
-                timeout=20,
+                timeout=2,
             )
 
         try:

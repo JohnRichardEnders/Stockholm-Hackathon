@@ -80,7 +80,7 @@ async def gather_evidence_with_aci(claim: Claim) -> ClaimWithAllEvidence:
             messages=[
                 {
                     "role": "system",
-                    "content": "You are a research assistant. Use the EXA_AI search tool to find evidence about the given claim."
+                    "content": "You are a research assistant. Use the EXA_AI search tool to find evidence about the given claim. Set maximum number of sources to 3."
                 },
                 {
                     "role": "user",
