@@ -1,0 +1,1878 @@
+{
+  "video_id": "khY9OYwoJek",
+  "video_url": "https://www.youtube.com/watch?v=khY9OYwoJek",
+  "title": "Processed Video",
+  "total_claims": 72,
+  "claim_responses": [
+    {
+      "claim": {
+        "start": 43.880001068115234,
+        "claim": "Kristersson has a work line"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim \"Kristersson has a work line\" is vague and lacks specificity, making it difficult to verify conclusively. The evidence provided details Ulf Kristersson's roles and responsibilities, including his position as the Prime Minister of Sweden, his leadership of the Moderate Party, and his past political roles. However, there is no direct mention or clear explanation of what a \"work line\" would entail in this context. Without further clarification on what \"work line\" means, the claim cannot be verified as true or false.",
+      "evidence": [
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Ulf_Kristersson",
+          "source_title": "Ulf Kristersson - Wikipedia",
+          "snippet": "Ulf Kristersson är Sveriges statsminister sedan 2022. Han är även partiledare för Moderaterna sedan 2017. Kristersson har tidigare varit socialförsäkringsminister (2010–2014) och har även varit aktiv i riksdagen."
+        },
+        {
+          "source_url": "https://www.britannica.com/biography/Ulf-Kristersson",
+          "source_title": "Ulf Kristersson | Biography, Political Views, Immigration, & Family",
+          "snippet": "Ulf Kristersson (born December 29, 1963, Lund, Sweden) is a Swedish politician, leader of the Moderate Party (2018– ) and prime minister of Sweden (2022– )."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 43.880001068115234,
+        "claim": "There are two problems with Kristersson's work line"
+      },
+      "status": "verified",
+      "written_summary": "The claim regarding two main problems with Ulf Kristersson's work line as Swedish Prime Minister is verified based on critiques reported by Aftonbladet, a reputable Swedish media outlet. The two highlighted issues include incompetence and lack of crisis policy, suggesting an over-reliance on experts and market forces without effective intervention strategies. The second issue is the government's alleged lack of realism and preference for public relations and rhetoric over substantive policymaking, leading to unfulfilled election promises. These criticisms align with the outlined claim, confirming its accuracy.",
+      "evidence": [
+        {
+          "source_url": "https://www.aftonbladet.se/kultur/a/Knl1e4/niklas-altermark-om-ekonomisk-kris-och-teknokrati",
+          "source_title": "Aftonbladet",
+          "snippet": "Ulf Kristerssons arbete som statsminister kritiseras för två huvudsakliga problem: Inkompetens och brist på krispolitik..."
+        },
+        {
+          "source_url": "https://www.aftonbladet.se/ledare/a/kEm6gv/ulf-kristersson-slarvar-med-det-politiska-hantverket",
+          "source_title": "Aftonbladet",
+          "snippet": "Regeringen anklagas för att fokusera på PR och retorik snarare än att fatta välgrundade beslut..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 48.86000061035156,
+        "claim": "it lacks jobs"
+      },
+      "status": "false",
+      "written_summary": "The claim that \"it lacks jobs\" is false. While the job market in July 2025 showed little change in job openings, the openings remained high at 7.2 million. Although the unemployment rate rose to 4.3%, the evidence indicates that job openings are still substantial and unchanged. Therefore, the claim that there is a lack of jobs does not align with the evidence available, which shows that while unemployment is rising slightly, there are still a significant number of job openings available.",
+      "evidence": [
+        {
+          "source_url": "https://www.bls.gov/news.release/jolts.nr0.htm",
+          "source_title": "Job Openings and Labor Turnover Summary - 2025 M07 Results: Job Openings The number and rate of job openings were little changed at 7.2 million and 4.3 percent, respectively, in July. The number of job ...",
+          "snippet": "The number and rate of job openings were little changed at 7.2 million and 4.3 percent, respectively, in July."
+        },
+        {
+          "source_url": "https://www.cnn.com/business/live-news/us-jobs-report-august-2025",
+          "source_title": "America's job market flashes yet another warning sign about ... - CNN: How is the job market looking right now?",
+          "snippet": "Rising unemployment: The jobless rate rose to 4.3%, the highest level since 2021. Stagnation: The data underscores the extent to which consumers and businesses are struggling to accommodate the weight of tariffs, stubborn inflation, the decline in America's crucial immigrant workforce and overall economic uncertainty."
+        },
+        {
+          "source_url": "https://www.bls.gov/news.release/jolts.nr0.htm",
+          "source_title": "Job Openings and Labor Turnover Summary - 2025 M07 Results: Job Openings The number and rate of job openings were little changed at 7.2 million and 4.3 percent, respectively, in July. The number of job ...",
+          "snippet": "The number of hires and total separations were unchanged at 5.3 million."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 51.720001220703125,
+        "claim": "the line goes in the wrong direction"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim \"the line goes in the wrong direction\" is not specific enough to be classified as verified, false, disputed, or inconclusive. There are multiple interpretations and contexts in which this statement can apply, such as issues in CAD software, peculiarities in pregnancy tests, or misdirection in various scenarios. Each context could result in different evaluations of the statement's accuracy. Without additional context or details specifying which situation is being referred to, the claim remains too broad and ambiguous for a definitive assessment.",
+      "evidence": [
+        {
+          "source_url": "https://forums.autodesk.com/t5/autocad-forum/line-goes-in-wrong-direction-in-absolute-coordinate-system/td-p/9730150",
+          "source_title": "Line goes in wrong direction in absolute coordinate system",
+          "snippet": "We are drawing a Line from 2,3 to 2,0. This should make a line straight out to the right. However, it's drawing it straight downward."
+        },
+        {
+          "source_url": "https://netmums.com/coffeehouse/becoming-mum-ttc-64/am-i-pregnant-874/1703058-took-pregnancy-test-there-faint-line-but-its-wrong-direction.html",
+          "source_title": "Took a pregnancy test and there is a faint line but it's in the wrong ...",
+          "snippet": "These tests always have a faint line going the opposite way! I think it's something to do with the urine travelling along."
+        },
+        {
+          "source_url": "https://glowing.com/community/topic/677149/why-s-the-line-going-the-wrong-way-help",
+          "source_title": "Why's the line going the wrong way?? Help! - Glow Community",
+          "snippet": "You're test is confused lol take another test..it's faulty. Or call someone at the company and let them know...maybe they can give you a coupon ..."
+        },
+        {
+          "source_url": "https://www.cadforum.cz/forum_en/forum_posts.asp?TID=12406&title=complex-linetypes-drawing-direction-problems",
+          "source_title": "Complex Linetypes drawing direction problems: ",
+          "snippet": "Linetype showing flow direction might display incorrectly when drawn from right to left."
+        },
+        {
+          "source_url": "https://www.cadtutor.net/forum/topic/55500-linetype-wont-reverse",
+          "source_title": "Linetype won't reverse",
+          "snippet": "Complex linetypes with text or shapes can have issues with drawing direction."
+        },
+        {
+          "source_url": "https://www.vocabulary.com/dictionary/misguide",
+          "source_title": "Misguide - Definition, Meaning & Synonyms - Vocabulary.com",
+          "snippet": "What is the word for leading in the wrong direction? misguide. When you misguide someone, you lead them the wrong way. You might accidentally misguide a tourist by instructing him to turn left when he should have gone right."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 55.63999938964844,
+        "claim": "Kristersson says fewer people should live on benefits"
+      },
+      "status": "verified",
+      "written_summary": "The claim that Kristersson says fewer people should live on benefits is verified. Evidence from credible sources such as Aftonbladet and the Swedish Government's statements confirm that Ulf Kristersson has advocated for reducing dependency on benefits. He has emphasized the importance of getting more people into work to strengthen welfare and suggests reforms to make working more economically advantageous than living on benefits.",
+      "evidence": [
+        {
+          "source_url": "https://www.aftonbladet.se/nyheter/samhalle/a/a2BgL5/m-bidrag-far-aldrig-overstiga-lonen",
+          "source_title": "Aftonbladet",
+          "snippet": "Ulf Kristersson har uttalat att färre människor bör leva på bidrag. Han har betonat vikten av att minska bidragsberoendet och få fler i arbete för att stärka välfärden."
+        },
+        {
+          "source_url": "https://www.government.se/speeches/2022/10/statement-of-government-policy",
+          "source_title": "Regeringskansliet",
+          "snippet": "Kristersson har också sagt att en bidragsreform ska genomföras, bland annat genom lägre skatter för låg- och medelinkomsttagare och ett bidragstak för att göra det mer lönsamt att arbeta."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 55.63999938964844,
+        "claim": "more people are living on benefits"
+      },
+      "status": "verified",
+      "written_summary": "The claim that more people are living on benefits is verified. In April 2025, over 73.9 million people in the U.S., which accounts for more than a fifth of the population, were receiving benefits from Social Security programs. Additionally, reports highlight a significant dependency on government transfers among low-income families, with a noticeable decrease in income from work since 1979. This dependency was further accelerated by COVID-era benefits. The evidence supports the increase in the number of people receiving government aid.",
+      "evidence": [
+        {
+          "source_url": "https://www.pewresearch.org/short-reads/2025/05/20/what-the-data-says-about-social-security",
+          "source_title": "What the data says about Social Security | Pew Research Center",
+          "snippet": "As of April 2025, 73.9 million people – more than a fifth of the entire U.S. population – got benefits from at least one of Social Security's programs."
+        },
+        {
+          "source_url": "https://waysandmeans.house.gov/2025/01/08/new-report-shows-more-americans-dependent-on-welfare-checks-at-the-expense-of-work",
+          "source_title": "New Report Shows More Americans Dependent on Welfare Checks ...",
+          "snippet": "In 1979, families living below the poverty line earned about 60 percent of their income from work. In 2021, that number dropped to an all-time low of around 25 percent. The report also shows how the dramatic increase in dependency on government transfers for low-income families was accelerated by COVID-era benefits."
+        },
+        {
+          "source_url": "https://www.ssa.gov/policy/docs/quickfacts/stat_snapshot",
+          "source_title": "Monthly Statistical Snapshot, August 2025 - SSA",
+          "snippet": "Number of people receiving Social Security, Supplemental Security Income (SSI), or both, August 2025 (in thousands) ..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 61.779998779296875,
+        "claim": "There are significant cuts to labor market policies"
+      },
+      "status": "verified",
+      "written_summary": "The claim that there are significant cuts to labor market policies is verified. The evidence provided indicates that Finland has approved major reductions to labor market subsidies, commuting and relocation allowances, and unemployment benefits, effective January 1, 2025. Specifically, the minimum partial labor market subsidy will decrease from 50% to 35%, impacting about 10,000 unemployed individuals each year, particularly those under 30. These measures represent significant cuts to different components of labor market policies.",
+      "evidence": [
+        {
+          "source_url": "https://www.helsinkitimes.fi/finland/finland-news/domestic/25851-finland-cuts-unemployment-benefits-and-subsidies-for-2025.html",
+          "source_title": "Finland cuts unemployment benefits and subsidies for 2025",
+          "snippet": "As of September 14, 2025, Finland has approved significant cuts to labor market subsidies, commuting and relocation allowances, and unemployment benefits, effective January 1, 2025. The minimum partial labor market subsidy will be reduced from 50% to 35%, impacting approximately 10,000 unemployed individuals annually, mostly those under 30. Additionally, the increased rate for commuting and relocation allowance will be discontinued, and unemployment benefits will no longer include a supplementary increase during participation in employment-promoting services."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 66.87999725341797,
+        "claim": "there are cuts to adult education"
+      },
+      "status": "verified",
+      "written_summary": "The claim that there are cuts to adult education is verified. Multiple sources confirm that the Trump administration has implemented a freeze on $715 million in adult education funds nationwide. Additionally, the proposed budget for fiscal year 2026 suggests the elimination of the Adult Education and Family Literacy Act, which could further impact adult education services. These budgetary actions justify the concern over cuts to adult education programs.",
+      "evidence": [
+        {
+          "source_url": "https://pbswisconsin.org/news-item/funding-freeze-threatens-adult-education-programs-at-wisconsins-community-and-technical-colleges",
+          "source_title": "Funding freeze threatens adult education programs at Wisconsin's ...",
+          "snippet": "The administration has frozen $715 million in adult education funds nationwide, its largest blow to community college program funding to date."
+        },
+        {
+          "source_url": "https://www.insidehighered.com/news/institutions/community-colleges/2025/07/10/withheld-adult-education-funds-worry-community",
+          "source_title": "Withheld Adult Education Funds Worry Community Colleges",
+          "snippet": "The federal government paused about $716 million for adult education programs. Community college leaders fear they may have to cut staff and services."
+        },
+        {
+          "source_url": "http://newamerica.org/education-policy/edcentral/adult-education-pays-for-itself-why-does-trump-want-to-gut-it",
+          "source_title": "Adult Education Pays for Itself. Why Does Trump Want to Gut it?",
+          "snippet": "The administration's chief rationale for gutting the program conjures some magic: fewer adults will need “remedial education” next year."
+        },
+        {
+          "source_url": "https://www.nprillinois.org/2025-07-04/adult-education-programs-in-limbo-as-trump-administration-withholds-grant-funds",
+          "source_title": "Adult education programs in limbo as Trump administration ...",
+          "snippet": "BONNEY: Adult education is a talent pipeline into workforce and to community colleges. That talent pipeline will be immediately cut in half."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 69.83999633789062,
+        "claim": "the government has driven a construction crisis"
+      },
+      "status": "disputed",
+      "written_summary": "The claim that the government has driven a construction crisis is disputed. Evidence suggests that while government regulations, such as land-use restrictions, contribute to challenges in the construction industry, they are not the sole factor causing the crisis. Additional factors include rising costs, lack of skilled workers, slow technological adoption, and cash flow issues within the industry. Thus, the crisis stems from a combination of factors, both governmental and systemic within the industry itself.",
+      "evidence": [
+        {
+          "source_url": "https://www.nber.org/digest/202502/stagnation-us-construction-productivity",
+          "source_title": "The Stagnation of US Construction Productivity | NBER",
+          "snippet": "US residential construction productivity began to decline; today, it is close to the level of the 1930s. In contrast, manufacturing productivity has risen for various reasons."
+        },
+        {
+          "source_url": "https://revizto.com/en/construction-issues-challenges",
+          "source_title": "Top 20 Construction Issues & Industry Challenges in 2025 - Revizto",
+          "snippet": "The lack of a skilled workforce might be one of the biggest problems in the construction industry today, and it is one that also gets worse every year."
+        },
+        {
+          "source_url": "https://leanconstructionblog.com/The-Construction-Industry-is-in-Crisis.html",
+          "source_title": "The Construction Industry is in Crisis. The Root Cause and a Better ...",
+          "snippet": "The engineering and construction industry is in crisis, with over $1.6 trillion wasted annually due to capital projects not being delivered on time."
+        },
+        {
+          "source_url": "https://www.interiordaily.com/article/9606737/swedish-construction-industry-in-crisis-meeting-with-the-government",
+          "source_title": "Swedish construction industry in crisis meeting with the government",
+          "snippet": "Industry leaders urged the government to take action to increase construction."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 69.83999633789062,
+        "claim": "the government has driven more bankruptcies"
+      },
+      "status": "disputed",
+      "written_summary": "The claim that the government has driven more bankruptcies is disputed. The evidence indicates that the increase in bankruptcy filings in 2023 was primarily due to rising interest rates, inflation, and high debt levels from the period of easy money. These factors are largely economic conditions rather than direct government actions aimed at increasing bankruptcies. While government policies on interest rates and economic management could influence these conditions, the evidence does not directly support the claim that government actions were specifically aimed at driving bankruptcies. Thus, the assertion that the government has directly caused more bankruptcies is not conclusively supported by the provided evidence.",
+      "evidence": [
+        {
+          "source_url": "https://www.npr.org/2023/12/28/1221401948/bankruptcies-corporate-rise-inflation-2023-interest-rates",
+          "source_title": "NPR",
+          "snippet": "In 2023, there was a notable rise in corporate bankruptcies, with 591 filings recorded, one of the highest totals since 2011. This increase was driven by a combination of factors, including rising interest rates, inflation, and high debt levels from the period of easy money."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 97.30000305175781,
+        "claim": "one never knows"
+      },
+      "status": "verified",
+      "written_summary": "The phrase \"one never knows\" is an idiom that means it is impossible to be sure about what will happen in the future. It conveys uncertainty and the unpredictability of life events. This interpretation is supported by authoritative sources such as Merriam-Webster, which confirms that the expression is used to acknowledge the limitations of human foresight and understanding. Additional insights provided by Answers and other linguistic resources reinforce this understanding that the phrase indicates the inherent uncertainty in predicting future outcomes.",
+      "evidence": [
+        {
+          "source_url": "https://www.merriam-webster.com/dictionary/you%20never%20know",
+          "source_title": "YOU NEVER KNOW Definition & Meaning - Merriam-Webster",
+          "snippet": "idiom. used to say that it is impossible to be sure about what will happen. highlights: [idiom | used to say that it is impossible to be sure about what will happen]"
+        },
+        {
+          "source_url": "https://www.answers.com/english-language-arts/What_does_it_mean_when_someone_says_you_never_know",
+          "source_title": "What does it mean when someone says you never know? - Answers",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://www.hinative.com/questions/What_is_the_meaning_of_one_never_knows",
+          "source_title": "What is the meaning of \"one never knows\"? - HiNative",
+          "snippet": "It means that you can't know the future. \"One never knows what difference a kind word makes\" means that you should always speak kindly because ..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 97.30000305175781,
+        "claim": "it's not just that one doesn't know what politics one gets with an alternative"
+      },
+      "status": "verified",
+      "written_summary": "The claim is verified. The provided evidence indicates that political uncertainty is a common issue that affects elections and policy outcomes. Different types of uncertainty, such as candidate-specific and preference uncertainty, can influence political behavior and policy outcomes in various ways. This supports the idea that voters often face uncertainty regarding the politics they will get when choosing an alternative, as political contexts and potential shifts add layers of unpredictability. The provided sources discuss how this uncertainty influences elections, voter behavior, and policy convergence or divergence.",
+      "evidence": [
+        {
+          "source_url": "https://link.springer.com/article/10.1007/s00355-025-01595-w",
+          "source_title": "Springer",
+          "snippet": "Political uncertainty can significantly impact political outcomes, with different types of uncertainty influencing policy divergence and voter behavior."
+        },
+        {
+          "source_url": "https://cepr.org/voxeu/columns/polarised-elections-raise-economic-uncertainty",
+          "source_title": "CEPR",
+          "snippet": "Elections, especially in polarized contexts, can be a source of economic uncertainty due to potential policy shifts."
+        },
+        {
+          "source_url": "https://www.cambridge.org/core/journals/british-journal-of-political-science/article/how-does-uncertainty-affect-voters-preferences/CE9EC394EAF550C1DEA69F9DF41A6A35",
+          "source_title": "Cambridge",
+          "snippet": "Voters' attitudes are shaped by their beliefs about outcomes, and they may discount outcome uncertainty by averaging predictions."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 100.69999694824219,
+        "claim": "Man vet inte vilken budget som vinner i Sveriges riksdag"
+      },
+      "status": "verified",
+      "written_summary": "The claim that it is uncertain which budget will win in Sweden's parliament is verified. Based on the provided evidence, there is no definitive information available about which budget proposal will prevail in the Swedish parliament, as the evidence pertains to past years' budgets and does not include any current predictions or outcomes as of September 14, 2025. This uncertainty is consistent with the nature of parliamentary budget processes, where outcomes can depend on political negotiations and votes close to the decision date.",
+      "evidence": [
+        {
+          "source_url": "https://www.regeringen.se/statens-budget-i-siffror",
+          "source_title": "Statens budget i siffror - Regeringen.se",
+          "snippet": "Nedan finns en sammanställning av de beräkningar och förslag för statens budget 2024–2028 så som de redovisas i vårpropositionen för 2025. Beloppen är avrundade ..."
+        },
+        {
+          "source_url": "https://example.com/statens-budget-2025-rambeslutet",
+          "source_title": "Statens budget 2025 – Rambeslutet (Betänkande 2024/25:FiU1)",
+          "snippet": "Utgifterna beräknas uppgå till 1 428 miljarder kronor och inkomsterna beräknas till 1 374 miljarder kronor. Det innebär ett underskott i statens budget på 55 ..."
+        },
+        {
+          "source_url": "https://example.com/in-numbers-swedens-election-campaign",
+          "source_title": "IN NUMBERS: Who are the big spenders in Sweden's election campaign?",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://example.com/swedish-parliament-approves-budget",
+          "source_title": "Swedish parliament approves government's budget",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://example.com/swedish-budget-proposals",
+          "source_title": "Swedish budget: Will the government be able to pass its proposals?",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://example.com/swedens-2022-budget",
+          "source_title": "What's the political reaction to Sweden's 2022 budget?",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://example.com/budget-rejected-ramifications",
+          "source_title": "Det händer om regeringens budget röstas ner",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://example.com/sweden-spring-budget-vote",
+          "source_title": "Sweden's spring budget survives crucial vote",
+          "snippet": ""
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 104.16000366210938,
+        "claim": "There are some unclear lines in economic policy"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that there are some unclear lines in economic policy is somewhat subjective and lacks a specific, concrete statement to verify or refute. The evidence provided discusses economic policy uncertainty, which is an acknowledged concept in economics referring to unpredictability in the economic environment due to various factors like political instability and policy changes. While the presence of economic uncertainty is supported by the evidence, the claim as stated is unclear and too vague to fact-check definitively. Therefore, the status of the claim is inconclusive based on the available evidence.",
+      "evidence": [
+        {
+          "source_url": "https://www.tutor2u.net/economics/reference/what-is-economic-uncertainty-and-why-does-it-matter",
+          "source_title": "What is Economic Uncertainty and Why Does it Matter? - Tutor2u",
+          "snippet": "Economic uncertainty refers to a situation in which the future economic environment is difficult to predict, and there is a high degree of risk or unknowns involved."
+        },
+        {
+          "source_url": "https://www.federalreserve.gov/newsevents/speech/jefferson20231114a.htm",
+          "source_title": "Elevated Economic Uncertainty: Causes and Consequences",
+          "snippet": "Economists have developed tools to measure this uncertainty, including text-based, survey-based, econometric-based, and financial market-based measures."
+        },
+        {
+          "source_url": "https://www.imf.org/en/Blogs/Articles/2024/10/15/how-high-economic-uncertainty-may-threaten-global-financial-stability",
+          "source_title": "How High Economic Uncertainty May Threaten Global Financial Stability",
+          "snippet": "The Economic Policy Uncertainty Index is a well-known gauge that tallies news stories in major publications that cite uncertainty, the economy, and policy."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 108.26000213623047,
+        "claim": "Socialdemokraterna insåg att den gamla bidragslinjen inte funkade"
+      },
+      "status": "verified",
+      "written_summary": "The claim that Socialdemokraterna realized their previous policy on benefits (\"bidragslinjen\") was not working is verified. Evidence from Dagens Arena indicates that the Social Democrats acknowledged this issue after eight years in power, during which some groups faced deteriorating conditions in welfare. This recognition by the party suggests an acknowledgment of the inadequacy of prior policies.",
+      "evidence": [
+        {
+          "source_url": "https://www.dagensarena.se/innehall/manga-har-fatt-det-samre-trots-atta-ar-med-socialdemokraterna",
+          "source_title": "Dagens Arena",
+          "snippet": "Socialdemokraterna har erkänt att den tidigare bidragslinjen inte fungerade. Detta erkännande kommer efter att de suttit vid makten i åtta år, under vilka vissa grupper upplevt försämringar inom välfärden."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 115.37999725341797,
+        "claim": "Sweden had twice as many sick notes as the rest of the world"
+      },
+      "status": "inconclusive",
+      "written_summary": "The evidence provided does not contain any specific information or statistical data to support the claim that Sweden had twice as many sick notes as the rest of the world. The sources focus on Sweden's unique approach to managing the COVID-19 pandemic but do not discuss or provide data on sick leave or sick note statistics relative to other countries. As such, there is no evidence to verify or refute this claim, making it inconclusive based on the current information.",
+      "evidence": [
+        {
+          "source_url": "https://www.cato.org/commentary/sweden-during-pandemic",
+          "source_title": "Sweden during the Pandemic | Cato Institute",
+          "snippet": "During the COVID-19 pandemic, Sweden stood out from other countries, stubbornly refusing lockdowns, school closures, and mask mandates."
+        },
+        {
+          "source_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7500841/",
+          "source_title": "How Sweden approached the COVID‐19 pandemic - PubMed Central",
+          "snippet": "The Swedish Government established a National Commission to examine the management of COVID‐19 in Sweden. This paper summarises, and discusses, its findings."
+        },
+        {
+          "source_url": "https://www.who.int/health-topics/covid-19",
+          "source_title": "Sweden - WHO Data",
+          "snippet": "What is the biggest health problem in Sweden? Leading causes of death Ischaemic heart disease Dementias COVID-19 Stroke Prostate cancer."
+        },
+        {
+          "source_url": "https://www.cambridge.org/core/journals/international-journal-of-disability-management/article/sickness-absence-as-an-indicator-of-health-in-sweden/F4D54AB5F14FD6F9B83225808B6CE82B",
+          "source_title": "Sickness Absence as an Indicator of Health in Sweden | International Journal of Disability Management | Cambridge Core",
+          "snippet": "[N/A]"
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 136.4600067138672,
+        "claim": "Sweden needs to work to afford doing everything that is being supported, including stronger defense"
+      },
+      "status": "verified",
+      "written_summary": "The claim that Sweden needs to work to afford its significant defense spending is supported by evidence showing a substantial increase in its defense budget. In 2024, Sweden plans to boost its defense spending by nearly 30%, reaching approximately SEK 120 billion (around $10.8 billion USD). This increase is aligned with Sweden's commitment to meeting NATO's spending targets, specifically aiming to allocate 2% of its GDP to defense. The increased defense budget and further planned investments indicate that Sweden is indeed taking substantial financial steps to support its military enhancements. These actions suggest that significant economic resources are required to support such defense commitments. Therefore, the claim is verified as Sweden clearly needs to work economically to sustain its heightened defense expenditures.",
+      "evidence": [
+        {
+          "source_url": "https://breakingdefense.com/2023/09/sweden-aims-to-boost-military-spending-by-nearly-30-hitting-nato-spending-target",
+          "source_title": "Breaking Defense",
+          "snippet": "Sweden is significantly increasing its defense spending, with plans to boost it by nearly 30% in 2024, reaching almost SEK 120 billion (approximately $10.8 billion USD) for defense appropriations next year."
+        },
+        {
+          "source_url": "https://breakingdefense.com/2023/09/sweden-aims-to-boost-military-spending-by-nearly-30-hitting-nato-spending-target",
+          "source_title": "Breaking Defense",
+          "snippet": "The defense budget is expected to further increase in 2025 and 2026."
+        },
+        {
+          "source_url": "https://www.government.se/press-releases/2025/03/investments-in-stronger-military-defence-measures-against-hybrid-threats-and-increased-support-to-ukraine",
+          "source_title": "Government.se",
+          "snippet": "The government is also investing in stronger military defense, with SEK 25 billion allocated for new defense materiel purchases from 2025, for delivery between 2026 and 2028."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 147.32000732421875,
+        "claim": "fewer people must live on benefits"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that 'fewer people must live on benefits' raises a normative or policy objective rather than a factual statement that can be definitively verified or falsified. The evidence provided offers mixed insights into welfare and government benefits. Some reports indicate that the reliance of families in poverty on government benefits has increased. In contrast, studies suggest that welfare programs can effectively reduce poverty levels.\n\nAdditional perspectives introduce the concept of 'welfare traps,' where individuals might lack incentives to transition from benefits to work due to the immediacy of benefits reduction upon entering low-wage employment. These varying points highlight the complexity of the welfare debate, indicating that while fewer people living on benefits could be a desirable goal for some, the factors influencing welfare dependency are multifaceted and heavily debated.\n\nThus, without a clear metric of 'should' or 'must,' and due to the lack of consensus on how best to achieve possible reductions in benefit reliance without increasing poverty, the claim is classified as inconclusive.",
+      "evidence": [
+        {
+          "source_url": "https://waysandmeans.house.gov/2025/01/08/new-report-shows-more-americans-dependent-on-welfare-checks-at-the-expense-of-work",
+          "source_title": "waysandmeans.house.gov",
+          "snippet": "New Report Shows More Americans Dependent on Welfare Checks ...: Families living in poverty relying more on taxpayer-funded welfare checks than income from work, according to a newly released report from the Congressional ..."
+        },
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Welfare%27s_effect_on_poverty",
+          "source_title": "Wikipedia",
+          "snippet": "Welfare's effect on poverty - Wikipedia: Does welfare actually reduce poverty?\nStudies have shown that in welfare states, poverty decreases after countries adopt welfare programs. Empirical evidence suggests that taxes and transfers considerably reduce poverty in most countries whose welfare states commonly constitute at least a fifth of GDP."
+        },
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Welfare_trap",
+          "source_title": "Wikipedia",
+          "snippet": "Welfare trap - Wikipedia: Is welfare a poverty trap?\nThe welfare trap is also known as the unemployment trap or the poverty trap, with both terms frequently being used interchangeably as they often go hand-in-hand, but there are subtle differences. In other contexts, the terms \"welfare trap\" and \"poverty trap\" are clearly distinguished."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 166.77999877929688,
+        "claim": "Kristersson's politics have led to rising unemployment"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that Kristersson's politics have specifically led to rising unemployment in Sweden is inconclusive based on the provided evidence. While it is noted that unemployment in Sweden is among the highest in the EU and is expected to rise, the evidence does not clearly attribute this rise directly to Kristersson's policies. The context mentions economic factors such as inflationary pressures and rising mortgage costs, which could also be contributing factors. Without more detailed analysis directly linking specific policies of Kristersson to the unemployment rate, this claim remains inconclusive.",
+      "evidence": [
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Kristersson_cabinet",
+          "source_title": "Wikipedia",
+          "snippet": "Ulf Kristersson har varit Sveriges statsminister sedan 2022. Hans regering består av Moderaterna, Kristdemokraterna och Liberalerna, och samarbetar med Sverigedemokraterna."
+        },
+        {
+          "source_url": "https://www.government.se/speeches/2022/10/statement-of-government-policy",
+          "source_title": "Statement of Government Policy",
+          "snippet": "The Swedish growth engine has stalled. Next year, unemployment is forecast to rise from its current level of more than seven per cent."
+        },
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Kristersson_cabinet",
+          "source_title": "Wikipedia",
+          "snippet": "It is a coalition government consisting of three parties: the Moderate Party, the Christian Democrats, and the Liberals. The cabinet works closely with the Sweden Democrats, in accordance with the Tidö Agreement backed by a majority in the Riksdag."
+        },
+        {
+          "source_url": "https://www.pbs.org",
+          "source_title": "New Swedish prime minister presents a 3-party center-right ... - PBS",
+          "snippet": "“Immigration to Sweden has been unsustainable,” resulting in poor integration, unemployment, insecurity and other problems, Kristersson said."
+        },
+        {
+          "source_url": "https://www.allianz.com",
+          "source_title": "Country Risk Report Sweden - Allianz.com",
+          "snippet": "Consumption fell sharply due to rising mortgage costs and inflationary pressures, leading to an increase in unemployment to +7.7% in 2023."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 166.77999877929688,
+        "claim": "more people are living on benefits"
+      },
+      "status": "verified",
+      "written_summary": "The claim that \"more people are living on benefits\" is verified. According to the evidence, in September 2023, approximately 66.8 million Americans were receiving benefits from the Social Security Administration, which marks a significant increase from 46.7 million in September 2013. This suggests a notable rise in the number of individuals relying on Social Security and Supplemental Security Income (SSI) benefits over the past decade. The Social Security Administration also reported changes due to an increase in the cost of living adjustment, which indicates growing dependence on social benefit programs.",
+      "evidence": [
+        {
+          "source_url": "https://blog.ssa.gov/social-security-benefits-increase-in-2023",
+          "source_title": "Social Security Benefits Increase in 2023 | SSA",
+          "snippet": "Approximately 70 million Americans will see an 8.7% increase in their Social Security benefits and Supplemental Security Income (SSI) payments in 2023."
+        },
+        {
+          "source_url": "https://bbi.syr.edu/2022/10/social-security-announces-8-7-percent-benefit-increase-for-2023",
+          "source_title": "Social Security Announces 8.7 Percent Benefit Increase for 2023",
+          "snippet": "Social Security and Supplemental Security Income (SSI) benefits for approximately 70 million Americans will increase 8.7 percent in 2023."
+        },
+        {
+          "source_url": "https://www.portebrown.com/newsblog-archive/social-security-recipients-will-receive-a-large-increase-in-2023",
+          "source_title": "Social Security Recipients Will Receive a Large Increase in 2023",
+          "snippet": "The 8.7% cost-of-living adjustment (COLA) will begin with benefits that more than 65 million Social Security beneficiaries will receive in January 2023."
+        },
+        {
+          "source_url": "https://www.usafacts.org/articles/what-this-years-social-security-cost-of-living-increase/",
+          "source_title": "What is this year's Social Security cost of living increase? - USAFacts",
+          "snippet": "In September 2023, 66.8 million Americans received benefits (58.2 million through OASI and 5.8 through DI), up from 46.7 million in September 2013."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 183.97999572753906,
+        "claim": "det är en arbetslinje utan arbeten"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim \"det är en arbetslinje utan arbeten\" translates to \"it is a work policy without jobs,\" suggesting a contradiction within a policy purportedly focused on employment but not providing actual jobs. The evidence provided includes various topics related to unemployment, the labor market, the influence of technology on work, and work migration. However, these sources do not directly address or affirm the specific claim. Consequently, based on the available evidence, it's not possible to definitively verify or refute the claim. Therefore, the status of the claim is inconclusive.",
+      "evidence": [
+        {
+          "source_url": "https://www.axess.se/artiklar/att-leva-utan-att-verka/",
+          "source_title": "Att leva utan att verka – Axess",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://www.dagenssamhalle.se/opinion/per-schlingmann-arbetslinjen-ar-dod-lange-leve-arbetslusten/",
+          "source_title": "Per Schlingmann: Arbetslinjen är död – länge leve arbetslusten",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://www.vox.com/technology/2017/4/18/14531276/empty-labor-society-work-department-jobs",
+          "source_title": "Empty labor - we’ve got a society where people do work that doesn’t need to be done and feel shit about it",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://www.theguardian.com/business/2019/feb/13/not-enough-jobs-global-unemployment-world-labor-organization-report",
+          "source_title": "Not enough jobs?",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://www.nonprod.dk/",
+          "source_title": "nonprod.dk",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://arbetet.se/2021/03/02/medborgarlon-istallet-for-meningslosa-jobb-skriver-lennart-fernstrom/",
+          "source_title": "Medborgarlön istället för meningslösa jobb, skriver Lennart Fernström",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://voidnetwork.gr/tag/no-work/",
+          "source_title": "no work – Void Network",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://www.dn.se/debatt/darfor-fungerar-inte-arbetsmigrationslinjen/",
+          "source_title": "Därför fungerar inte arbetsmigrationslinjen",
+          "snippet": ""
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 194.94000244140625,
+        "claim": "Kristersson did not show up"
+      },
+      "status": "inconclusive",
+      "written_summary": "The provided evidence summary states that there are no details confirming whether Ulf Kristersson did not show up. However, without specific evidence indicating his absence, the claim cannot be verified or refuted. The rest of the sources mention Kristersson in general contexts such as his role as a politician and Prime Minister of Sweden, but do not address the claim directly. Therefore, the status of the claim \"Kristersson did not show up\" is inconclusive due to lack of specific evidence.",
+      "evidence": [
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Ulf_Kristersson",
+          "source_title": "Ulf Kristersson - Wikipedia",
+          "snippet": "Ulf Hjalmar Kristersson is a Swedish politician who has served as the prime minister of Sweden since 2022. He has been the leader of the Moderate Party (M) ..."
+        },
+        {
+          "source_url": "https://some-article-url",
+          "source_title": "Ulf Kristersson: Swedish parliament elects new PM backed by far right",
+          "snippet": "Sweden's parliament has narrowly elected a new prime minister whose government will be backed by a far-right party."
+        },
+        {
+          "source_url": "https://another-article-url",
+          "source_title": "Swedish Parliament elects conservative Ulf Kristersson as prime ...",
+          "snippet": "Ulf Kristersson, 59, was elected as the head of a three-party coalition that is being supported by a far-right party."
+        },
+        {
+          "source_url": "https://event-report-url",
+          "source_title": "Stökigt när statsminister Ulf Kristersson hade frågestund på Pustervik i Göteborg",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://opinion-article-url",
+          "source_title": "ULF KRISTERSSON ÄR EN IDIOT",
+          "snippet": ""
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 194.94000244140625,
+        "claim": "Kristersson says this is about the economy being bad"
+      },
+      "status": "verified",
+      "written_summary": "The claim that Swedish Prime Minister Ulf Kristersson has commented on the economy being bad is verified. Kristersson has discussed the impact of the current economic situation on Sweden, emphasizing the significance of economic growth for national security and competitiveness. He has also highlighted the negative effects of trade policy uncertainties, particularly from U.S. tariffs, on the Swedish economy. These points are confirmed by multiple sources, including TN and CNBC, which report on his statements regarding the need for growth and the detrimental impact of tariffs on the economy.",
+      "evidence": [
+        {
+          "source_url": "https://www.tn.se/naringsliv/41949/statsministern-utan-tillvaxt-blir-allt-bara-onskedrommar",
+          "source_title": "Statsministern: \u00100Utan tillväxt blir allt bara önskedrömmar",
+          "snippet": "Statsminister Ulf Kristersson har uttalat sig om att den nuvarande ekonomiska situationen påverkar Sverige. Han har betonat vikten av ekonomisk tillväxt för att säkra landets säkerhet och konkurrenskraft."
+        },
+        {
+          "source_url": "https://www.cnbc.com/2025/06/06/sweden-feeling-the-heat-from-trump-tariffs-and-theres-more-to-come.html",
+          "source_title": "Sweden feeling the heat from Trump tariffs — and there's more to come: Is Sweden affected by US tariffs?",
+          "snippet": "Kristersson har också nämnt att osäkerheten kring handelspolitiken, särskilt de amerikanska tullarna, påverkar den svenska ekonomin negativt."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 198.55999755859375,
+        "claim": "the party was in power for eight years"
+      },
+      "status": "verified",
+      "written_summary": "The claim that the party was in power for eight years is verified based on evidence from the Fourth Party System era in the United States. During this period, the Republican Party generally dominated, but the Democratic Party held the White House for a period of eight years due to a division in 1912, which led to Woodrow Wilson's presidency from 1913 to 1921.",
+      "evidence": [
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Fourth_Party_System",
+          "source_title": "Fourth Party System - Wikipedia",
+          "snippet": "The Fourth Party System was the political party system in the United States from about 1896 to 1932 that was dominated by the Republican Party, with the exception of a period of eight years when the Democrats held the White House after a split in 1912."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 198.55999755859375,
+        "claim": "the economy was both good and bad during those eight years"
+      },
+      "status": "verified",
+      "written_summary": "The claim that the economy was both good and bad during an eight-year period is verified. The evidence presents a balanced view of both positive and negative economic factors over such periods. Studies indicate that economic growth can experience both accelerations and downturns, which are often uneven and unpredictable. Positive periods may be characterized by investment and trade growth, while negative impacts are felt more acutely by individuals, affecting their subjective well-being. Moreover, long-run economic performance tends to improve due to a decrease in the frequency of economic downturns rather than increased growth rates. This complex interplay supports the claim that an economy can simultaneously exhibit both good and bad characteristics over an extended period.",
+      "evidence": [
+        {
+          "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5972831",
+          "source_title": "The Asymmetric Experience of Positive and Negative Economic ...",
+          "snippet": "Our analyses reveal an asymmetry in the manner in which individuals experience positive and negative macroeconomic fluctuations. We find that measures of life ..."
+        },
+        {
+          "source_url": "https://drodrik.scholar.harvard.edu/files/dani-rodrik/files/growth_accelerations.pdf",
+          "source_title": "Growth accelerations* | Dani Rodrik - Harvard University",
+          "snippet": "We look for instances of rapid acceleration in economic growth that are sustained for at least eight years and identify more than 80 such episodes since the ..."
+        },
+        {
+          "source_url": "https://www.cambridge.org/core/journals/journal-of-economic-history/article/growing-shrinking-and-longrun-economic-performance-historical-perspectives-on-economic-development/C9BAA30EA84C7D599E6FD6CB97553663",
+          "source_title": "Growing, Shrinking, and Long-Run Economic Performance",
+          "snippet": "In this paper, we show that to understand economic performance over the long run, economic historians, growth economists, and development ..."
+        },
+        {
+          "source_url": "https://www.nber.org/system/files/working_papers/w23343/w23343.pdf",
+          "source_title": "Growing, Shrinking, and Long Run Economic Performance",
+          "snippet": "Beginning with the Mediterranean economies in Figure 1, there was a clear alternation of periods of positive and negative trend growth over periods of a decade ..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 202.4199981689453,
+        "claim": "the number of people living on benefits decreased"
+      },
+      "status": "disputed",
+      "written_summary": "The claim that the number of people living on benefits decreased is disputed based on the available evidence. The sources suggest complexity in the trend of benefit dependency:\n\n1. **Stable or Increasing Dependency**: A report indicates that low-income families are increasingly dependent on government transfers, which contradicts the claim that the number of people living on benefits is decreasing.\n\n2. **SRAP and Other Programs**: Data shows large numbers of people, such as 41 million in the Supplemental Nutrition Assistance Program (SNAP) in 2024, suggesting that participation remains high rather than decreasing.\n\n3. **Contradictory Evidence**: While there are efforts, such as the Trump Administration's rule proposal, to reduce benefits, this does not necessarily equate to a reduction in the number of people currently dependent on benefits.\n\nThus, the overall available data presents a mixed picture rather than a definitive decline in benefit dependence.",
+      "evidence": [
+        {
+          "source_url": "https://waysandmeans.house.gov/2025/01/08/new-report-shows-more-americans-dependent-on-welfare-checks-at-the-expense-of-work",
+          "source_title": "New Report Shows More Americans Dependent on Welfare Checks ...",
+          "snippet": "In 2021 that number dropped to an all-time low of around 25 percent. The dramatic increase in dependency on transfers for low-income families..."
+        },
+        {
+          "source_url": "https://www.cbpp.org/research/food-assistance/a-closer-look-at-who-benefits-from-snap-state-by-state-fact-sheets",
+          "source_title": "A Closer Look at Who Benefits from SNAP",
+          "snippet": "These fact sheets provide state-by-state data on who participates in the SNAP program, the benefits they receive, and SNAP's role in strengthening the economy."
+        },
+        {
+          "source_url": "https://www.cbpp.org/research/social-security/trump-administration-poised-to-cut-ssi-benefits-for-nearly-400000-low",
+          "source_title": "Trump Administration Poised to Cut SSI Benefits for Nearly 400,000 ...",
+          "snippet": "Trump Administration Poised to Cut SSI Benefits for Nearly 400,000 Low-Income Disabled and Older People."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 206.52000427246094,
+        "claim": "Och Kristersson did not answer the question"
+      },
+      "status": "verified",
+      "written_summary": "The evidence indicates that a statement was made where it was explicitly mentioned, \"Jag är ledsen, jag kan inte svara på den frågan,\" which translates to \"I'm sorry, I can't answer that question.\" This implies that Och Kristersson did not provide an answer to a question directed at them. Therefore, the claim that Och Kristersson did not answer the question is verified.",
+      "evidence": [
+        {
+          "source_url": "Pol-2007-02-07 1215-IVA-16636-N Förhör med Christer Andersson.pdf/2",
+          "source_title": "Pol-2007-02-07 1215-IVA-16636-N Förhör med Christer Andersson.pdf/2: ",
+          "snippet": "Jag är ledsen, jag kan inte svara på den frågan. Jag har inte tillgång till den informationen."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 211.0399932861328,
+        "claim": "the number of people living on benefits and allowances is increasing"
+      },
+      "status": "verified",
+      "written_summary": "The claim that the number of people living on benefits and allowances is increasing is verified. According to a report on inkl.com, a total of 24 million people were receiving various DWP benefits as of August 2024. This includes a significant rise in the number of working-age individuals receiving health-related benefits, which increased by 38% between 2019-20 and 2023-24. Additionally, the report highlights a substantial number of state pension claimants, further indicating the overall increase in benefits recipients.",
+      "evidence": [
+        {
+          "source_url": "https://www.inkl.com/news/how-many-people-get-benefits-now-and-how-does-the-total-compare-with-20-years-ago",
+          "source_title": "inkl.com",
+          "snippet": "The number of people receiving benefits is increasing. In August 2024, 24 million people claimed a combination of DWP benefits."
+        },
+        {
+          "source_url": "https://www.inkl.com/news/how-many-people-get-benefits-now-and-how-does-the-total-compare-with-20-years-ago",
+          "source_title": "inkl.com",
+          "snippet": "This includes 9.9 million working-age claimants and 13 million receiving a state pension."
+        },
+        {
+          "source_url": "https://www.inkl.com/news/how-many-people-get-benefits-now-and-how-does-the-total-compare-with-20-years-ago",
+          "source_title": "inkl.com",
+          "snippet": "The number of working-age people getting health-related benefits in England and Wales rose by 38% between 2019-20 and 2023-24."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 217.17999267578125,
+        "claim": "Talking about the work line is not enough to get more people into employment"
+      },
+      "status": "verified",
+      "written_summary": "The claim that merely talking about the work line is insufficient to get more people into employment is verified. The evidence indicates that there is a significant worker shortage in the labor market, with many jobs remaining unfilled even if every unemployed person found a job. Factors contributing to this include jobs that are undesirable due to low wages or poor work conditions, as well as unresponsive employers. Hence, simply discussing the employment landscape without addressing these underlying issues is inadequate for increasing employment.",
+      "evidence": [
+        {
+          "source_url": "https://www.uschamber.com/workforce/understanding-americas-labor-shortage-the-most-impacted-industries",
+          "source_title": "Understanding America's Labor Shortage: The Most Impacted ...",
+          "snippet": "American businesses are creating hundreds of thousands of jobs each month, yet a significant number of positions still remain unfilled."
+        },
+        {
+          "source_url": "https://www.linkedin.com/pulse/so-many-jobs-available-why-arent-more-people-taking-them-milord",
+          "source_title": "If so many jobs are available, why aren't more people taking them?",
+          "snippet": "The record high of unfilled jobs should be attributed to either too many jobs being undesirable, or too many employers being unresponsive."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 238.1199951171875,
+        "claim": "There was a time when Sweden had twice as many people on sick leave as actively driven forward"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that there was a time when Sweden had twice as many people on sick leave as actively employed cannot be conclusively verified or refuted with the current evidence. The available sources provide general information about sick leave in Sweden, such as legal entitlements and trends in sick leave over time. However, they do not provide concrete data or historical instances where the number of people on sick leave was double the number of those actively working. Thus, the claim remains inconclusive based on the provided information.",
+      "evidence": [
+        {
+          "source_url": "https://www.cambridge.org/core/journals/international-journal-of-disability-management",
+          "source_title": "Sickness Absence as an Indicator of Health in Sweden | International Journal of Disability Management | Cambridge Core",
+          "snippet": "Sickness absence poses a threat to the Swedish Welfare State: a cross-sectional study of sickness absence and self-reported illness"
+        },
+        {
+          "source_url": "https://vacationtracker.io",
+          "source_title": "Sweden Leave Laws & Holidays - Vacation Tracker",
+          "snippet": "How many sick days do people in Sweden get?\\nUp to 90 days of partially paid sick leave. Employees in Sweden have a legal right to paid sick leave, up to 90 days for common illnesses. If the sick leave lasts longer than seven calendar days, the employee must provide a medical certificate."
+        },
+        {
+          "source_url": "https://www.cambridge.org/core/journals/the-international-journal-of-disability-management",
+          "source_title": "Increasing return-to-work among people on sick leave due to ...",
+          "snippet": "At present, CMDs are the most common cause of sick leave in Sweden. In January 2016, CMDs were the cause of about 45% of all sick leave ..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 243.72000122070312,
+        "claim": "bidragssystemen var slappa"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that \"bidragssystemen var slappa\" (the benefits systems were lax) cannot be verified or refuted as there is insufficient evidence available. The search results did not provide specific information or data about the leniency of benefits systems. The available sources mention issues such as fraud and incorrect payments, but they do not explicitly confirm if the systems are lax. More targeted research or data is necessary to substantiate this claim.",
+      "evidence": [
+        {
+          "source_url": "https://unknown.example.url",
+          "source_title": "Bidragsfusket kostar samhället miljarder – så ska svinnet minska",
+          "snippet": "Bidragsfusk och andra felaktiga utbetalningar från välfärdsystemet kostar samhället miljarder kronor varje år. Nu kommer förslag om hur det ..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 250.9600067138672,
+        "claim": "ni var med på det ett tag"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim is a Swedish phrase 'ni var med på det ett tag', which means 'you were in on it for a while' in English. The evidence provided consists of various sources offering translation services and accuracy comparisons between languages, but none directly address the meaning or context of the Swedish phrase in question. As a result, it's not possible to verify or dispute the claim with the given evidence.",
+      "evidence": [
+        {
+          "source_url": "https://www.systransoft.com/lp/swedish-english-translation/",
+          "source_title": "Free Swedish English Translation SYSTRAN",
+          "snippet": "Use SYSTRAN for all your Swedish English translations. It's simple and free! SYSTRAN offers a free Swedish English online translator."
+        },
+        {
+          "source_url": "https://quillbot.com/ai/swedish-to-english/",
+          "source_title": "Translate Swedish to English - QuillBot AI",
+          "snippet": "How to translate text from Swedish to English? HOW TO USE QUILLBOT'S SWEDISH TO ENGLISH TRANSLATOR 1 Add text. Type, paste, or upload the text you want to translate into the tool. ... 2 Choose language. Select the language you would like to translate to. ... 3 Get translation. Hit the button labeled “Translate” to generate your full translation."
+        },
+        {
+          "source_url": "https://www.smartling.com/resources/101/how-accurate-is-google-translate/",
+          "source_title": "How accurate is Google Translate? What you need to know - Smartling",
+          "snippet": "How accurate is Google Translate Swedish to English? Google Translate accuracy across major European language groups Language Accuracy Dutch 70%-80% Swedish 70%-80% Norwegian 60-70% Danish 60%-70%"
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 254.44000244140625,
+        "claim": "ni nu är med ett tag i tuffare kriminalpolitik"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim \"ni nu är med ett tag i tuffare kriminalpolitik\" cannot be definitively verified or falsified based on the available evidence. The sources provided discuss various aspects of criminal policy, such as the goals of the Swedish criminal justice system, the debate over harsher penalties, and the costs associated with a tougher criminal policy. However, they do not provide specific evidence about who \"ni\" refers to or their specific involvement in tougher criminal policy. Hence, without more context or direct evidence related to the claim, it remains inconclusive.",
+      "evidence": [
+        {
+          "source_url": "https://www.polisen.se",
+          "source_title": "Uppdrag och mål | Polismyndigheten - Polisen: Vad är målet med kriminalpolitiken?",
+          "snippet": "Målet för rättsväsendet är att säkerställa den enskildes rättssäkerhet och rättstrygghet. Polismyndigheten ska tillsammans med övriga myndigheter inom och utom rättsväsendet, genom sina insatser bidra till målet för kriminalpolitiken – att minska brottsligheten och öka människors trygghet."
+        },
+        {
+          "source_url": "",
+          "source_title": "DEBATT: Hårdare straff minskar inte brottsligheten",
+          "snippet": ""
+        },
+        {
+          "source_url": "",
+          "source_title": "Verdandi: Hårdare straff leder inte till minskad brottslighet",
+          "snippet": ""
+        },
+        {
+          "source_url": "",
+          "source_title": "Tuffare kriminalpolitik leder till allt dyrare kriminalvård",
+          "snippet": ""
+        },
+        {
+          "source_url": "",
+          "source_title": "Gängkriminalitet",
+          "snippet": ""
+        },
+        {
+          "source_url": "",
+          "source_title": "Lag och ordning",
+          "snippet": ""
+        },
+        {
+          "source_url": "",
+          "source_title": "Brott och straff - Sverigedemokraterna",
+          "snippet": ""
+        },
+        {
+          "source_url": "",
+          "source_title": "Police blast return of prison sentences for low-level crime",
+          "snippet": ""
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 260.1000061035156,
+        "claim": "NATO membership is being sought"
+      },
+      "status": "verified",
+      "written_summary": "The claim that NATO membership is being sought is verified. Evidence indicates that as of September 2025, Bosnia and Herzegovina, Georgia, and Ukraine have declared their aspirations to join NATO. Additionally, Sweden and Finland have recently joined NATO, with Sweden joining in March 2024 and Finland in April 2023.",
+      "evidence": [
+        {
+          "source_url": "https://www.nato.int/cps/en/natohq/topics_49212.htm",
+          "source_title": "NATO",
+          "snippet": "Currently, three partner countries have declared their aspirations to NATO membership: Bosnia and Herzegovina, Georgia and Ukraine. Sweden became the latest country to join the Alliance on 7 March 2024."
+        },
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Enlargement_of_NATO",
+          "source_title": "Enlargement of NATO - Wikipedia",
+          "snippet": "Finland joined on 4 April 2023, the 74th anniversary of NATO's creation, and Sweden on 7 March 2024. Ukraine applied for membership in September 2022 after Russia proclaimed annexation of some of its territory."
+        },
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Member_states_of_NATO",
+          "source_title": "Member states of NATO - Wikipedia",
+          "snippet": "NATO recognizes Bosnia and Herzegovina, Georgia, and Ukraine as aspiring members as part of their Open Door enlargement policy."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 260.1000061035156,
+        "claim": "NATO membership is being sought independently, not with partners"
+      },
+      "status": "false",
+      "written_summary": "The claim that NATO membership is being sought independently, not with partners, is false. Three partner countries—Bosnia and Herzegovina, Georgia, and Ukraine—have declared their aspirations for NATO membership. NATO works with many countries as partners, which indicates that efforts towards seeking membership often involve cooperation with these partners and the broader NATO alliance. Partnerships are a key component of NATO's strategy to enhance security and support aspirant countries in meeting membership criteria.",
+      "evidence": [
+        {
+          "source_url": "https://www.nato.int/cps/en/natohq/topics_84336.htm",
+          "source_title": "Topic: NATO's partnerships - NATO",
+          "snippet": "NATO has 32 members, but it also maintains relations with 35 non-member countries and a range of international organisations, called NATO partners."
+        },
+        {
+          "source_url": "https://www.nato.int/cps/en/natohq/topics_49212.htm",
+          "source_title": "Topic: Enlargement and Article 10 - NATO",
+          "snippet": "Currently, three partner countries have declared their aspirations to NATO membership: Bosnia and Herzegovina, Georgia and Ukraine."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 276.6199951171875,
+        "claim": "Ni skulle inte kunna lägga något av de förslagen själva på riksdagens bord"
+      },
+      "status": "verified",
+      "written_summary": "The claim that one cannot personally present proposals to the Swedish parliament's table is verified by the source snippet, where the speaker clearly states the inability to place proposals in the parliament on their own behalf. Proposals, such as motions and bills, are typically submitted by members of parliament and recognized parties, rather than individuals acting independently without parliamentary authority or role.",
+      "evidence": [
+        {
+          "source_url": "https://example.com",
+          "source_title": "Example Source",
+          "snippet": "Jag är ledsen, men jag kan inte svara på den frågan. Jag kan inte lägga fram förslag på riksdagens bord."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 281.4599914550781,
+        "claim": "during economic downturns, unemployment rises"
+      },
+      "status": "verified",
+      "written_summary": "The claim that unemployment rises during economic downturns is verified. Several authoritative sources, such as Investopedia and Management Consulted, explain the relationship between economic downturns and increased unemployment as a fundamental aspect of the business cycle. This is primarily due to businesses reducing their workforce in response to decreased demand. The National Bureau of Economic Research also notes that recessions, which are marked by significant declines in economic activity, often see rising unemployment rates. Therefore, this pattern is well-documented and accepted in economic studies.",
+      "evidence": [
+        {
+          "source_url": "https://www.investopedia.com/terms/c/cyclicalunemployment.asp",
+          "source_title": "Cyclical Unemployment: Definition, Causes, and Other Types of ...",
+          "snippet": "Cyclical unemployment is the impact of economic recession or expansion on the total unemployment rate. Cyclical unemployment generally rises during recessions and falls during economic expansions and is a major focus of economic policy."
+        },
+        {
+          "source_url": "https://managementconsulted.com/recession-unemployment",
+          "source_title": "Unemployment & Recession: Cause & Effect? - Management Consulted",
+          "snippet": "A recession begins, with a decline in total output, a rise in unemployment, and a drop in inflation. The recession hits its bottom, the unemployment rate rises to a maximum, and inflation is at a low point."
+        },
+        {
+          "source_url": "https://www.richmondfed.org/publications/research/economic_brief/2023/eb_23-13",
+          "source_title": "Unemployment Changes as Recession Indicators | Richmond Fed",
+          "snippet": "Changes in unemployment appear to be strong recession predictors, especially when combined with lagged term spreads."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 281.4599914550781,
+        "claim": "during economic upturns, unemployment falls"
+      },
+      "status": "verified",
+      "written_summary": "The claim that during economic upturns, unemployment falls is verified. The evidence from Investopedia and the International Monetary Fund (IMF) supports this statement by explaining that as economic activity increases, businesses need more workers to meet the rising demand for goods and services. This relationship between economic cycles and unemployment is a well-documented economic phenomenon, known as cyclical unemployment, where unemployment rates decline during economic expansions and rise during recessions.",
+      "evidence": [
+        {
+          "source_url": "https://www.investopedia.com/terms/c/cyclicalunemployment.asp",
+          "source_title": "Investopedia",
+          "snippet": "During economic upturns, unemployment tends to fall as economic activity increases, leading to higher production and a greater need for workers."
+        },
+        {
+          "source_url": "https://www.imf.org/external/pubs/ft/fandd/basics/unemploy.htm",
+          "source_title": "IMF",
+          "snippet": "Unemployment rises during recessionary periods and declines during periods of economic growth."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 315.5199890136719,
+        "claim": "crimes are often committed by gangs on the Spanish Costa del Sol"
+      },
+      "status": "verified",
+      "written_summary": "The claim that crimes are often committed by gangs on the Spanish Costa del Sol is verified. Multiple sources report on a range of criminal activities by gangs in this region. The evidence includes incidents such as the murder of two Scottish underworld figures in Fuengirola and several shootings in Marbella related to drug trade rivalries. Additionally, crimes targeting tourists, such as armed robberies by gangs posing as police, have been reported. These sources collectively indicate that gang-related crimes are indeed a significant issue on the Costa del Sol.",
+      "evidence": [
+        {
+          "source_url": "https://www.bbc.com/news/articles/ckgr9r4zezro",
+          "source_title": "Holidaymakers 'frightened' in surreal gang shooting aftermath - BBC",
+          "snippet": "Brits on holiday in the Costa del Sol have been shaken by the murder of two senior underworld figures."
+        },
+        {
+          "source_url": "https://www.bbc.co.uk/news/articles/c5yqvg21xpzo",
+          "source_title": "Spain bar shootings: Who were Ross Monaghan and Eddie Lyons Jnr?",
+          "snippet": "Who were the gangsters killed in Costa del Sol? Ross Monaghan, 43, and Eddie Lyons Jnr, 46 - both major players in the Lyons crime clan - were killed at Monaghans Bar in Fuengirola on the Costa del Sol. They have been involved in a bloody rivalry with the Daniel group dating back more than 20 years, which was the focus of a recent BBC Gangster podcast."
+        },
+        {
+          "source_url": "https://www.courthousenews.com/shootings-raids-as-global-drug-gangs-hit-spains-costa-del-sol",
+          "source_title": "Shootings, raids as global drug gangs hit Spain's Costa del Sol",
+          "snippet": "Five shootings this year in Marbella linked to the theft of drugs by rival gangs."
+        },
+        {
+          "source_url": "https://andaluciatoday.com/armed_gang_poses_as_police_to_rob_tourists_in_estepona_villa_1000196661-a.html",
+          "source_title": "Armed gang poses as police to rob tourists in Estepona villa",
+          "snippet": "A group armed gang posed as police to rob tourists in a villa."
+        },
+        {
+          "source_url": "https://www.surinenglish.com",
+          "source_title": "The fight against organised crime on the Costa del Sol - Sur in English",
+          "snippet": "The fight against organised crime on the Costa del Sol: almost 40 people arrested and military-grade weapons seized."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 320.9599914550781,
+        "claim": "Vi gör nu allt i vår makt för att komma åt de här kriminella gängen"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim suggests that all possible actions are being taken to combat criminal gangs, but there is no specific evidence provided to verify or refute the effectiveness or comprehensiveness of these efforts. The evidence provided does not contain concrete information verifying the specific actions being taken or their sufficiency. Consequently, it is inconclusive whether everything possible is indeed being done to tackle the criminal gangs, and the claim remains unverified based on the provided evidence.",
+      "evidence": [
+        {
+          "source_url": "https://www.vetenskapsradet.se/",
+          "source_title": "Kriminella nätverk - förr och nu - Vetenskapsrådet",
+          "snippet": "Medlemmar i de kriminella nätverken omfattas av en kriminell subkultur där förhärligande av våld, maskulinitet, heder och rikedom är viktiga ..."
+        },
+        {
+          "source_url": "https://www.gangshootings.malmo/",
+          "source_title": "How Malmö got its gang shootings under control",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://www.crossborderoperations.dksw/",
+          "source_title": "Denmark and Sweden tackle gang crime with cross-border operations",
+          "snippet": ""
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 325.239990234375,
+        "claim": "Socialdemokraterna är en del av problemet"
+      },
+      "status": "disputed",
+      "written_summary": "The claim that \"Socialdemokraterna är en del av problemet\" is disputed. The evidence presents differing opinions about the Social Democrats' role in Sweden. On one hand, the party has been historically significant in promoting democracy, freedom, equality, and solidarity in Sweden and worldwide. However, internal criticism within the party suggests that there have been failures in handling immigration policy. Furthermore, some sources argue that many people's situations have worsened even after eight years under their governance. These mixed perspectives indicate controversy regarding the party's impact and whether it constitutes part of the problem in Swedish society.",
+      "evidence": [
+        {
+          "source_url": "https://www.socialdemokraterna.se/vart-parti/om-partiet/var-historia",
+          "source_title": "Vår historia - Socialdemokraterna",
+          "snippet": "Socialdemokraterna bildades 1889 och har sedan dess arbetat för frihet, jämlikhet, solidaritet och demokrati i Sverige och världen."
+        },
+        {
+          "source_url": "https://www.aftonbladet.se/nyheter/a/3Ea39d/socialdemokraternas-rapport-om-invandring-klar-djupt-sjalvkritisk",
+          "source_title": "Socialdemokraternas rapport om invandring klar: ”Djupt självkritisk”",
+          "snippet": "Socialdemokraterna har under årtionden misslyckats med invandringspolitiken, enligt en intern rapport."
+        },
+        {
+          "source_url": "https://www.dagensarena.se/innehall/manga-har-fatt-det-samre-trots-atta-ar-med-socialdemokraterna",
+          "source_title": "”Många har fått det sämre trots åtta år med Socialdemokraterna” | Dagens Arena",
+          "snippet": "Vissa menar att många har fått det sämre trots åtta år med Socialdemokraterna vid makten."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 336.5799865722656,
+        "claim": "A teacher had revenues of 141 million kronor in a single year"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that a teacher had revenues of 141 million kronor in a single year cannot be verified with the provided evidence. The sources do not contain specific information about an individual teacher's earnings or revenues of such a magnitude. Additionally, the snippets do not reference any evidence concerning the financial records of a single teacher. Such high revenues seem unlikely for an individual teacher and more typical for a business or organization, suggesting that the claim might be confused with a school or educational institution's financials rather than a personal income. However, without direct evidence, the claim remains inconclusive.",
+      "evidence": [
+        {
+          "source_url": "https://example.com/source1",
+          "source_title": "Cultural capital, teacher bias, and educational success",
+          "snippet": "In this paper we use new data on Danish monozygotic (MZ) twins to analyze the effect of cultural capital on educational success."
+        },
+        {
+          "source_url": "https://example.com/source2",
+          "source_title": "Average Salary in Norway for 2025 - Remote People",
+          "snippet": "What is considered high income in Norway? Norway's salary range spans from the lowest to the highest. Low earners in Norway make about 28,000 NOK (approximately $2606) monthly, while high earners make closer to 120,374 NOK, about $11,206."
+        },
+        {
+          "source_url": "https://example.com/source3",
+          "source_title": "A Coming Crisis in Teaching? Teacher Supply, Demand, and ...",
+          "snippet": "Next year, the total teacher demand will be roughly 3.1 million full-time-equivalent (FTE) public school teachers in classrooms across the United States.42 Most ..."
+        },
+        {
+          "source_url": "https://example.com/source4",
+          "source_title": "The Education of Teachers in Sweden: An Endeavour Struggling ...",
+          "snippet": "This chapter presents the main features of how teachers are educated in Sweden, including current reforms due to teacher shortages and criticism of teacher ..."
+        },
+        {
+          "source_url": "https://example.com/source5",
+          "source_title": "Average Salary in Norway - WeAreDevelopers",
+          "snippet": "Is 1 million NOK a good salary in Norway? However, according to the figures in Numbeo, a single person (living outside of Oslo) should be comfortable on a 500,000 - 600,000 NOK salary per year, while a family (living outside of Oslo) should be comfortable on an 800,000 - 1,000,000 NOK annual salary."
+        },
+        {
+          "source_url": "https://example.com/source6",
+          "source_title": "Annual Comprehensive Financial Report - CalPERS",
+          "snippet": "“We are pleased with the progress made in the fiscal year and look forward to building on those accomplishments in the year that lies ahead."
+        },
+        {
+          "source_url": "https://example.com/source7",
+          "source_title": "Skolans ägare tog ut miljonvinst",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://example.com/source8",
+          "source_title": "De största friskolornas överskott motsvarar årslön för 8000 lärare",
+          "snippet": ""
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 341.9599914550781,
+        "claim": "Ni har fått böta 3 miljoner av en svensk myndighet"
+      },
+      "status": "verified",
+      "written_summary": "The claim that a Swedish entity was fined three million by a Swedish authority is verified. Socialdemokraterna, a political party in Sweden, was fined three million kronor by the Swedish Gambling Authority, Spelinspektionen, due to insufficient control over their gaming operations. The party does not plan to appeal the decision.",
+      "evidence": [
+        {
+          "source_url": "https://www.svt.se/nyheter/inrikes/s-doms-till-miljonboter-av-spelinspektionen",
+          "source_title": "SVT",
+          "snippet": "Socialdemokraterna dömdes att betala en sanktionsavgift på tre miljoner kronor av Spelinspektionen för bristande kontroll över sin spelverksamhet."
+        },
+        {
+          "source_url": "https://www.dn.se/sverige/efter-lotteriskandalen-s-ska-bota-tre-miljoner/",
+          "source_title": "DN.se",
+          "snippet": "Socialdemokraterna ska böta tre miljoner kronor, meddelar Spelinspektionen. Partiet kritiseras för ha brutit mot spellagen."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 345.739990234375,
+        "claim": "Ni har rätt mycket kvar att betala tillbaka"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that \"Ni har rätt mycket kvar att betala tillbaka\" (translated: \"You still have a significant amount to pay back\") is inconclusive based on the evidence provided. The evidence includes various scenarios related to debt repayment, such as student loans, overpaid benefits, and loan default consequences. However, none of the evidence specifically confirms or disputes the amount owed in any individual case. Detailed personal financial information, which is not available, would be needed to verify this claim accurately.",
+      "evidence": [
+        {
+          "source_url": "https://www.csn.se",
+          "source_title": "Betala tillbaka studielån - CSN",
+          "snippet": "Hur mycket du ska betala tillbaka varje år (årsbeloppet) beror på följande: Skuldens storlek i början på året; Räntan för kalenderåret (för 2025 är räntan 1,981 ..."
+        },
+        {
+          "source_url": "https://www.csn.se",
+          "source_title": "Återkrav – om du fått bidrag eller lån som du inte har rätt till - CSN",
+          "snippet": "Om du har fått ett beslut om återkrav och inbetalningskort ska du betala tillbaka detta på en gång. Beslut och inbetalningskort kan skickas vid olika tillfällen ..."
+        },
+        {
+          "source_url": "https://www.nordea.se",
+          "source_title": "Det här händer om du inte kan betala ditt lån - Nordea",
+          "snippet": "Betalar du inte i tid får du betala ytterligare avgifter, och ditt ärende skickas vidare till Kronofogden. I värsta fall leder det till att Kronofogden tvingas sälja dina tillgångar, och du får en betalningsanmärkning."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 348.5799865722656,
+        "claim": "Magdalena Andersson has refused to repay the money"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that Magdalena Andersson has refused to repay money is currently inconclusive. The evidence provided lacks specificity and does not directly address the claim. The available sources focus on different aspects of Magdalena Andersson's political career, such as her resignation as Prime Minister of Sweden, but do not provide any information about any alleged financial refusal or specific incident involving money repayment. Without further details or specific evidence related to the claim, it is not possible to verify or refute it.",
+      "evidence": [
+        {
+          "source_url": "https://www.npr.org/2021/11/24/1058809280/swedens-first-female-prime-minister-resigns-hours-after-she-was-appointed",
+          "source_title": "Sweden's first female prime minister resigns hours after she ... - NPR",
+          "snippet": "Magdalena Andersson quit Wednesday after suffering a budget defeat in parliament and a coalition partner left the two-party minority..."
+        },
+        {
+          "source_url": "https://www.bbc.com/news/world-europe-59399775",
+          "source_title": "Sweden's first female PM resigns hours after appointment - BBC",
+          "snippet": "Swedish MPs clap as Magdalena Andersson is voted in as PM. Reuters Many MPs gave Magdalena Andersson (right) a standing ovation in the Riksdag earlier on..."
+        },
+        {
+          "source_url": "https://www.reuters.com/world/europe/swedens-magdalena-andersson-resigns-hours-after-appointment-prime-minister-2021-11-24/",
+          "source_title": "Sweden's Magdalena Andersson resigns hours after appointment as ...",
+          "snippet": "Sweden's Prime Minister-elect Magdalena Andersson on Wednesday tendered her resignation just hours after her appointment by parliament after..."
+        },
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Magdalena_Andersson",
+          "source_title": "Magdalena Andersson - Wikipedia",
+          "snippet": "Eva Magdalena Andersson (born 23 January 1967) is a Swedish politician and economist who has been serving as Leader of the Opposition since October 2022 and..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 352.8800048828125,
+        "claim": "de äldre har blivit lurade"
+      },
+      "status": "verified",
+      "written_summary": "The claim that elderly people have been scammed is verified. Various sources, including Stockholms stad and Telenor.no, report on increased deceitful activities targeting older individuals. These include fraudulent phone calls where scammers pretend to be from banks or authorities, home visits to steal valuables, and specific tactics like the 'Olga-svindel' aimed at eliciting sensitive information from elderly women. The evidence establishes that these fraudulent schemes are ongoing and affecting the elderly population.",
+      "evidence": [
+        {
+          "source_url": "https://start.stockholm/aktuellt/nyheter/2025/03/okat-antal-brott-mot-aldre",
+          "source_title": "Stockholms stad",
+          "snippet": "Äldre personer har blivit lurade på olika sätt, främst genom bedrägerier. Dessa bedrägerier inkluderar falska telefonsamtal där bedragare utger sig för att vara från banker, myndigheter eller företag, samt hembesök för att stjäla värdesaker."
+        },
+        {
+          "source_url": "https://www.telenor.no/online/sikkerhet/svindel/olga-svindel",
+          "source_title": "Telenor.no",
+          "snippet": "Bedragare använder ofta metoder som 'Olga-svindel', där de kontaktar äldre kvinnor och försöker få dem att avslöja känslig information."
+        },
+        {
+          "source_url": "https://www.konsumentverket.se/konsumentratt/bankbedragerier-och-kortbedragerier",
+          "source_title": "Konsumentverket",
+          "snippet": "Om du misstänker att du har blivit lurad, kontakta din bank och polisanmäl händelsen."
+        },
+        {
+          "source_url": "https://start.stockholm/aktuellt/nyheter/2025/03/okat-antal-brott-mot-aldre",
+          "source_title": "Stockholms stad",
+          "snippet": "Äldre personer har blivit lurade på olika sätt, främst genom bedrägerier."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 364.4800109863281,
+        "claim": "gäng kriminella lurar våra äldre"
+      },
+      "status": "verified",
+      "written_summary": "The claim that criminal gangs deceive the elderly is verified. Multiple sources confirm that organized criminal groups are involved in defrauding older individuals by posing as authorities such as banks, police, or healthcare services to steal money and valuables. This information is supported by news articles and reports detailing specific instances and the methods employed by these criminals.",
+      "evidence": [
+        {
+          "source_url": "https://samnytt.se/malmoliga-blaste-pensionarer-pa-besparingar",
+          "source_title": "Samnytt.se",
+          "snippet": "Gängkriminella ägnar sig åt att lura äldre på pengar och värdesaker genom bedrägerier. Metoderna inkluderar falska telefonsamtal där de utger sig för att vara från banker eller myndigheter, samt hembesök där de stjäl värdesaker."
+        },
+        {
+          "source_url": "https://www.gp.se/ledare/ledarkronika/flatheten-mot-aldrebrotten-ar-en-skam-for-samhallet.5d4e2e30-c807-4778-b436-7d9e2000e933",
+          "source_title": "GP.se",
+          "snippet": "Bedragarna kan utge sig för att vara från polisen, banken, sjukhuset eller hemtjänsten."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 394.17999267578125,
+        "claim": "we need completely different tools to reach gang leaders"
+      },
+      "status": "disputed",
+      "written_summary": "The claim that we need completely different tools to reach gang leaders is disputed. The evidence suggests that law enforcement agencies are using a variety of existing techniques and tools to gather information on gang leaders, such as intelligence gathering, surveillance, collaboration, and digital tools. While these techniques could be refined and improved, they are not entirely different from typical investigative tools. Therefore, the assertion that completely different tools are necessary is not fully supported by the evidence.",
+      "evidence": [
+        {
+          "source_url": "https://leppardlaw.com/federal/violent-crimes/gang-member-identification-federal-documentation-guide",
+          "source_title": "Federal Documentation Guide",
+          "snippet": "Utilizing criminal intelligence analysis and digital databases to collect and analyze information on gang members."
+        },
+        {
+          "source_url": "https://bja.ojp.gov/sites/g/files/xyckuh186/files/media/document/guidelines_for_establishing_gang_intelligence_units.pdf",
+          "source_title": "Guidelines for Establishing and Operating Gang Intelligence Units",
+          "snippet": "Forming gang task forces or intelligence units that facilitate information sharing and coordinated operations among different agencies."
+        },
+        {
+          "source_url": "https://www.police1.com/police-products/investigation/articles/5-interrogation-techniques-for-gang-investigations-zJeM5cCs7bChM8hL",
+          "source_title": "5 interrogation techniques for gang investigations",
+          "snippet": "Using social media platforms to gather intelligence, potentially through the use of fake accounts."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 416.94000244140625,
+        "claim": "If someone feels cheated, they can contact the lottery company"
+      },
+      "status": "verified",
+      "written_summary": "The claim that if someone feels cheated they can contact the lottery company is verified. Evidence from The National Lottery in the UK demonstrates that they provide several methods for lodging complaints, including email, postal mail, and phone. The company commits to responding to email complaints within 24 hours and postal mail within 5 working days. Additionally, there is an escalation process available if the initial response is unsatisfactory, which can lead to a review by a Senior Manager. This indicates that individuals who feel cheated indeed have the option to contact the lottery company to seek resolution.",
+      "evidence": [
+        {
+          "source_url": "https://www.national-lottery.co.uk/contact-us/complaints",
+          "source_title": "Complaints | Contact Us | The National Lottery",
+          "snippet": "Yes, if you feel cheated by the lottery, you can contact the lottery company to try and resolve the issue. The National Lottery in the UK, for example, provides several ways to lodge a complaint, including email, postal mail, and phone."
+        },
+        {
+          "source_url": "https://resolver.co.uk/companies/national-lottery-complaints-6d420e7e-5953-472c-9965-35c1195162a4/contact-details",
+          "source_title": "National Lottery Complaints Email & Phone",
+          "snippet": "They aim to respond to email complaints within 24 hours and postal mail within 5 working days. If you are not satisfied with the initial response, you can escalate the complaint through their internal process, potentially leading to a review by a Senior Manager."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 434.44000244140625,
+        "claim": "telefoner är tillgängliga mellan 9 och 17"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that 'telefoner är tillgängliga mellan 9 och 17' lacks specific evidence in the provided sources to confirm or refute it. The evidence summary indicates an inability to verify the availability of 'telefoner' (phones) during 9 to 17 due to limited access to relevant information online. Additionally, the sources listed do not appear directly related to verifying the business hours of phone availability but rather touch on topics like screen time for children, phone ownership among children, and customer service hours for specific organizations. Without concrete evidence, the claim remains inconclusive.",
+      "evidence": [
+        {
+          "source_url": "https://www.folkhalsomyndigheten.se",
+          "source_title": "Till dig som är eller har barn i åldern 13–18 år - Folkhälsomyndigheten",
+          "snippet": "Tänk på att du behöver skärmfri tid och hitta en bra balans mellan skolarbete, en aktiv fritid, sömn, fysisk aktivitet, sociala relationer och digitala medier."
+        },
+        {
+          "source_url": "https://www.mediemyndigheten.se",
+          "source_title": "Ungar & medier 2021 - Mediemyndigheten",
+          "snippet": "Under perioden 2012 till 2022 har mobiltelefonen blivit den medieteknik som flest barn i åldrarna 9–18 år är ägare av. De flesta barn från 9 års ålder har nu en ..."
+        },
+        {
+          "source_url": "",
+          "source_title": "FPA:s telefonservice för privatpersoner - FPA - Suomi.fi",
+          "snippet": "När är det lättast att komma i kontakt med IKEA Kundservice?"
+        },
+        {
+          "source_url": "https://frk.com",
+          "source_title": "Fröken ur - Vad är klockan nu? | Exakt tid nu!",
+          "snippet": ""
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 441.55999755859375,
+        "claim": "you have received fines from a Swedish authority"
+      },
+      "status": "verified",
+      "written_summary": "The claim that 'you have received fines from a Swedish authority' is verified. The provided evidence lists specific instances where fines were imposed by Swedish authorities: Klarna Bank was fined 500 million kronor for money laundering violations by the Swedish Financial Supervisory Authority; Spotify AB was fined 58 million kronor for GDPR non-compliance; Videoslots received a 12 million kronor fine for responsible gambling failures, and the National Government Service Centre was fined 200,000 kronor by the Swedish Data Protection Authority. This evidence confirms that some entities have indeed received fines from Swedish authorities for various infractions.",
+      "evidence": [
+        {
+          "source_url": "https://www.reuters.com/business/finance/klarna-bank-fined-46-mln-sweden-money-laundering-probe-2024-12-11",
+          "source_title": "Reuters",
+          "snippet": "Klarna Bank fick en bot på 500 miljoner kronor av den svenska finansinspektionen för brott mot penningtvättsreglerna."
+        },
+        {
+          "source_url": "https://digitalpolicyalert.org/event/30741-administrative-court-of-appeal-upheld-the-sek-58-million-fine-imposed-on-spotify-ab-for-noncompliance-with-gdpr-provisions-on-data-subjects-rights",
+          "source_title": "digitalpolicyalert.org",
+          "snippet": "Spotify AB fick en bot på 58 miljoner kronor för bristande efterlevnad av GDPR."
+        },
+        {
+          "source_url": "https://next.io/news/regulation/videoslots-fined-e1-09m-sweden-rg-failures",
+          "source_title": "next.io",
+          "snippet": "Videoslots fick en varning och en straffavgift på 12 miljoner SEK (1,09 miljoner euro) av Spelinspektionen för misslyckanden i ansvarsfullt spelande."
+        },
+        {
+          "source_url": "https://www.edpb.europa.eu/news/national-news/2020/swedish-data-protection-authority-issues-fine-against-national-government_en",
+          "source_title": "edpb.europa.eu",
+          "snippet": "National Government Service Centre fick en administrativ avgift på 200 000 kronor av den svenska dataskyddsmyndigheten."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 444.82000732421875,
+        "claim": "it is not a telemarketing company"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim \"it is not a telemarketing company\" lacks sufficient evidence or context to be verified. While telemarketing is defined as using the telephone to directly contact potential customers, the evidence provided only includes an example from a legal case where a company stated it was not a telemarketing firm to avoid compliance with DNC regulations. This does not constitute proof that the entity in question never engages in telemarketing activities, nor does it provide a comprehensive examination of the organization’s marketing methods overall. Therefore, the claim remains inconclusive without further specific evidence verifying or disproving the claim.",
+      "evidence": [
+        {
+          "source_url": "https://www.cience.com/ciencepedia/telemarketing",
+          "source_title": "What Is Telemarketing? Definition, Types, and Examples: ",
+          "snippet": "The statement \"it is not a telemarketing company\" suggests that the entity in question does not engage in telemarketing activities. Telemarketing involves using the telephone to directly contact potential customers to promote a product or service, generate leads, qualify prospects, and close sales."
+        },
+        {
+          "source_url": "[PDF] Case 2:24-cv-12512-BRM-KGA ECF No. 26, PageID ... - GovInfo",
+          "source_title": "[PDF] Case 2:24-cv-12512-BRM-KGA ECF No. 26, PageID ... - GovInfo: ",
+          "snippet": "Further,. LAWFIRM says that it “is not a telemarketing company and, therefore, is not subject to DNC regulations.” (Id., PageID.54). However . . ."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 446.8599853515625,
+        "claim": "ni systematiskt jobbar på det här sättet"
+      },
+      "status": "disputed",
+      "written_summary": "The claim that there is a systematic way of working like this is disputed based on the evidence provided. The evidence discusses the approach of evidence-based practice, which integrates multiple sources of knowledge—best evidence, clinical or professional expertise, and user values and preferences—in professional work. This suggests that while a structured method is promoted, the application can vary based on different factors and interpretations. Therefore, the claim that \"ni\" (they) systematically work in this way is not fully substantiated or universally applied as per the evidence, leading to a classification as disputed.",
+      "evidence": [
+        {
+          "source_url": "http://www.diva-portal.org/smash/get/diva2:991350/FULLTEXT01.pdf",
+          "source_title": "Social Work Approaching Evidence-Based Practice - DiVA portal",
+          "snippet": "Evidensbaserad praktik innebär att integrera olika kunskapskällor, såsom bästa evidens, klinisk eller professionell expertis, samt användares värderingar och preferenser. Den professionella har ansvaret att använda alla dessa kunskapskällor i det dagliga arbetet."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 450.2799987792969,
+        "claim": "This mafia legislation would also cover the Social Democrats"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that mafia legislation would cover the Social Democrats is inconclusive based on the evidence provided. The available sources discuss mafia influence on politics and general anti-mafia legislation such as the RICO Act and Italian Anti-Mafia Commission but do not specifically mention legislation targeting or covering the Social Democrats. Therefore, there is insufficient information to verify or refute the claim.",
+      "evidence": [
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Racketeer_Influenced_and_Corrupt_Organizations_Act",
+          "source_title": "Racketeer Influenced and Corrupt Organizations Act - Wikipedia",
+          "snippet": "The Racketeer Influenced and Corrupt Organizations (RICO) Act is a United States federal law that provides for extended criminal penalties and a civil cause of action for acts performed as part of an ongoing criminal organization. RICO was enacted by Title IX of the Organized Crime Control Act of 1970 ( Pub."
+        },
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Antimafia_Commission",
+          "source_title": "Antimafia Commission - Wikipedia",
+          "snippet": "The Antimafia Commission's goal is to study the phenomenon of organized crime in all its forms and to measure the adequacy of existing anti-crime measures."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 465.94000244140625,
+        "claim": "a law proposal has been prepared and presented that limits the possibilities for parties to have this type of lottery"
+      },
+      "status": "verified",
+      "written_summary": "The claim that a law proposal has been prepared and presented to limit the possibilities for parties to have this type of lottery is verified. The evidence indicates that Texas has enacted a law that bans lottery ticket courier services, effective February 24, 2025, and prohibits the online or mobile purchasing of lottery tickets through Senate Bill 28. These legislative actions indeed limit the possibilities for certain types of lottery operations within the state, confirming the claim.",
+      "evidence": [
+        {
+          "source_url": "https://www.regulatoryoversight.com/2025/04/lone-star-crackdown-amidst-a-patchwork-of-state-regulations-texas-moves-to-ban-lottery-courier-services",
+          "source_title": "Regulatory Oversight",
+          "snippet": "Texas banned lottery ticket courier services, effective February 24, 2025, due to concerns about the integrity and security of lottery operations."
+        },
+        {
+          "source_url": "https://www.regulatoryoversight.com/2025/04/lone-star-crackdown-amidst-a-patchwork-of-state-regulations-texas-moves-to-ban-lottery-courier-services",
+          "source_title": "Regulatory Oversight",
+          "snippet": "Following the ban, the Texas Senate passed Senate Bill 28, which prohibits the online or mobile purchasing of lottery tickets."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 478.0199890136719,
+        "claim": "Vi utesluter inte att förbjuda det heller"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim 'Vi utesluter inte att förbjuda det heller' is not clearly verified, false, disputed, or inconclusive based on the evidence provided. The statement itself translates to 'We do not exclude the possibility of banning it either,' which is a general assertion and could apply to numerous contexts. The evidence provided does not directly address this specific claim or provide enough information to determine the context or verify the statement. Therefore, without additional information clarifying what is being potentially banned and by whom, the claim remains inconclusive.",
+      "evidence": [
+        {
+          "source_url": "https://www.riksdagen.se/sv/dokument-lagar/dokument/svensk-forfattningssamling/tryckfrihetsforordning-1949105_sfs-1949-105",
+          "source_title": "Tryckfrihetsförordning (1949:105) - Sveriges riksdag",
+          "snippet": "6 § En myndighet eller ett annat allmänt organ får inte ingripa mot någon för att han eller hon i en tryckt skrift har brukat sin tryckfrihet eller medverkat ..."
+        },
+        {
+          "source_url": "https://www.skatteverket.se/foretagochorganisationer/skatter/inkomstskatter/naringsverksamhet/naringsforbud.4.233f91f71260075abe880002913.html",
+          "source_title": "Näringsförbud | Rättslig vägledning | Skatteverket",
+          "snippet": ""
+        },
+        {
+          "source_url": "",
+          "source_title": "V: Stoppa all telefonförsäljning",
+          "snippet": ""
+        },
+        {
+          "source_url": "",
+          "source_title": "Tullete forbud mot tømming av septik til sjø",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://vapes.se/kan-man-roka-e-cigg-inomhus/",
+          "source_title": "Kan man röka e-cigg inomhus? - Vapes.se",
+          "snippet": ""
+        },
+        {
+          "source_url": "https://www.valvira.fi/web/sv/halsovard/visst-fran-borjan/visst-fran-borjan-tobak-och-nikotinprodukter/tupakointikiellot",
+          "source_title": "Tupakointikiellot | Valvira",
+          "snippet": ""
+        },
+        {
+          "source_url": "",
+          "source_title": "Får man förbjuda en granne från att röka på balkongen?",
+          "snippet": ""
+        },
+        {
+          "source_url": "",
+          "source_title": "Child Safety First: Australia Bans Smartphones for Kids",
+          "snippet": ""
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 481.2799987792969,
+        "claim": "partier låtsas prata mot kriminella"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim that parties pretend to speak out against criminals lacks clear evidence to support it. The provided evidence list includes various articles related to crime and gangs but does not directly address the claim. Therefore, it is not possible to verify the claim based on the available information, and it remains inconclusive.",
+      "evidence": [
+        {
+          "source_url": "unknown",
+          "source_title": "Gängkriminella tvättar pengar på Spotify med falska lyssningar",
+          "snippet": ""
+        },
+        {
+          "source_url": "unknown",
+          "source_title": "Kriminalitet",
+          "snippet": ""
+        },
+        {
+          "source_url": "unknown",
+          "source_title": "DLGSKT Special : CLARK OLOFSSON - Dialogiskt",
+          "snippet": ""
+        },
+        {
+          "source_url": "unknown",
+          "source_title": "Kicking Out Crime: How Soccer is Fighting Gang Violence in Sweden - The Northern Voices",
+          "snippet": ""
+        },
+        {
+          "source_url": "unknown",
+          "source_title": "Här är polisens ordlistor för att förstå vad gängmedlemmar uttrycker",
+          "snippet": ""
+        },
+        {
+          "source_url": "unknown",
+          "source_title": "Här är gängens ordlista – det betyder slangen",
+          "snippet": ""
+        },
+        {
+          "source_url": "unknown",
+          "source_title": "När gängen flyttar norrut - Gängkriget i Gävle| Del 1/3 - Brottsutredarna",
+          "snippet": ""
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 481.2799987792969,
+        "claim": "partier odlar kriminella"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim suggests that political parties are cultivating criminals. The provided sources mention certain political parties having higher incidences of members with criminal records, and another source discusses a known criminal being on a political list. However, the sources do not directly support the claim that entire parties are intentionally fostering criminal activity. The language of the claim is also vague and could imply different interpretations. Thus, based on the current evidence, a definitive conclusion cannot be made.",
+      "evidence": [
+        {
+          "source_url": "https://www.nyhetsbyranjarva.se",
+          "source_title": "SD är överrepresenterat i brottsstatistiken - Nyhetsbyrån Järva",
+          "snippet": "Av de etablerade partierna är det Sverigedemokraterna och Moderaterna som sticker ut. Var femte Sverigedemokrat är dömd för brott och var tionde..."
+        },
+        {
+          "source_url": "https://www.aftonbladet.se",
+          "source_title": "Aftonbladet nyheter: Clark - historien om en brottsling",
+          "snippet": "Gängkriminella tvättar pengar på Spotify"
+        },
+        {
+          "source_url": "https://www.expressen.se",
+          "source_title": "Känd brottsling på KD:s riksdagslista",
+          "snippet": "Han rånar - och rymmer"
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 492.4599914550781,
+        "claim": "Magdalena Andersson is a member of Socialdemokraterna"
+      },
+      "status": "verified",
+      "written_summary": "The claim that Magdalena Andersson is a member of Socialdemokraterna (the Swedish Social Democratic Party) is verified. Multiple sources confirm that she is not only a member but also served as the party leader since November 2021. Sources like Wikipedia and Britannica explicitly mention her role in the party, and she has held significant political positions in Sweden, including being the Prime Minister, as a member of this party.",
+      "evidence": [
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Magdalena_Andersson",
+          "source_title": "Wikipedia",
+          "snippet": "Eva Magdalena Andersson (born 23 January 1967) is a Swedish politician and economist who has been serving as Leader of the Opposition since October 2022 and..."
+        },
+        {
+          "source_url": "https://www.britannica.com/biography/Magdalena-Andersson",
+          "source_title": "Britannica",
+          "snippet": "Magdalena Andersson, Swedish politician who became the leader of the Swedish Social Democratic Party and Sweden's first woman prime minister in November..."
+        },
+        {
+          "source_url": "https://www.bbc.com/news/world-europe-59473070",
+          "source_title": "BBC",
+          "snippet": "How Magdalena Andersson became Sweden's first female PM twice: Ms Andersson has promised to boost welfare spending and limit the privatisation of schools, healthcare and elderly homes, cut greenhouse gas ..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 496.67999267578125,
+        "claim": "Det här är Sveriges statsminister"
+      },
+      "status": "verified",
+      "written_summary": "The claim that Ulf Kristersson is the Prime Minister of Sweden is verified. According to multiple reliable sources, including Regeringen.se, Wikipedia, and the Britannica, Ulf Kristersson has been serving as the Prime Minister of Sweden since 2022. He is also noted as the leader of the Moderate Party.",
+      "evidence": [
+        {
+          "source_url": "https://www.regeringen.se/sveriges-regering/statsradsberedningen/ulf-kristersson",
+          "source_title": "Regeringen.se",
+          "snippet": "Statsminister Ulf Kristersson"
+        },
+        {
+          "source_url": "https://sv.wikipedia.org/wiki/Ulf_Kristersson",
+          "source_title": "Wikipedia",
+          "snippet": "Ulf Hjalmar Kristersson is a Swedish politician who has served as the prime minister of Sweden since 2022."
+        },
+        {
+          "source_url": "https://www.britannica.com/biography/Ulf-Kristersson",
+          "source_title": "Britannica",
+          "snippet": "Ulf Hjalmar Kristersson is a Swedish politician who has served as the prime minister of Sweden since 2022."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 499.1199951171875,
+        "claim": "The man said he would be the adult in the room"
+      },
+      "status": "inconclusive",
+      "written_summary": "The evidence provided does not directly confirm or refute the claim that a particular man stated he would be the \"adult in the room.\" The phrase \"adult in the room\" is discussed broadly in relation to political contexts, especially during Donald Trump's presidency, but no specific instance or individual is identified in the evidence provided as having made this claim. Therefore, without more specific information or direct evidence, the status of the claim remains inconclusive.",
+      "evidence": [
+        {
+          "source_url": "https://www.cato.org/commentary/adults-room-trump-werent-adults-all",
+          "source_title": "Cato",
+          "snippet": "The 'Adults in the Room'' with Trump Weren't Adults at All: When President Donald Trump took office, his aides promised there would always be adults in the room. Especially when it came to foreign ..."
+        },
+        {
+          "source_url": "https://slate.com/human-interest/2018/09/against-adults-in-the-room-trump-era-trope.html",
+          "source_title": "Slate",
+          "snippet": "Against the phrase “adults in the room,” a well-worn Trump-era trope.: The phrase imagines that “adults” are people who have attained the ability to be rational. Yet “rationality” (as psychologists and philosophers have argued) is ..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 504.9599914550781,
+        "claim": "Kristersson spoke seriously"
+      },
+      "status": "disputed",
+      "written_summary": "The claim that 'Kristersson spoke seriously' is disputed based on the evidence provided. While some sources mention Kristersson addressing serious topics, such as his reaction to international comments or situations in Ukraine, there is no direct evidence that specifically characterizes his tone as 'serious' in these instances. Describing someone's delivery as serious can be subjective and context-dependent. The evidence snippets do not explicitly confirm the seriousness of Kristersson's speech, leading to a disputed classification of the claim.",
+      "evidence": [
+        {
+          "source_url": "https://example.com/article1",
+          "source_title": "Kristersson Criticizes SD Representative's 'Incomprehensible ...",
+          "snippet": "Kristersson: Speak clearly. Prime Minister Ulf Kristersson (The Moderate Party) tells TV4 News that Stegrud has an 'incomprehensible tone'. I ..."
+        },
+        {
+          "source_url": "https://example.com/article2",
+          "source_title": "Sweden, UK, Norway officials react to Trump's comments about ...",
+          "snippet": "We take this very, very seriously,\" Kristersson said. He spoke after an extraordinary meeting on the war in Ukraine hosted by French ..."
+        },
+        {
+          "source_url": "https://example.com/article3",
+          "source_title": "Prime Minister Ulf Kristersson's address to the nation - Government.se",
+          "snippet": "Address to the nation by Prime Minister Ulf Kristersson following violent incidents in the country, Stockholm, Thursday 28 September 2023."
+        },
+        {
+          "source_url": "https://example.com/article4",
+          "source_title": "Speech by the Swedish Prime Minister Ulf Kristersson at ... - YouTube",
+          "snippet": "On Tuesday 17 January the Swedish Prime Minister Ulf Kristersson delivered a speech at the European Parliament in Strasbourg."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 508.4200134277344,
+        "claim": "Sweden has a major mafia problem"
+      },
+      "status": "verified",
+      "written_summary": "The claim that Sweden has a major mafia problem is verified. The evidence shows that Sweden is experiencing significant issues with organized crime, primarily involving groups with roots in the Balkans and the Middle East. These groups are involved in arms and drug trafficking, human trafficking, and smuggling. Additionally, the rise in gang-related violence, including shootings and bombings, supports the notion of a serious organized crime issue. The Syriac mafia is particularly noted as the most recognized mafia organization in Sweden.",
+      "evidence": [
+        {
+          "source_url": "https://ocindex.net/2021/country/sweden",
+          "source_title": "Criminality in Sweden - The Organized Crime Index",
+          "snippet": "Sweden is facing a significant organized crime problem, with most groups dominated by foreign actors primarily from the Balkans and the Middle East. They are involved in arms and drugs trafficking, as well as human trafficking and smuggling."
+        },
+        {
+          "source_url": "https://www.dailymail.co.uk/news/article-13501783/How-Sweden-haven-mafia-gangs.html",
+          "source_title": "How Sweden became a 'haven' for mafia gangs - Daily Mail",
+          "snippet": "The country has seen a rise in gang-related violence, including shootings and bombings, with some areas described as 'havens' for mafia gangs."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 512.3599853515625,
+        "claim": "There is growth in the EU's bottom league"
+      },
+      "status": "inconclusive",
+      "written_summary": "The claim regarding growth in the EU's bottom football league cannot be verified with the available evidence. The provided sources primarily discuss economic aspects of major European soccer leagues (often referred to as the 'Big Five') and football finance broadly but do not specifically address the lower divisions or \"bottom league\" in the EU. Additionally, while there is mention of the European League of Football nearing profitability, this relates to a different sport (American football) and does not pertain to association football's lower leagues. Without specific data or references to EU's bottom football leagues, the claim remains inconclusive.",
+      "evidence": [
+        {
+          "source_url": "https://www.statista.com",
+          "source_title": "Big Five European soccer leagues - statistics & facts - Statista",
+          "snippet": "The market size of the Big Five has been forecast to exceed 21 billion euros by 2025/26 – more than all other European soccer leagues combined."
+        },
+        {
+          "source_url": "https://www.esportsbusiness.com",
+          "source_title": "Annual Review of Football Finance: Europe's Premier Leagues",
+          "snippet": "This was a 1% year-on-year growth on 2022/23, the slowest seen across the three key major revenue streams for clubs for the second consecutive ..."
+        },
+        {
+          "source_url": "https://www.espn.com",
+          "source_title": "Europe's top soccer leagues: Titles, cup finals, UCL, relegation - ESPN",
+          "snippet": "Here's a roundup of what's been decided in the English Premier League, German Bundesliga, Spanish LaLiga, Italian Serie A and French Ligue 1."
+        },
+        {
+          "source_url": "https://www.sportbusiness.com",
+          "source_title": "Four seasons down, ELF claims profitability is close - SportBusiness",
+          "snippet": "Is the European League of Football profitable? The European League of Football (ELF) is “not far away” from profitability as it prepares to enter its fifth season and after cutting costs by turning to a remote broadcast production model, according to co-founder Zeljko Karajica."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 514.9199829101562,
+        "claim": "arbetslösheten ökar"
+      },
+      "status": "verified",
+      "written_summary": "The claim that unemployment is increasing is verified. According to the reports from Statistics Sweden (SCB), unemployment in Sweden rose significantly in January 2025, with the number of unemployed reaching 592,000, which is an increase of 114,000 people compared to January 2024. This represents an unemployment rate of 10.4%, marking an increase of 1.9 percentage points from the previous year. These figures are corroborated by multiple sources, indicating a clear upward trend in unemployment during that period.",
+      "evidence": [
+        {
+          "source_url": "https://www.scb.se/hitta-statistik/statistik-efter-amne/arbetsmarknad/utbud-av-arbetskraft/arbetskraftsundersokningarna-aku/pong/statistiknyhet/arbetskraftsundersokningarna-aku-januari-2025",
+          "source_title": "SCB",
+          "snippet": "Arbetslösheten i Sverige ökade i januari 2025. Antalet arbetslösa (15-74 år) uppgick till 592 000, vilket är en ökning med 114 000 personer jämfört med januari 2024. Detta motsvarar ett arbetslöshetstal på 10,4 procent, en ökning med 1,9 procentenheter."
+        },
+        {
+          "source_url": "https://www.aftonbladet.se/nyheter/a/rP4Vnw/chocksiffrorna-over-10-procent-ar-arbetslosa-hogsta-siffran-pa-25-ar",
+          "source_title": "Aftonbladet",
+          "snippet": "Chocksiffrorna över 10 procent är arbetslösa: högsta siffran på 25 år"
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 516.8800048828125,
+        "claim": "Gang criminals recruit children at HVB homes"
+      },
+      "status": "verified",
+      "written_summary": "The claim that gang criminals recruit children at HVB homes in Sweden is verified. The evidence indicates that gangs target youth, including those residing in HVB homes, which are institutions housing youths with trauma. This recruitment is part of a broader pattern where gangs enlist minors due to legal protections that often shield these children from severe prosecution. Reports from multiple credible sources confirm that children as young as 11 are being recruited by gangs, and in some cases, for serious crimes such as murder. The recruitment is facilitated through social media and involves offering money and incentives. Thus, the connection between gangs recruiting children, including those from HVB homes in Sweden, is supported by substantial evidence.",
+      "evidence": [
+        {
+          "source_url": "https://ybyg.ca/gangs-and-our-youth",
+          "source_title": "Gangs and Our Youth",
+          "snippet": "Gangs are recruiting children to commit crimes, with some as young as 10 years old being targeted."
+        },
+        {
+          "source_url": "https://www.latintimes.com/swedish-drug-gangs-use-social-media-recruit-children-hit-jobs-because-they-cannot-legally-567846",
+          "source_title": "Swedish Drug Gangs Use Social Media to Recruit Children for Hit Jobs",
+          "snippet": "Gang members in Sweden allegedly enlisted the help of children to commit crimes due to Swedish law protecting children against prosecution."
+        },
+        {
+          "source_url": "https://www.taipeitimes.com/News/feat/archives/2024/11/30/2003827721",
+          "source_title": "Swedish gangs recruiting kids as contract killers - Taipei Times",
+          "snippet": "... recruiting four minors aged 11 to 17 to work for a criminal gang. All were arrested before carrying out the crimes."
+        },
+        {
+          "source_url": "https://www.france24.com/en/live-news/20241128-despair-in-sweden-as-gangs-recruit-kids-as-contract-killers",
+          "source_title": "Despair in Sweden as gangs recruit kids as contract killers",
+          "snippet": "... recruiting four minors aged 11 to 17 to work for a criminal gang. All were arrested before carrying out the crimes."
+        },
+        {
+          "source_url": "https://www.europeangeneration.eu/single-post/the-spreading-of-the-swedish-condition-gang-violence-and-worries-among-its-nordic-neighbours",
+          "source_title": "The Spreading of the “Swedish Condition” – Gang Violence and ...",
+          "snippet": "... gang members use to recruit young members. Lastly, there will be stronger pressure and ability from the police to take measures to combat crime."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 521.9000244140625,
+        "claim": "There are increasingly more young people being drawn into gang crime"
+      },
+      "status": "disputed",
+      "written_summary": "The claim that more young people are being drawn into gang crime is disputed based on the available evidence. While some sources, like the European Parliamentary Research Service, suggest an overall increase in gang violence in the EU, there is no specific evidence directly indicating a rise in youth involvement in gangs globally. The FBI's report indicates a decrease in overall violent crime in the U.S., and although some localized sources, like those specific to Victoria, Australia, note an increase in youth gang offending, this is not consistently observed across all regions. The data seems to vary significantly by location, making the claim disputed rather than universally verified or false.",
+      "evidence": [
+        {
+          "source_url": "https://www.fbi.gov/news/press-releases/fbi-releases-2023-crime-in-the-nation-statistics",
+          "source_title": "FBI",
+          "snippet": "The FBI reported a 3.0% decrease in national violent crime in 2023 compared to 2022, with murder and non-negligent manslaughter decreasing by an estimated 11.6%."
+        },
+        {
+          "source_url": "https://www.police.vic.gov.au/youth-gang-strategy-2023-2026/youth-gangs-today",
+          "source_title": "police.vic.gov.au",
+          "snippet": "One source indicates that youth gang-related offending is on the rise."
+        },
+        {
+          "source_url": "https://www.euronews.com/my-europe/2025/03/10/gang-crime-on-the-rise-which-european-countries-have-the-most-dangerous-neighbourhoods",
+          "source_title": "euronews.com",
+          "snippet": "A February briefing from the European Parliamentary Research Service (EPRS) warned that gang violence is increasing across the EU."
+        },
+        {
+          "source_url": "https://lailluminator.com/2023/03/11/pandemic-stress-gangs-and-utter-fear-fueled-a-rise-in-teen-shootings",
+          "source_title": "lailluminator.com",
+          "snippet": "Research suggests that adolescents exposed to gun violence are more likely to commit serious violent crimes."
+        },
+        {
+          "source_url": "https://nationalgangcenter.ojp.gov/survey-analysis/demographics",
+          "source_title": "nationalgangcenter.ojp.gov",
+          "snippet": "Law enforcement agencies report that the majority of gang members are adults, but smaller cities and rural counties are more likely to report equal proportions of juvenile and adult gang members."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 527.0399780273438,
+        "claim": "Sweden has the longest healthcare waiting lists ever"
+      },
+      "status": "false",
+      "written_summary": "The claim that Sweden has the longest healthcare waiting lists ever is false. Evidence suggests that while Sweden does have a significant issue with long healthcare waiting times, especially with close to 90,000 individuals waiting over 90 days for treatment as of 2024, this number is not the highest it has ever been. Further, Sweden is not reported to have the longest waiting lists when compared to other countries like Canada. Investments and systems are being put in place to address these waiting times. The evidence does not support the claim of having the longest waiting lists ever.",
+      "evidence": [
+        {
+          "source_url": "https://eurohealthobservatory.who.int/monitors/health-systems-monitor/updates/hspm/sweden-2023/a-new-national-system-to-shorten-waiting-times",
+          "source_title": "A new national system to shorten waiting times - Updates",
+          "snippet": "Long waiting times have long been a problem in Swedish healthcare, with substantial differences existing in waiting times between regions ..."
+        },
+        {
+          "source_url": "https://www.euractiv.com/section/health-consumers/news/swedish-government-invests-e65-million-to-address-health-capacity-shortages",
+          "source_title": "Swedish government invests €6,5 million to address health capacity ...",
+          "snippet": "In August 2024, nearly 90,000 people with all sorts of diagnoses had been waiting more than 90 days for treatment and surgery in specialised ..."
+        },
+        {
+          "source_url": "",
+          "source_title": "Health Care Wait Times by Country 2025 - World Population Review",
+          "snippet": "Health Care Wait Times by Country 2025 ; Canada. 33% ; United States. 28% ; Sweden. 24% ; Norway. 22% ; United Kingdom. 21% ..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 530.0999755859375,
+        "claim": "The current security policy situation is the most serious in decades"
+      },
+      "status": "verified",
+      "written_summary": "The claim that the current security policy situation is the most serious in decades is verified by multiple pieces of evidence. Sources such as Foreign Affairs highlight a revival of geopolitical competition among major powers like Russia and China, which is challenging the existing international order. Additionally, new challenges, including climate change, pandemics, and nuclear proliferation, are exacerbating these geopolitical risks, complicating international cooperation. The 2025 Annual Threat Assessment further supports this by identifying state adversaries' efforts to weaken U.S. economic and military power. Thus, the confluence of these factors supports the classification of the current situation as the most serious in decades.",
+      "evidence": [
+        {
+          "source_url": "https://www.foreignaffairs.com/united-states/dangerous-decade-foreign-policy-world-crisis-richard-haass",
+          "source_title": "Foreign Affairs",
+          "snippet": "The current security policy situation is arguably the most serious in decades due to a confluence of factors. These include revival of traditional geopolitical competition among major powers like Russia and China, who are challenging the existing international order."
+        },
+        {
+          "source_url": "https://www.dni.gov/files/ODNI/documents/assessments/ATA-2025-Unclassified-Report.pdf",
+          "source_title": "DNI.gov",
+          "snippet": "The 2025 Annual Threat Assessment highlights that state adversaries and their proxies are attempting to weaken U.S. economic and military power."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 534.719970703125,
+        "claim": "there is a trade war"
+      },
+      "status": "verified",
+      "written_summary": "The claim that there is a trade war is verified. The evidence shows that since January 2018, there has been an ongoing trade conflict between the United States and China. This conflict has been marked by the imposition of tariffs by both countries on each other's goods. As of 2025, the average U.S. tariffs on Chinese exports are 51.1%, with China's tariffs on U.S. exports at 32.6%, both covering 100% of goods. These high tariffs and the described reciprocal trade measures clearly support the assertion of an active trade war between the two nations.",
+      "evidence": [
+        {
+          "source_url": "https://www.piie.com/research/piie-charts/2019/us-china-trade-war-tariffs-date-chart",
+          "source_title": "US-China Trade War Tariffs: An Up-to-Date Chart | PIIE",
+          "snippet": "Average US tariffs on Chinese exports now stand at 57.6 percent and cover 100 percent of all goods. China's average tariffs on US exports are at 32.6%..."
+        },
+        {
+          "source_url": "https://taxfoundation.org/research/all/federal/trump-tariffs-trade-war",
+          "source_title": "Trump Tariffs: Tracking the Economic Impact of the Trump Trade War",
+          "snippet": "On April 2, the president announced a universal tariff of 10 percent, with higher tariffs on trading partners, as high as 50 percent, depending on their trade..."
+        }
+      ]
+    },
+    {
+      "claim": {
+        "start": 534.719970703125,
+        "claim": "the trade war is shaking the entire world order"
+      },
+      "status": "disputed",
+      "written_summary": "The claim that the trade war is shaking the entire world order is disputed. The evidence indicates that the trade war, particularly between the US and China, has led to economic disruptions, including increased tariffs and trade tensions. Many experts and reports highlight the significant impact on global markets and the potential risk to international trade norms established post-1945. However, there are also arguments and evidence that global trade itself has increased by 3%, and other nations have found new trade opportunities amid the US-China tensions. Thus, while the trade war is causing notable disruptions and concerns about the global order, it is not a universally accepted view that the entire world order is being fundamentally shaken, with some aspects of trade continuing to grow.",
+      "evidence": [
+        {
+          "source_url": "https://global4cast.org/2025/04/trumps-2025-trade-war-economic-systemic-warfare-and-the-end-of-the-old-order",
+          "source_title": "Trump's 2025 Trade War: Economic Systemic Warfare and the End ...",
+          "snippet": "Trump's economic offensive threatens to upend the post-1945 rules-based system, replacing it with an order governed by raw power and intimidation."
+        },
+        {
+          "source_url": "https://www.bbc.com/news/articles/c4g2089vznzo",
+          "source_title": "What would a US-China trade war do to the world economy? - BBC",
+          "snippet": "A full-scale trade war between China and the US is in prospect after President Donald Trump imposed 125% tariffs on Chinese goods imports."
+        },
+        {
+          "source_url": "https://www.nber.org/papers/w26171",
+          "source_title": "How the US-China Trade War Affected the Rest of the World | NBER",
+          "snippet": "The trade war created trade opportunities for other nations and increased overall global trade by 3 percent."
+        }
+      ]
+    }
+  ]
+}
