@@ -110,8 +110,22 @@ Once you have the backend app running, you'll need to unpack the Chrome extensio
 5. Go to Youtube, play a video, the fact-checker pop-up will be immediately available. Note that it takes a few seconds to start transcribing
 
 
-### Interface 3: Lovable dashboard
+### Interface 3: Dashboard
+Run the backend and frontend in separate terminals.
 
+1) Start the backend API (terminal A)
+```bash
+cd backend
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+2) Start the dashboard UI (terminal B)
+```bash
+cd frontend
+npm run dev
+```
+
+Then open `http://localhost:3000` in your browser. Paste a YouTube URL, click Analyze, and watch claims and fact‑checks appear when processing completes. 
 
 ## Processing Pipeline
 
