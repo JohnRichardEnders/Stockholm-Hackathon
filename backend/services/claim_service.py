@@ -15,6 +15,84 @@ from models import Claim, Sentence
 # Load environment variables
 load_dotenv()
 
+
+# add near the top
+import re
+import string
+
+# ===== filters =====
+VAGUE = {"it","this","that","they","he","she","these","those"}
+HEDGES = {"maybe","might","could","possibly","likely","appears","seems","probably"}
+REL_TIME = {"today","yesterday","tomorrow","recently","last year","this year","last month","this month","last week","this week"}
+AUX = {"is","are","was","were","has","have","had","do","does","did","will","would","should","can","cannot","cant"}
+
+def _tokens(s: str):
+    return re.findall(r"\w+", s.lower())
+
+def _jaccard(a, b):
+    ia = set(a); ib = set(b)
+    inter = ia & ib; union = ia | ib
+    return len(inter) / max(1, len(union))
+
+def _has_verb(toks):
+    return any(t in AUX or t.endswith(("ed","es","ing")) for t in toks)
+
+def _non_claim(s: str) -> bool:
+    s = s.strip()
+    if not s: return True
+    if s.endswith("?"): return True
+    if re.match(r"^\s*(please|do|make|tell|consider)\b", s.lower()): return True
+    toks = _tokens(s)
+    if len(toks) < 3 or len(toks) > 60: return True
+    if not _has_verb(toks): return True
+    return False
+
+def _ambiguous(s: str) -> bool:
+    toks = _tokens(s)
+    if not toks: return True
+    if toks[0] in VAGUE and len(toks) < 5: return True
+    if set(toks) & HEDGES: return True
+    return False
+
+def _temporal_vague(s: str) -> bool:
+    low = s.lower()
+    return any(rt in low for rt in REL_TIME)
+
+def _grounded(claim: str, src: str) -> bool:
+    return _jaccard(_tokens(claim), _tokens(src)) >= 0.35
+
+def _numeric_ok(claim: str, src: str) -> bool:
+    nums = re.findall(r"\d[\d,.\-]*", claim)
+    return all(n in src for n in nums)
+
+def _near_dup(s: str, kept: list) -> bool:
+    ta = set(_tokens(s))
+    for k in kept:
+        tb = set(_tokens(k))
+        if _jaccard(ta, tb) > 0.9:
+            return True
+    return False
+
+def _clean_end(s: str) -> str:
+    s = s.strip()
+    if s and s[-1].isalnum():
+        s += "."
+    return s
+
+def filter_claims(claims: list, source: str) -> list:
+    out = []
+    for c in claims:
+        if _non_claim(c): continue
+        if _ambiguous(c): continue
+        if _temporal_vague(c): continue
+        if not _grounded(c, source): continue
+        if not _numeric_ok(c, source): continue
+        if _near_dup(c, out): continue
+        out.append(_clean_end(c))
+    return out
+
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -77,32 +155,16 @@ async def extract_claims_from_sentence(sentence: Sentence) -> List[Claim]:
         claim_texts = result.get("claims", [])
         logger.info(f"Claim texts: {claim_texts}")
         
-        # Create Claim objects with timestamps
-        claims = [
-            Claim(start=sentence.start, claim=claim_text)
-            for claim_text in claim_texts
-        ]
+        claim_texts = filter_claims(claim_texts, text)
+
+        logger.info(f"Filtered claim texts: {claim_texts}")
+
+        claims = [Claim(start=sentence.start, claim=c) for c in claim_texts]
         
         logger.info(f"Extracted {len(claims)} claims from: '{text[:50]}...'")
         return claims
         
     except Exception as e:
         logger.error(f"RunPod extraction failed: {e}")
-        return mock_extract_claims(text, sentence.start)
-
-
-def mock_extract_claims(text: str, start_time: float) -> List[Claim]:
-    """Simple fallback for testing"""
-    claims = []
-    text_lower = text.lower()
-    
-    if "vaccine" in text_lower and "autism" in text_lower:
-        claims.append(Claim(start=start_time, claim="vaccines cause autism"))
-    
-    if "earth" in text_lower and "flat" in text_lower:
-        claims.append(Claim(start=start_time, claim="the Earth is flat"))
-    
-    if "climate change" in text_lower and ("fake" in text_lower or "hoax" in text_lower):
-        claims.append(Claim(start=start_time, claim="climate change is fake"))
-    
-    return claims
+        raise RuntimeError(f"RunPod extraction failed: {e}")
+        
