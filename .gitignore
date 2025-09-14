@@ -212,3 +212,6 @@ backend/.env
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Lukas enviroment
+/supabase

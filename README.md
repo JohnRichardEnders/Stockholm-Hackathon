@@ -111,3 +111,12 @@ The backend uses async queues for concurrent processing:
 - Results are returned as structured JSON
 
 Perfect for hackathon development with clean separation of concerns and production-ready architecture.
+
+
+
+
+
+$env:PATH += ';C:\ffmpeg\bin' 
+cd .\backend\  
+.\venv\Scripts\activate 
+python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
