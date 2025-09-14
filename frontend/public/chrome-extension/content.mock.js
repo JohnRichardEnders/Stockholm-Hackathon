@@ -1,90 +1,259 @@
-// Mock data loading and timeline markers
+// API service for real fact-checking data
 
-YouTubeFactChecker.prototype.loadMockData = function() {
-    // Mock data with structure: timestamp, claim, categoryOfLikeness, sources, judgement
-    // Added endTimestamp for proper duration handling
-    this.mockFactChecks = [{
-            timestamp: 15,
-            endTimestamp: 25, // 10 second duration
-            claim: 'This technology will revolutionize the entire industry within 5 years',
-            categoryOfLikeness: 'false',
-            sources: [
-                'https://example.com/tech-revolution-study',
-                'https://example.com/industry-transformation-timeline',
-            ],
-            judgement: {
-                reasoning: 'Historical analysis shows that revolutionary industry transformations typically take 10-15 years, not 5. Similar bold predictions in the past have proven overly optimistic.',
-                summary: 'Claim is overly optimistic based on historical precedent',
-            },
-        },
-        {
-            timestamp: 45,
-            endTimestamp: 55, // 10 second duration
-            claim: 'Studies show that 90% of users prefer this method over traditional approaches',
-            categoryOfLikeness: 'false',
-            sources: [
-                'https://example.com/user-preference-study',
-                'https://example.com/methodology-comparison',
-            ],
-            judgement: {
-                reasoning: 'Independent research indicates preference rates are actually 60-65%, not 90%. The referenced studies could not be independently verified.',
-                summary: 'Significantly overstated user preference statistics',
-            },
-        },
-        {
-            timestamp: 120,
-            endTimestamp: 130, // 10 second duration
-            claim: 'The market cap will reach $1 trillion by next year',
-            categoryOfLikeness: 'false',
-            sources: [
-                'https://example.com/market-analysis-report',
-                'https://example.com/financial-projections',
-            ],
-            judgement: {
-                reasoning: 'Current market trends and financial analyst consensus indicate this projection is unrealistic given current growth rates and market conditions.',
-                summary: 'Unrealistic market cap projection without supporting evidence',
-            },
-        },
-        {
-            timestamp: 180,
-            endTimestamp: 190, // 10 second duration
-            claim: 'No other company has been able to achieve these results',
-            categoryOfLikeness: 'true',
-            sources: [
-                'https://example.com/industry-benchmarks',
-                'https://example.com/competitive-analysis',
-            ],
-            judgement: {
-                reasoning: 'Comprehensive industry analysis confirms this claim. Peer-reviewed research and industry reports from the past 3 years support this assertion.',
-                summary: 'Accurate claim supported by industry data',
-            },
-        },
-        {
-            timestamp: 240,
-            endTimestamp: 250, // 10 second duration
-            claim: 'This approach is completely safe with no side effects',
-            categoryOfLikeness: 'neutral',
-            sources: [
-                'https://example.com/safety-study',
-                'https://example.com/clinical-trials',
-            ],
-            judgement: {
-                reasoning: "While initial studies show promise, long-term effects are still being studied. The claim of 'no side effects' cannot be definitively confirmed at this time.",
-                summary: 'Insufficient data to confirm absolute safety claims',
-            },
-        },
-    ];
+YouTubeFactChecker.prototype.startAnalysis = function() {
+    if (this.isAnalysisInProgress) {
+        console.log('Analysis already in progress');
+        return;
+    }
 
-    console.log('Mock fact-check data loaded:', this.mockFactChecks.length, 'claims');
+    const videoUrl = window.location.href;
+    console.log('Starting analysis for video:', videoUrl);
 
-    // Create timeline markers after loading mock data
-    this.createTimelineMarkers();
+    this.isAnalysisInProgress = true;
+    this.updateButtonState();
+    this.showProcessingIndicator();
+
+    // Extract video ID from URL
+    const videoId = this.extractVideoIdFromUrl(videoUrl);
+    if (!videoId) {
+        this.isAnalysisInProgress = false;
+        this.updateButtonState();
+        this.handleAnalysisError(new Error('Could not extract video ID from URL'));
+        return;
+    }
+
+    // Send message to background script to start analysis
+    chrome.runtime.sendMessage({
+        type: 'START_ANALYSIS',
+        videoId: videoId
+    }, (response) => {
+        if (chrome.runtime.lastError) {
+            console.error('Error sending message:', chrome.runtime.lastError);
+            this.isAnalysisInProgress = false;
+            this.updateButtonState();
+            this.handleAnalysisError(new Error('Failed to communicate with background script'));
+            return;
+        }
+
+        if (!response.success) {
+            this.isAnalysisInProgress = false;
+            this.updateButtonState();
+            this.handleAnalysisError(new Error(response.error));
+        }
+        // If successful, the background script will send the results via message
+    });
+};
+
+YouTubeFactChecker.prototype.extractVideoIdFromUrl = function(url) {
+    try {
+        const urlObj = new URL(url);
+        return urlObj.searchParams.get('v');
+    } catch (error) {
+        console.error('Error parsing URL:', error);
+        return null;
+    }
+};
+
+YouTubeFactChecker.prototype.processVideo = async function(videoUrl) {
+    const API_BASE_URL = 'http://localhost:8000';
+
+    try {
+        // Encode the video URL as a query parameter
+        const encodedVideoUrl = encodeURIComponent(videoUrl);
+        const response = await fetch(`${API_BASE_URL}/api/process-video?video_url=${encodedVideoUrl}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            throw new Error('Cannot connect to server. Make sure the backend is running on localhost:8000');
+        }
+        throw error;
+    }
+};
+
+
+YouTubeFactChecker.prototype.handleAnalysisComplete = function(result) {
+    // Transform API response to match existing overlay format
+    if (result.claim_responses && result.claim_responses.length > 0) {
+        this.mockFactChecks = result.claim_responses.map(claimResponse => ({
+            timestamp: claimResponse.claim.start,
+            endTimestamp: claimResponse.claim.start + 10, // Default 10-second duration
+            claim: claimResponse.claim.claim,
+            categoryOfLikeness: this.mapApiStatusToCategory(claimResponse.status),
+            sources: claimResponse.evidence ? claimResponse.evidence.map(ev => ev.source_url).filter(Boolean) : [],
+            judgement: {
+                reasoning: claimResponse.written_summary || 'No detailed explanation provided',
+                summary: claimResponse.written_summary || `Status: ${claimResponse.status}`
+            }
+        }));
+
+        console.log('Processed fact-check data:', this.mockFactChecks.length, 'claims');
+
+        // Create timeline markers with real data
+        this.createTimelineMarkers();
+
+        // Show completion notification
+        this.showCompletionNotification({
+            total_claims: result.total_claims || this.mockFactChecks.length,
+            summary: result.summary || this.createSummaryFromClaims()
+        });
+    } else {
+        // No claims found
+        this.showNoClaimsNotification();
+    }
+
+    this.hideProcessingIndicator();
+};
+
+YouTubeFactChecker.prototype.handleAnalysisError = function(error) {
+    this.hideProcessingIndicator();
+
+    const notification = document.createElement('div');
+    notification.id = 'fact-checker-error-notification';
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; background: #f44336; color: white; 
+        padding: 16px; border-radius: 8px; font-family: Arial, sans-serif; 
+        font-size: 14px; z-index: 10000; max-width: 300px;
+        box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+    `;
+    notification.innerHTML = `
+        <div style="font-weight: bold; margin-bottom: 8px;">❌ Analysis Failed</div>
+        <div style="font-size: 12px; margin-bottom: 8px;">${error.message}</div>
+        <div style="font-size: 11px; opacity: 0.8;">Try again or check if the backend server is running</div>
+    `;
+
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 8000);
+};
+
+YouTubeFactChecker.prototype.showNoClaimsNotification = function() {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; background: #2196F3; color: white; 
+        padding: 16px; border-radius: 8px; font-family: Arial, sans-serif; 
+        font-size: 14px; z-index: 10000; max-width: 300px;
+        box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+    `;
+    notification.innerHTML = `
+        <div style="font-weight: bold; margin-bottom: 8px;">ℹ️ Analysis Complete</div>
+        <div style="font-size: 12px;">No claims requiring fact-checking were found in this video.</div>
+    `;
+
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+};
+
+YouTubeFactChecker.prototype.mapApiStatusToCategory = function(status) {
+    // Map API response status to existing category system
+    const statusMapping = {
+        'verified': 'true',
+        'true': 'true',
+        'false': 'false',
+        'disputed': 'false',
+        'inconclusive': 'neutral',
+        'neutral': 'neutral'
+    };
+
+    return statusMapping[status.toLowerCase()] || 'neutral';
+};
+
+YouTubeFactChecker.prototype.createSummaryFromClaims = function() {
+    const summary = { verified: 0, false: 0, disputed: 0, inconclusive: 0 };
+
+    this.mockFactChecks.forEach(claim => {
+        const category = claim.categoryOfLikeness;
+        if (category === 'true') summary.verified++;
+        else if (category === 'false') summary.false++;
+        else if (category === 'neutral') summary.inconclusive++;
+    });
+
+    return summary;
+};
+
+YouTubeFactChecker.prototype.showCompletionNotification = function(data) {
+    const notification = document.createElement('div');
+    notification.id = 'fact-checker-completion-notification';
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; background: #4caf50; color: white; 
+        padding: 16px; border-radius: 8px; font-family: Arial, sans-serif; 
+        font-size: 14px; z-index: 10000; max-width: 300px;
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    `;
+    notification.innerHTML = `
+        <div style="font-weight: bold; margin-bottom: 8px;">✅ Analysis Complete!</div>
+        <div>Found ${data.total_claims} claims</div>
+        <div style="font-size: 12px; margin-top: 8px; opacity: 0.9;">
+            ${data.summary.verified || 0} verified, ${data.summary.disputed || 0} disputed, 
+            ${data.summary.false || 0} false, ${data.summary.inconclusive || 0} inconclusive
+        </div>
+    `;
+
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+};
+
+YouTubeFactChecker.prototype.showProcessingIndicator = function() {
+    // Remove any existing indicator first
+    const existingIndicator = document.getElementById('fact-checker-processing');
+    if (existingIndicator) existingIndicator.remove();
+
+    const indicator = document.createElement('div');
+    indicator.id = 'fact-checker-processing';
+    indicator.style.cssText = `
+        position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.8); color: white; 
+        padding: 12px 16px; border-radius: 8px; font-family: Arial, sans-serif; 
+        font-size: 14px; z-index: 10000; display: flex; align-items: center; gap: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    `;
+    indicator.innerHTML = `
+        <div style="width:16px;height:16px;border:2px solid #fff;border-top:2px solid transparent;border-radius:50%;animation:spin 1s linear infinite;"></div>
+        <span>Analyzing video for claims...</span>
+        <style>
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
+    `;
+    document.body.appendChild(indicator);
+};
+
+YouTubeFactChecker.prototype.hideProcessingIndicator = function() {
+    const indicator = document.getElementById('fact-checker-processing');
+    if (indicator) {
+        indicator.remove();
+    }
 };
 
 YouTubeFactChecker.prototype.createTimelineMarkers = function() {
-    // Remove existing markers
+    // Remove existing markers and tooltips completely
     const existingMarkers = document.querySelectorAll('.fact-check-timeline-marker');
     existingMarkers.forEach((marker) => marker.remove());
+
+    // Also clear any existing tooltips
+    this.hideTimelineTooltip();
 
     if (!this.mockFactChecks || this.mockFactChecks.length === 0) return;
 
@@ -126,7 +295,7 @@ YouTubeFactChecker.prototype.createTimelineMarkers = function() {
 
         marker.style.cssText = `
       position: absolute;
-      top: -14px;
+      top: -16px;
       left: ${position}%;
       width: 14px;
       height: 14px;
@@ -146,7 +315,6 @@ YouTubeFactChecker.prototype.createTimelineMarkers = function() {
         effect.className = 'liquidGlass-effect';
         effect.style.cssText = `
       position: absolute; z-index: 0; inset: 0; border-radius: inherit; 
-      backdrop-filter: blur(2px) saturate(1.1); 
       filter: url(#glass-distortion); 
       overflow: hidden; isolation: isolate;
       pointer-events: none;
@@ -156,7 +324,7 @@ YouTubeFactChecker.prototype.createTimelineMarkers = function() {
         tint.className = 'liquidGlass-tint';
         tint.style.cssText = `
       z-index: 1; position: absolute; inset: 0; border-radius: inherit; 
-      background: ${this.getCategoryColor(factCheck.categoryOfLikeness)}40;
+      background: ${this.getCategoryColor(factCheck.categoryOfLikeness)}70;
       pointer-events: none;
     `;
 
@@ -172,25 +340,36 @@ YouTubeFactChecker.prototype.createTimelineMarkers = function() {
         marker.appendChild(tint);
         marker.appendChild(shine);
 
-        // Add hover effects
+        // Add hover effects with immediate response
         marker.addEventListener('mouseenter', () => {
             console.log('Marker hover enter - showing tooltip');
+
+            // Immediate visual feedback
             marker.style.opacity = '1';
-            marker.style.width = '18px';
-            marker.style.height = '18px';
-            marker.style.top = '-16px';
-            marker.style.transform = 'translateX(-50%) scale(1.1)';
-            marker.style.boxShadow = `0 0 0 1px rgba(255, 255, 255, 0.5), 0 6px 20px rgba(10, 132, 255, 0.35)`;
+            marker.style.width = '20px';
+            marker.style.height = '20px';
+            marker.style.top = '-24px';
+            marker.style.transform = 'translateX(-50%) scale(1.15)';
+            marker.style.boxShadow = `0 0 0 2px rgba(255, 255, 255, 0.6), 
+                                     0 8px 24px rgba(10, 132, 255, 0.4),
+                                     0 0 20px ${this.getCategoryColor(factCheck.categoryOfLikeness)}60`;
+            marker.style.zIndex = '1001';
+
+            // Show tooltip immediately
             this.showTimelineTooltip(marker, factCheck);
         });
 
         marker.addEventListener('mouseleave', () => {
+            // Reset marker styles
             marker.style.opacity = '0.95';
             marker.style.width = '14px';
             marker.style.height = '14px';
-            marker.style.top = '-14px';
+            marker.style.top = '-16px';
             marker.style.transform = 'translateX(-50%) scale(1)';
             marker.style.boxShadow = `0 0 0 1px rgba(255, 255, 255, 0.4), 0 4px 12px rgba(10, 132, 255, 0.25)`;
+            marker.style.zIndex = '1000';
+
+            // Hide tooltip immediately
             this.hideTimelineTooltip();
         });
 
@@ -207,114 +386,150 @@ YouTubeFactChecker.prototype.createTimelineMarkers = function() {
 };
 
 YouTubeFactChecker.prototype.showTimelineTooltip = function(marker, factCheck) {
-    // Remove existing tooltip
+    // Remove existing tooltip immediately
     this.hideTimelineTooltip();
 
-    console.log('Creating timeline tooltip for:', factCheck.claim.substring(0, 50));
+    // Ensure glass filter exists
+    this.createGlassFilter();
 
     const tooltip = document.createElement('div');
     tooltip.className = 'fact-check-timeline-tooltip liquidGlass-wrapper';
-    // Get marker position for tooltip positioning
+
+    // Get the marker's exact position using getBoundingClientRect for pixel-perfect positioning
     const markerRect = marker.getBoundingClientRect();
-    const containerRect = (marker.closest('.ytp-progress-bar-container') || marker.closest('.ytp-progress-bar') || marker.parentElement).getBoundingClientRect();
-    const markerLeft = parseFloat(marker.style.left);
+    const progressContainer = marker.closest('.ytp-progress-bar-container') || marker.closest('.ytp-progress-bar') || marker.parentElement;
+    const containerRect = progressContainer.getBoundingClientRect();
 
+    // Calculate tooltip position relative to the container
+    const markerCenterX = markerRect.left + (markerRect.width / 2) - containerRect.left;
+
+    // Check for edge detection to prevent cutoff
+    const tooltipWidth = 200; // Estimated tooltip width
+    const containerWidth = containerRect.width;
+    let leftPosition = markerCenterX;
+    let transform = 'translateX(-50%)';
+
+    // Adjust position if would be cut off on edges
+    if (markerCenterX - tooltipWidth / 2 < 0) {
+        leftPosition = 10;
+        transform = 'translateX(0)';
+    } else if (markerCenterX + tooltipWidth / 2 > containerWidth) {
+        leftPosition = containerWidth - 10;
+        transform = 'translateX(-100%)';
+    }
+
+    // Position tooltip directly above marker center with liquid glass styling
     tooltip.style.cssText = `
-    position: absolute;
-    bottom: 100%;
-    left: ${markerLeft}%;
-    transform: translateX(-50%) translateY(-8px);
-    padding: 12px 16px;
-    border-radius: 12px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-size: 12px;
-    z-index: 10000;
-    max-width: 240px;
-    white-space: normal;
-    line-height: 1.4;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4), 0 8px 24px rgba(10, 132, 255, 0.3);
-    animation: tooltipFadeIn 0.2s ease-out;
-    overflow: visible;
-    display: block;
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-    background: rgba(0, 0, 0, 0.1);
-  `;
+        position: absolute;
+        top: -68px;
+        left: ${leftPosition}px;
+        transform: ${transform};
+        padding: 8px 16px;
+        border-radius: 12px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        z-index: 10000;
+        white-space: nowrap;
+        color: white;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4);
+        pointer-events: none;
+        overflow: hidden;
+        opacity: 0;
+        transform: ${transform} scale(0.9);
+        transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    `;
 
-    // Create liquid glass layers for tooltip
+    // Create liquid glass structure
     const effect = document.createElement('div');
     effect.className = 'liquidGlass-effect';
     effect.style.cssText = `
-    position: absolute; z-index: 0; inset: 0; border-radius: inherit; 
-    backdrop-filter: blur(2px) saturate(1.1); 
-    filter: url(#glass-distortion); 
-    overflow: hidden; isolation: isolate;
-    pointer-events: none;
-  `;
+        position: absolute; z-index: 0; inset: 0; border-radius: inherit; 
+        backdrop-filter: blur(8px) saturate(1.2); 
+        filter: url(#glass-distortion); 
+        overflow: hidden; isolation: isolate;
+        pointer-events: none;
+    `;
 
     const tint = document.createElement('div');
     tint.className = 'liquidGlass-tint';
     tint.style.cssText = `
-    z-index: 1; position: absolute; inset: 0; border-radius: inherit; 
-    background: rgba(255, 255, 255, 0.15);
-    pointer-events: none;
-  `;
+        z-index: 1; position: absolute; inset: 0; border-radius: inherit;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+    `;
 
     const shine = document.createElement('div');
     shine.className = 'liquidGlass-shine';
     shine.style.cssText = `
-    position: absolute; inset: 0; z-index: 2; border-radius: inherit; overflow: hidden; 
-    box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.1), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.1);
-    pointer-events: none;
-  `;
+        position: absolute; inset: 0; z-index: 2; border-radius: inherit; overflow: hidden; 
+        box-shadow: inset 1px 1px 2px 0 rgba(255, 255, 255, 0.2), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+    `;
 
-    const content = document.createElement('div');
-    content.style.cssText = `
-    position: relative; z-index: 3; color: white; 
-    display: block; visibility: visible; opacity: 1;
-    pointer-events: none;
-  `;
+    // Create content container
+    const contentContainer = document.createElement('div');
+    contentContainer.className = 'liquidGlass-text';
+    contentContainer.style.cssText = `
+        z-index: 3; position: relative; 
+        color: white; pointer-events: none;
+        display: flex; align-items: center; gap: 8px;
+    `;
 
-    content.innerHTML = `
-    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 11px;">
-      <span style="font-size: 12px;">${this.getCategoryIcon(factCheck.categoryOfLikeness)}</span>
-      <span style="font-weight: 600; text-transform: capitalize; color: white;">${
-        factCheck.categoryOfLikeness
-      }</span>
-      <span style="opacity: 0.8; color: rgba(255,255,255,0.8);">• ${this.formatTime(factCheck.timestamp)}</span>
-    </div>
-    <div style="font-size: 11px; line-height: 1.3; color: rgba(255,255,255,0.9);">
-      "${factCheck.claim.substring(0, 100)}${
-        factCheck.claim.length > 100 ? '...' : ''
-      }"
-    </div>
-  `;
+    // Enhanced content with better formatting
+    const endTime = factCheck.endTimestamp || (factCheck.timestamp + 10);
+    const categoryIcon = this.getCategoryIcon(factCheck.categoryOfLikeness);
+    const categoryColor = this.getCategoryColor(factCheck.categoryOfLikeness);
 
+    contentContainer.innerHTML = `
+        <span style="font-size: 14px; color: ${categoryColor};">${categoryIcon}</span>
+        <span style="text-transform: uppercase; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; color: ${categoryColor};">${factCheck.categoryOfLikeness}</span>
+        <span style="color: rgba(255, 255, 255, 0.6); font-size: 11px;">•</span>
+        <span style="font-size: 11px; color: rgba(255, 255, 255, 0.9); font-weight: 400;">${this.formatTime(factCheck.timestamp)}</span>
+    `;
+
+    // Assemble tooltip
     tooltip.appendChild(effect);
     tooltip.appendChild(tint);
     tooltip.appendChild(shine);
-    tooltip.appendChild(content);
+    tooltip.appendChild(contentContainer);
 
-    // Try adding tooltip to the progress container instead of marker for better positioning
-    const progressContainer = marker.closest('.ytp-progress-bar-container') || marker.closest('.ytp-progress-bar') || marker.parentElement;
-    if (progressContainer) {
-        progressContainer.appendChild(tooltip);
-        console.log('Tooltip added to progress container:', tooltip);
-    } else {
-        marker.appendChild(tooltip);
-        console.log('Tooltip added to marker:', tooltip);
-    }
+    // Add to container
+    progressContainer.appendChild(tooltip);
 
-    // Store reference for cleanup
-    marker._tooltip = tooltip;
+    // Store reference
+    this.currentTooltip = tooltip;
+
+    // Animate in
+    requestAnimationFrame(() => {
+        tooltip.style.opacity = '1';
+        tooltip.style.transform = `${transform} scale(1)`;
+    });
 };
 
 YouTubeFactChecker.prototype.hideTimelineTooltip = function() {
-    const existingTooltip = document.querySelector('.fact-check-timeline-tooltip');
-    if (existingTooltip) {
-        existingTooltip.remove();
+    if (this.currentTooltip && this.currentTooltip.parentNode) {
+        // Animate out
+        this.currentTooltip.style.opacity = '0';
+        this.currentTooltip.style.transform = this.currentTooltip.style.transform.replace('scale(1)', 'scale(0.9)');
+
+        // Remove after animation
+        setTimeout(() => {
+            if (this.currentTooltip && this.currentTooltip.parentNode) {
+                this.currentTooltip.remove();
+            }
+            this.currentTooltip = null;
+        }, 200);
     }
+
+    // Backup cleanup for any orphaned tooltips (immediate removal for cleanup)
+    const existingTooltips = document.querySelectorAll('.fact-check-timeline-tooltip');
+    existingTooltips.forEach(tooltip => {
+        if (tooltip !== this.currentTooltip) {
+            tooltip.remove();
+        }
+    });
 };
 
 YouTubeFactChecker.prototype.jumpToTimestamp = function(timestamp) {
@@ -332,14 +547,9 @@ YouTubeFactChecker.prototype.addTooltipStyles = function() {
     const style = document.createElement('style');
     style.id = 'timeline-tooltip-styles';
     style.textContent = `
-        @keyframes tooltipFadeIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(4px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .fact-check-timeline-marker {
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .fact-check-timeline-tooltip { pointer-events: auto !important; }
-        .fact-check-timeline-tooltip .liquidGlass-effect,
-        .fact-check-timeline-tooltip .liquidGlass-tint,
-        .fact-check-timeline-tooltip .liquidGlass-shine { pointer-events: none; }
     `;
     document.head.appendChild(style);
 };

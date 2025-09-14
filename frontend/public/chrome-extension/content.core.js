@@ -9,13 +9,16 @@ class YouTubeFactChecker {
         this.currentTime = 0;
         this.player = null;
         this.isInitialized = false;
-        this.mockMode = true; // Enable mock data mode
+        this.mockMode = false; // Use real API by default (set to true for mock data)
         this.activeIndicator = null;
         this.popupTimeouts = [];
         this.currentDisplayedClaim = null;
         this.motionTokens = null;
         this.indicatorIcon = null;
         this.isMorphed = false;
+        this.currentTooltip = null; // Track current tooltip
+        this.isAnalysisInProgress = false; // Track analysis state
+        this.mockFactChecks = []; // Store fact-check results
     }
 
     init() {
@@ -24,6 +27,8 @@ class YouTubeFactChecker {
             this.setupTimeTracking();
             this.createOverlayContainer();
             this.extractVideoId();
+            this.createActiveIndicator(); // Create analyze button
+            this.setupResizeListener(); // Add resize listener for dynamic repositioning
             this.isInitialized = true;
         });
 
