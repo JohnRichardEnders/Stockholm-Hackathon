@@ -3,7 +3,7 @@ YouTube Fact-Checker Backend
 Main FastAPI app with orchestration logic
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Dict, Any
 import logging
@@ -48,11 +48,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # Include API routes
 app.include_router(router)         # existing
 app.include_router(router_stream)  # your JSONL route
 app.include_router(router_sse)     # ✅ new SSE route
 
+@app.middleware("http")
+async def allow_private_network(request: Request, call_next):
+    # Handle PNA preflight explicitly
+    if request.method == "OPTIONS" and \
+       request.headers.get("Access-Control-Request-Private-Network", "").lower() == "true":
+        return Response(
+            status_code=204,
+            headers={
+                "Access-Control-Allow-Private-Network": "true",
+                "Access-Control-Allow-Origin": request.headers.get("Origin", ""),
+                "Access-Control-Allow-Methods": request.headers.get("Access-Control-Request-Method", "POST, OPTIONS"),
+                "Access-Control-Allow-Headers": request.headers.get("Access-Control-Request-Headers", ""),
+            },
+        )
+    return await call_next(request)
 
 @app.on_event("startup")
 async def startup_event():
